@@ -35,6 +35,8 @@ class Article(models.Model):
     sourceName = models.CharField(max_length=255, null=True)
     content = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    feature_names = models.TextField(null=True)
+    bag_of_words_matrix = models.BinaryField(null=True)
 
     
     def __str__(self):
@@ -51,7 +53,8 @@ class UserProfile(models.Model):
     science = models.IntegerField(default=0)
     sports = models.IntegerField(default=0)
     technology = models.IntegerField(default=0)
-    read_articles = models.ManyToManyField(Article, related_name='read_by_users', blank=True)
+    read_articles = models.ManyToManyField(Article, related_name='read_by_users')
+    last_article = models.ForeignKey(Article, related_name="last_article", null = True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username if self.user else "UserProfile"
@@ -71,6 +74,8 @@ class TrainingArticle(models.Model):
     sourceName = models.CharField(max_length=255, null=True)
     content = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    feature_names = models.TextField(null=True)
+    bag_of_words_matrix = models.BinaryField(null=True)
 
     def __str__(self):
         return self.title

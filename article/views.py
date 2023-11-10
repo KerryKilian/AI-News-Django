@@ -2,7 +2,8 @@ import requests
 import json
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from .services import fetchTrainingArticles, getArticlesForUser, trainAi, fetchWithoutCategories, saveTrainingJsons
+from .services import fetchTrainingArticles, getArticlesForUser, fetchWithoutCategories, saveTrainingJsons
+from .ai import trainAi
 import os
 from .models import TrainingArticle, UserProfile
 from django.contrib.auth.decorators import login_required

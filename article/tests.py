@@ -1,12 +1,13 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.urls import reverse
 from django.core.management import call_command
+
+from .ai import create_bag_of_words, trainAi
 
 
 # Create your tests here.
 from .models import Category, TrainingArticle, Article, UserProfile
-from .services import fetchTrainingArticles, get_sorted_categories, getArticlesForUser, trainAi, predictCategory, saveTrainingJsons
+from .services import get_sorted_categories, getArticlesForUser, predictCategory, saveTrainingJsons
 
 class ArticlesTest(TestCase):
     def setUp(self):
@@ -172,7 +173,7 @@ class UserTest(TestCase):
         }
 
         # Create categories in the database
-        call_command("create_initial_categories")
+        # call_command("create_initial_categories")
         initial_categories = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
 
         # Check if categories exist
@@ -206,7 +207,7 @@ class UserTest(TestCase):
 class UserArticlesTest(TestCase):
     def setUp(self):
         saveTrainingJsons()
-        call_command("create_initial_categories")
+        # call_command("create_initial_categories")
 
     
     def test_get_sorted_categories(self):
@@ -231,26 +232,72 @@ class UserArticlesTest(TestCase):
         # Check if the sorted categories match the expected order
         self.assertEqual(list(sorted_categories.keys()), expected_sorted_order)
 
-    def test_get_sorted_categories(self):
+    def test_get_sorted_categories_universe(self):
         
-        user = User.objects.create_user(
-            username='testuser',
-            email='testuser@example.com',
-            password='testpassword'
+        user_data = {
+            'username': 'testuser',
+            'email': 'testuser@example.com',
+            'password1': 'testpassword',
+            'password2': 'testpassword',
+        }
+        article = Article.objects.create(
+            title='The dark universe. When do we learn more with our telescopes?',
+            description='NASA build new telescopes but when do we see more into the dark of the universe?',
+            content=""
         )
+        feature_names, bag_of_words_matrix = create_bag_of_words(article)
+        article.bag_of_words_matrix = bag_of_words_matrix
+        article.save()
 
-        user_profile = UserProfile(
-            entertainment=2,
-            general=0,
-            business=-1,
-            health=-3,
-            science=3,
-            sports=1,
-            technology=2,
-        )
+        response = self.client.post('/signup/', user_data, follow=True)
+        user = User.objects.get(username='testuser')
+        user_profile = UserProfile.objects.get(user=user)
+        user_profile.entertainment = 0
+        user_profile.general = -1
+        user_profile.business = -2
+        user_profile.health = 4
+        user_profile.science = 5
+        user_profile.sports = 1
+        user_profile.technology = 3
+        user_profile.last_article = article
         user_profile.save()
 
-        result, fetchNeeded = getArticlesForUser(user.id)
-
+        result = getArticlesForUser(user_profile.id)
+        print(result)
         self.assertIsNotNone(result)
         # cannot really test what is in here because mock data is not good enough (not every category is in mock data)
+
+    # def test_get_sorted_categories_gaza(self):
+        
+    #     user_data = {
+    #         'username': 'testuser',
+    #         'email': 'testuser@example.com',
+    #         'password1': 'testpassword',
+    #         'password2': 'testpassword',
+    #     }
+    #     article = Article.objects.create(
+    #         title='War between Israel and Gaza is getting worse',
+    #         description='President Netanyahu is in Israel',
+    #         content=""
+    #     )
+    #     feature_names, bag_of_words_matrix = create_bag_of_words(article)
+    #     article.bag_of_words_matrix = bag_of_words_matrix
+    #     article.save()
+
+    #     response = self.client.post('/signup/', user_data, follow=True)
+    #     user = User.objects.get(username='testuser')
+    #     user_profile = UserProfile.objects.get(user=user)
+    #     user_profile.entertainment = 0
+    #     user_profile.general = -1
+    #     user_profile.business = -2
+    #     user_profile.health = 4
+    #     user_profile.science = 5
+    #     user_profile.sports = 1
+    #     user_profile.technology = 3
+    #     user_profile.last_article = article
+    #     user_profile.save()
+
+    #     result = getArticlesForUser(user_profile.id)
+    #     print(result)
+    #     self.assertIsNotNone(result)
+    #     # cannot really test what is in here because mock data is not good enough (not every category is in mock data)
