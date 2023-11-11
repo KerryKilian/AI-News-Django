@@ -7,7 +7,7 @@ from .ai import create_bag_of_words, trainAi
 
 # Create your tests here.
 from .models import Category, TrainingArticle, Article, UserProfile
-from .services import get_sorted_categories, getArticlesForUser, predictCategory, saveTrainingJsons
+from .services import get_sorted_categories, getArticlesForUser, predictCategory, saveTrainingJsons, user_read_article
 
 class ArticlesTest(TestCase):
     def setUp(self):
@@ -242,7 +242,7 @@ class UserArticlesTest(TestCase):
         }
         article = Article.objects.create(
             title='The dark universe. When do we learn more with our telescopes?',
-            description='NASA build new telescopes but when do we see more into the dark of the universe?',
+            description='NASA builds new telescopes but when do we see more into the dark of the universe?',
             content=""
         )
         feature_names, bag_of_words_matrix = create_bag_of_words(article)
@@ -260,6 +260,7 @@ class UserArticlesTest(TestCase):
         user_profile.sports = 1
         user_profile.technology = 3
         user_profile.last_article = article
+        user_profile.read_articles.add(article)
         user_profile.save()
 
         result = getArticlesForUser(user_profile.id)
@@ -267,37 +268,51 @@ class UserArticlesTest(TestCase):
         self.assertIsNotNone(result)
         # cannot really test what is in here because mock data is not good enough (not every category is in mock data)
 
-    # def test_get_sorted_categories_gaza(self):
-        
-    #     user_data = {
-    #         'username': 'testuser',
-    #         'email': 'testuser@example.com',
-    #         'password1': 'testpassword',
-    #         'password2': 'testpassword',
-    #     }
-    #     article = Article.objects.create(
-    #         title='War between Israel and Gaza is getting worse',
-    #         description='President Netanyahu is in Israel',
-    #         content=""
-    #     )
-    #     feature_names, bag_of_words_matrix = create_bag_of_words(article)
-    #     article.bag_of_words_matrix = bag_of_words_matrix
-    #     article.save()
+    
 
-    #     response = self.client.post('/signup/', user_data, follow=True)
-    #     user = User.objects.get(username='testuser')
-    #     user_profile = UserProfile.objects.get(user=user)
-    #     user_profile.entertainment = 0
-    #     user_profile.general = -1
-    #     user_profile.business = -2
-    #     user_profile.health = 4
-    #     user_profile.science = 5
-    #     user_profile.sports = 1
-    #     user_profile.technology = 3
-    #     user_profile.last_article = article
-    #     user_profile.save()
+    def test_user_read_article(self):
+        '''
+            test if read articles appear in user_profile's "read_article" field
+        '''
+        user_data = {
+            'username': 'testuser',
+            'email': 'testuser@example.com',
+            'password1': 'testpassword',
+            'password2': 'testpassword',
+        }
+        # Create a category
+        category = Category.objects.get(name='entertainment')
 
-    #     result = getArticlesForUser(user_profile.id)
-    #     print(result)
-    #     self.assertIsNotNone(result)
-    #     # cannot really test what is in here because mock data is not good enough (not every category is in mock data)
+        # Create three articles
+        article1 = Article.objects.create(
+            title='Test Article 1',
+            description='Test description 1',
+            content='Test content 1',
+            category=category
+        )
+
+        article2 = Article.objects.create(
+            title='Test Article 2',
+            description='Test description 2',
+            content='Test content 2',
+            category=category
+        )
+
+        article3 = Article.objects.create(
+            title='Test Article 3',
+            description='Test description 3',
+            content='Test content 3',
+            category=category
+        )
+
+        response = self.client.post('/signup/', user_data, follow=True)
+        user = User.objects.get(username='testuser')
+        user_profile = UserProfile.objects.get(user=user)
+
+        user_read_article(user_profile, article1.id)
+        user_read_article(user_profile, article2.id)
+        user_read_article(user_profile, article3.id)
+
+        self.assertIn(article1, user_profile.read_articles.all())
+        self.assertIn(article2, user_profile.read_articles.all())
+        self.assertIn(article3, user_profile.read_articles.all())

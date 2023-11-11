@@ -12,6 +12,8 @@ import pickle
 from sklearn.metrics.pairwise import cosine_similarity
 
 from django.core.cache import cache
+from django.contrib.auth.models import User
+
 
 
 tfidf_vectorizer = None
@@ -194,7 +196,7 @@ def categoriesAlgorithm(user_profile):
                 for _ in range(category_number): # as many articles as points in userprofile
                     # get articles which are not yet in positive and not read by user yet
                     available_articles = [
-                        article for article in articles if article not in positive and article not in user_profile.read_articles.all()
+                        article for article in articles if article not in result and article not in user_profile.read_articles.all()
                     ]
                     if available_articles:
                         selected_article = available_articles[0]  # Select the first available article
@@ -202,7 +204,7 @@ def categoriesAlgorithm(user_profile):
             elif category_number == 0:
                 # get articles which are not yet in zero and not read by user yet
                 available_articles = [
-                    article for article in articles if article not in zero and article not in user_profile.read_articles.all()
+                    article for article in articles if article not in result and article not in user_profile.read_articles.all()
                 ]
                 if available_articles:
                     selected_article = available_articles[0]  # Select the first available article
@@ -210,7 +212,7 @@ def categoriesAlgorithm(user_profile):
             elif category_number < 0:
                 # get articles which are not yet in negative and not read by user yet
                 available_articles = [
-                    article for article in articles if article not in zero and article not in user_profile.read_articles.all()
+                    article for article in articles if article not in result and article not in user_profile.read_articles.all()
                 ]
                 if available_articles:
                     selected_article = available_articles[0]  # Select the first available article
@@ -230,35 +232,73 @@ def categoriesAlgorithm(user_profile):
     return result, fetch_needed
 
 
+# def getArticlesForUser(user_id):
+#     user_profile = UserProfile.objects.get(id=user_id)
+#     # get Articles for the user depending on categories with trained AI
+#     articles, fetch_needed = categoriesAlgorithm(user_profile)
+
+#     if user_profile.read_articles:
+#         # sort Articles for the user depending on the bag of words
+#         priority_queue = PriorityQueue()
+
+#         # Extract text from the last three articles
+#         read_articles = user_profile.read_articles.all().order_by('-id')[:3]
+#         read_articles_text = ""
+#         for article in read_articles:
+#             text = text_from_article(article)
+#             read_articles_text += text + "; "
+
+#         print(read_articles_text)
+
+#         for article in articles:
+#             print(text_from_article(article))
+#             print(read_articles_text)
+#             similarity = compute_similarity(text_from_article(article), read_articles_text)
+
+#             # Add the (similarity, article_id) pair to the priority queue
+#             priority_queue.put((-similarity, article.id))
+#             print("similarity: " + str(similarity))
+
+#         # Retrieve the sorted article IDs from the priority queue
+#         sorted_article_ids = []
+
+#         while not priority_queue.empty():
+#             _, article_id = priority_queue.get()
+#             sorted_article_ids.append(article_id)
+
+#         # Get the corresponding articles based on their IDs
+#         sorted_articles = Article.objects.filter(id__in=sorted_article_ids)
+
+#         return sorted_articles
+#     else:
+#         return articles
 def getArticlesForUser(user_id):
     user_profile = UserProfile.objects.get(id=user_id)
     # get Articles for user depending on categories with trained AI
     articles, fetch_needed = categoriesAlgorithm(user_profile)
 
+    
 
 
-    if user_profile.last_article:
+    if user_profile.read_articles:
         # sort Articles for user depending of bag of words
         priority_queue = PriorityQueue()
 
-        # user_feature_names, user_bag_of_words_matrix = create_bag_of_words_for_user(user_profile)
-        user_article_text = text_from_article(user_profile.last_article)
+        # user_article_text = text_from_article(user_profile.last_article)
+        # extract text from the last three articles
+        read_articles = user_profile.read_articles.all().order_by('-id')[:3]
+        read_articles_text = ""
+        for article in read_articles:
+            text = text_from_article(article)
+            read_articles_text += text + "; "
+
+
+
         for article in articles:
-            # feature_names = pickle.loads(article.feature_names if hasattr(article, 'feature_names') else article.get('feature_names'))
-            # bag_of_words_matrix = pickle.loads(article.bag_of_words_matrix if hasattr(article, 'bag_of_words_matrix') else article.get('bag_of_words_matrix'))
-            # user_feature_names = user_profile.feature_names if hasattr(user_profile, 'feature_names') else user_profile.get('feature_names')
-            # user_bag_of_words_matrix = user_profile.bag_of_words_matrix if hasattr(user_profile, 'bag_of_words_matrix') else user_profile.get('bag_of_words_matrix')
-            # feature_names, bag_of_words_matrix = create_bag_of_words(article)
-            # print("user_bag_of_words_matrix")
-            # print(user_bag_of_words_matrix)
-            # print("bag_of_words_matrix")
-            # print(bag_of_words_matrix)
-            # similarity = cosine_similarity(user_bag_of_words_matrix, bag_of_words_matrix)[0, 0]
-
-            similarity = compute_similarity(text_from_article(article), user_article_text)
-
+            similarity = compute_similarity(text_from_article(article), read_articles_text)
+            print(article)
             # Add the (similarity, article) pair to the priority queue
-            priority_queue.put((-similarity, article))
+            priority_queue.put((-similarity, article.id))
             print("similarity: " + str(similarity))
 
         # Retrieve the sorted articles from the priority queue
@@ -271,3 +311,12 @@ def getArticlesForUser(user_id):
         return sorted_articles
     else:
         return articles
+
+def user_read_article(user_profile, article_id):
+    '''
+        adds an article to the user's "read_article" field
+    '''
+    article = Article.objects.get(id=article_id)
+
+    user_profile.read_articles.add(article)
+
