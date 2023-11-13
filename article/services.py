@@ -7,7 +7,7 @@ import requests
 from .models import Article, Category, TrainingArticle, UserProfile
 from decouple import config
 from .utils import readFile, createUrl, saveFile, text_from_article
-from .ai import create_bag_of_words, get_sorted_categories, predictCategory, create_bag_of_words_for_user, compute_similarity
+from .ai import create_bag_of_words, get_sorted_categories, predictCategory, compute_similarity
 import pickle
 from sklearn.metrics.pairwise import cosine_similarity
 

@@ -32,18 +32,18 @@ def create_bag_of_words(article):
 
     return feature_names, bag_of_words_matrix
 
-def create_bag_of_words_for_user(user_profile): 
+# def create_bag_of_words_for_user(user_profile): 
     
-    vectorizer = CountVectorizer()
+#     vectorizer = CountVectorizer()
 
-    # Fit and transform the preprocessed text to obtain the bag of words representation
-    X = vectorizer.fit_transform([text_from_article(user_profile.last_article)])
+#     # Fit and transform the preprocessed text to obtain the bag of words representation
+#     X = vectorizer.fit_transform([text_from_article(user_profile.last_article)])
 
-    # Get the feature names and bag of words matrix
-    feature_names = vectorizer.get_feature_names_out()
-    bag_of_words_matrix = X.toarray()
+#     # Get the feature names and bag of words matrix
+#     feature_names = vectorizer.get_feature_names_out()
+#     bag_of_words_matrix = X.toarray()
 
-    return feature_names, bag_of_words_matrix
+#     return feature_names, bag_of_words_matrix
 
 def preprocess_text(text):
     # Your implementation for text preprocessing, e.g., lowercasing and removing stop words
