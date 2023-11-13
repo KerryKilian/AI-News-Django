@@ -1,13 +1,15 @@
+from django.shortcuts import redirect, render
 import requests
 import json
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from .services import fetchTrainingArticles, getArticlesForUser, fetchWithoutCategories, saveTrainingJsons
+from .services import fetchTrainingArticles, getArticlesForUser, fetchWithoutCategories, saveTrainingJsons, search_articles
 from .ai import trainAi
 import os
 from .models import TrainingArticle, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.contrib.auth.models import User
 
 
 @require_http_methods(["GET"])
@@ -54,3 +56,11 @@ def saveJsons(request):
     success, message = saveTrainingJsons()
     return JsonResponse({'message': str(message)})
                        
+
+def search(request):
+    query = request.GET.get('q', '')
+    try:
+        search_articles(query)
+    except Exception as e:
+        return HttpResponse(status=500)
+    

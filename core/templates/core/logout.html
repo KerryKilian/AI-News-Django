@@ -1,0 +1,7 @@
+<a href="{% url 'logout' %}">Logout</a>
+
+<!-- example using a form and button -->
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>

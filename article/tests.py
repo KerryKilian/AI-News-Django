@@ -7,7 +7,7 @@ from .ai import create_bag_of_words, trainAi
 
 # Create your tests here.
 from .models import Category, TrainingArticle, Article, UserProfile
-from .services import get_sorted_categories, getArticlesForUser, predictCategory, saveTrainingJsons, user_read_article
+from .services import get_sorted_categories, getArticlesForUser, predictCategory, saveTrainingJsons, search_articles, user_read_article
 
 class ArticlesTest(TestCase):
     def setUp(self):
@@ -263,7 +263,8 @@ class UserArticlesTest(TestCase):
         user_profile.read_articles.add(article)
         user_profile.save()
 
-        result = getArticlesForUser(user_profile.id)
+        result = getArticlesForUser(user_profile)
+        print("result")
         print(result)
         self.assertIsNotNone(result)
         # cannot really test what is in here because mock data is not good enough (not every category is in mock data)
@@ -316,3 +317,31 @@ class UserArticlesTest(TestCase):
         self.assertIn(article1, user_profile.read_articles.all())
         self.assertIn(article2, user_profile.read_articles.all())
         self.assertIn(article3, user_profile.read_articles.all())
+
+
+
+class ArticleSearchTest(TestCase):
+
+    def setUp(self):
+        # Create sample articles for testing
+        self.article1 = Article.objects.create(title='Sample Article 1', description='Description 1')
+        self.article2 = Article.objects.create(title='Sample Article 2', description='Description 2')
+        self.article3 =  Article.objects.create(title='Another Article', description='Description 3')
+
+    def test_search_articles(self):
+        # Call the search_articles function directly with a search term
+        articles = search_articles('sample')
+
+        # Check that the correct articles are returned
+        self.assertQuerysetEqual(
+            articles,
+            [self.article1, self.article2],
+            ordered=False
+        )
+
+    def test_search_articles_no_results(self):
+        # Call the search_articles function directly with a search term that has no results
+        articles = search_articles('nonexistent')
+
+        # Check that no articles are returned
+        self.assertQuerysetEqual(articles, [])

@@ -13,6 +13,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from django.core.cache import cache
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 
@@ -272,17 +273,15 @@ def categoriesAlgorithm(user_profile):
 #         return sorted_articles
 #     else:
 #         return articles
-def getArticlesForUser(user_id):
-    user_profile = UserProfile.objects.get(id=user_id)
+def getArticlesForUser(user_profile):
     # get Articles for user depending on categories with trained AI
     articles, fetch_needed = categoriesAlgorithm(user_profile)
 
     
 
 
-    if user_profile.read_articles:
+    if user_profile.read_articles.exists():
         # sort Articles for user depending of bag of words
-        priority_queue = PriorityQueue()
 
         # user_article_text = text_from_article(user_profile.last_article)
         # extract text from the last three articles
@@ -292,21 +291,11 @@ def getArticlesForUser(user_id):
             text = text_from_article(article)
             read_articles_text += text + "; "
 
-
-
-        for article in articles:
-            similarity = compute_similarity(text_from_article(article), read_articles_text)
-            print(article)
-            # Add the (similarity, article) pair to the priority queue
-            priority_queue.put((-similarity, article.id))
-            print("similarity: " + str(similarity))
-
-        # Retrieve the sorted articles from the priority queue
-        sorted_articles = []
-
-        while not priority_queue.empty():
-            _, article = priority_queue.get()
-            sorted_articles.append(article)
+        sorted_articles = sorted(
+            articles,
+            key=lambda article: compute_similarity(text_from_article(article), read_articles_text),
+            reverse=True,
+        )
 
         return sorted_articles
     else:
@@ -320,3 +309,8 @@ def user_read_article(user_profile, article_id):
 
     user_profile.read_articles.add(article)
 
+def search_articles(search_term):
+    articles = Article.objects.filter(
+        Q(title__icontains=search_term) | Q(description__icontains=search_term)
+    )
+    return articles
