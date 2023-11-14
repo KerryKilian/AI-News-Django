@@ -126,6 +126,7 @@ def fetchWithoutCategories():
                 url=article_data.get('url'),
                 urlToImage=article_data.get('urlToImage'),
                 publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
+                sourceName=article_data.get("source").get("source"),
                 content=article_data.get('content'),
                 category=Category.objects.get(name=category),
                 feature_names=feature_names,
@@ -169,6 +170,7 @@ def categoriesAlgorithm(user_profile):
                     url=article_data.get('url'),
                     urlToImage=article_data.get('urlToImage'),
                     publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
+                    sourceName=article_data.get("source").get("source"),
                     content=article_data.get('content'),
                     category=Category.objects.get(name=category),
                     feature_names=feature_names,
@@ -314,3 +316,25 @@ def search_articles(search_term):
         Q(title__icontains=search_term) | Q(description__icontains=search_term)
     )
     return articles
+
+
+def user_likes(user_profile, article_id):
+    article = Article.objects.get(id=article_id)
+    field_value = getattr(user_profile, article.category.name)
+    field_value += 2
+    setattr(user_profile, article.category.name, field_value)
+    return field_value
+
+def user_dislikes(user_profile, article_id):
+    article = Article.objects.get(id=article_id)
+    field_value = getattr(user_profile, article.category.name)
+    field_value -= 1
+    setattr(user_profile, article.category.name, field_value)
+    return field_value
+
+
+def user_read_article(user_profile, article_id):
+    article = Article.objects.get(id=article_id)
+    user_profile.read_articles.add(article)
+    user_profile.save()
+    return user_profile

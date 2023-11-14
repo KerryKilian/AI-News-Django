@@ -1,0 +1,60 @@
+{% extends "core/base.html" %} 
+{% block title %}{{ article.title }}{% endblock %} 
+{% block content %}
+<div class="w-3/4 my-6 mx-auto p-6 bg-gray-100 rounded-xl">
+    <h1 class="mb-6 text-5xl font-bold">{{ article.title }}</h1>
+    <img src="{{article.urlToImage}}" class="rounded-xl" alt="{{article.title}}">
+    <h2 class="mt-6 text-2xl font-bold">{{article.description}}</h2>
+    <p class="mt-6 mb-6">{{article.content}}</p>
+    <a href="{{article.url}}" class="px-6 py-3 mt-6 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">
+        Continue reading {% if article.sourceName %}at {{article.sourceName}} {% endif%} 
+    </a>
+
+    <div class="flex mt-4 space-x-4">
+        {% load static %}
+        <button class="button thumbs-up active rounded-xl p-4">
+            <img src="{% static 'core/thumbs-up.svg' %}" alt="Thumbs Up" class="w-8 h-8">
+        </button>
+        <button class="button thumbs-down rounded-xl">
+            <img src="{% static 'core/thumbs-down.svg' %}" alt="Thumbs Down" class="w-8 h-8">
+        </button>
+    </div>
+</div>
+<style>
+    .button {
+        cursor: pointer;
+        border: none;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        color: #000; /* Set the initial text color */
+    }
+
+    .button.thumbs-up.active {
+        background-color: green;
+        color: #fff; /* Set the text color when active */
+    }
+
+    .button.thumbs-down.active {
+        background-color: red;
+        color: #fff; /* Set the text color when active */
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.button');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                buttons.forEach(otherButton => {
+                    if (otherButton !== button) {
+                        otherButton.classList.remove('active');
+                    }
+                });
+
+                button.classList.toggle('active');
+            });
+        });
+    });
+</script>
+{% endblock %}

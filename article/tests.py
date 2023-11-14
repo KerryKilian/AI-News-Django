@@ -7,7 +7,7 @@ from .ai import create_bag_of_words, trainAi
 
 # Create your tests here.
 from .models import Category, TrainingArticle, Article, UserProfile
-from .services import get_sorted_categories, getArticlesForUser, predictCategory, saveTrainingJsons, search_articles, user_read_article
+from .services import get_sorted_categories, getArticlesForUser, predictCategory, saveTrainingJsons, search_articles, user_dislikes, user_likes, user_read_article
 
 class ArticlesTest(TestCase):
     def setUp(self):
@@ -345,3 +345,42 @@ class ArticleSearchTest(TestCase):
 
         # Check that no articles are returned
         self.assertQuerysetEqual(articles, [])
+
+
+class UserProfileLikeOrDislikeTests(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+
+        # Create test categories
+        self.category_general = Category.objects.create(name='general')
+        self.category_technology = Category.objects.create(name='technology')
+
+        # Create a test article
+        self.article_general = Article.objects.create(
+            title='Test Article General',
+            category=self.category_general
+        )
+
+        self.article_technology = Article.objects.create(
+            title='Test Article Technology',
+            category=self.category_technology
+        )
+
+        # Create a test user profile
+        self.user_profile = UserProfile.objects.create(user=self.user)
+
+    def test_user_likes(self):
+        initial_value = getattr(self.user_profile, self.category_general.name)
+        new_value = user_likes(self.user_profile, self.article_general.id)
+        self.assertEqual(new_value, initial_value + 2)
+
+    def test_user_dislikes(self):
+        initial_value = getattr(self.user_profile, self.category_technology.name)
+        new_value = user_dislikes(self.user_profile, self.article_technology.id)
+        self.assertEqual(new_value, initial_value - 1)
+
+    def test_user_read_article(self):
+        initial_read_articles_count = self.user_profile.read_articles.count()
+        user_read_article(self.user_profile, self.article_general.id)
+        self.assertEqual(self.user_profile.read_articles.count(), initial_read_articles_count + 1)

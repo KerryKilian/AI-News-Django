@@ -2,11 +2,12 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from article.models import UserProfile
-from article.services import getArticlesForUser
+from article.services import getArticlesForUser, user_read_article
 from .forms import SignupForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
+from django.shortcuts import render, get_object_or_404
+from article.models import Article
 # Create your views here.
 
 def signup(request):
@@ -40,3 +41,13 @@ def index(request):
     except:
         return HttpResponse(status=500)
     return render(request, 'core/index.html', {'articles': articles})
+
+
+
+
+def article_detail(request, pk):
+    user_profile = UserProfile.objects.get(user=request.user)
+    article = get_object_or_404(Article, pk=pk)
+    new_value = user_read_article(user_profile, article.id)
+    
+    return render(request, 'core/article_detail.html', {'article': article})

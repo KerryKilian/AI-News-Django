@@ -13,4 +13,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path("login/", auth_views.LoginView.as_view(template_name="core/login.html", authentication_form=LoginForm), name="login"),
     path("", views.index, name="index"),
+    path('article/<int:pk>/', views.article_detail, name='article_detail'),
 ]

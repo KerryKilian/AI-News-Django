@@ -1,0 +1,36 @@
+{% for article in articles %}
+    <div class="mb-5 relative">
+      <a href="{% url 'core:article_detail' article.id %}">
+        <div>
+          <img src="{{article.urlToImage}}" class="rounded-t-xl" alt="{{article.title}}">
+          <!-- Add label to the top right corner -->
+          <div class="group">
+            <span class="absolute top-0 right-0 text-white p-2 rounded-tr-xl rounded-bl-xl 
+            {% if article.category.name == 'business' %} bg-blue-500 
+            {% elif article.category.name == 'general' %} bg-gray-500 
+            {% elif article.category.name == 'sports' %} bg-red-500 
+            {% elif article.category.name == 'health' %} bg-green-500 
+            {% elif article.category.name == 'science' %} bg-yellow-800 
+            {% elif article.category.name == 'technology' %} bg-purple-500 
+            {% elif article.category.name == 'entertainment' %} bg-pink-500 {% endif %}">
+              {{ article.category }}
+            </span>
+            <div class="opacity-0 text-white text-xs rounded-xl p-2 absolute top-0 left-full ml-2 group-hover:opacity-100
+            {% if article.category.name == 'business' %} bg-blue-500 
+            {% elif article.category.name == 'general' %} bg-gray-500 
+            {% elif article.category.name == 'sports' %} bg-red-500 
+            {% elif article.category.name == 'health' %} bg-green-500 
+            {% elif article.category.name == 'science' %} bg-yellow-800 
+            {% elif article.category.name == 'technology' %} bg-purple-500 
+            {% elif article.category.name == 'entertainment' %} bg-pink-500 {% endif %}">
+              Recognized by AI
+            </div>
+          </div>
+        </div>
+        <div class="p-6 bg-white rounded-xl">
+          <h2 class="text-2xl">{{article.title}}</h2>
+          <p class="text-gray-500">{{article.description}}</p>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
