@@ -1,7 +1,9 @@
 {% extends "core/base.html" %} 
 {% block title %}{{ article.title }}{% endblock %} 
 {% block content %}
-<div class="w-3/4 my-6 mx-auto p-6 bg-gray-100 rounded-xl">
+{% load static %}
+{% load icons %}
+<div class="w-3/4 my-6 mx-auto p-6 bg-gray-100 rounded-xl" data-article="{{ article.id }}" id="article-details">
     <h1 class="mb-6 text-5xl font-bold">{{ article.title }}</h1>
     <img src="{{article.urlToImage}}" class="rounded-xl" alt="{{article.title}}">
     <h2 class="mt-6 text-2xl font-bold">{{article.description}}</h2>
@@ -11,14 +13,33 @@
     </a>
 
     <div class="flex mt-4 space-x-4">
-        {% load static %}
-        <button class="button thumbs-up active rounded-xl p-4">
+        
+        
+        <button id="btn-thumbs-up" class="button thumbs-up rounded-xl p-4" onclick="likeArticle(article.id)">
             <img src="{% static 'core/thumbs-up.svg' %}" alt="Thumbs Up" class="w-8 h-8">
         </button>
-        <button class="button thumbs-down rounded-xl">
+        <button id="btn-thumbs-down" class="button thumbs-down rounded-xl p-4" onclick="dislikeArticle(article.id)">
             <img src="{% static 'core/thumbs-down.svg' %}" alt="Thumbs Down" class="w-8 h-8">
         </button>
+        
     </div>
+    <h2 class="mt-6 text-2xl font-bold">Ratings</h2> 
+    <div class="flex">
+        {% for i in stars_list %}
+        <img src="{% static 'core/star-fill.svg' %}" alt="Star" class="w-8 h-8 m-1">
+        {% endfor %}
+        {% for i in stars_until_5_list %}
+        <img src="{% static 'core/star.svg' %}" alt="Non-filled Star" class="w-8 h-8 m-1">
+    {% endfor %}
+    </div>
+    <h2 class="mt-6 text-2xl font-bold">Your Rating</h2> 
+    <div class="flex">
+        {% for i in stars_5_list %}
+        <img src="{% static 'core/star.svg' %}" alt="Star" data-value={{i}} class="w-8 h-8 m-1 own_rating">
+        {% endfor %}
+    </div>
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
 </div>
 <style>
     .button {
@@ -41,6 +62,44 @@
     }
 </style>
 <script>
+    console.log("HELLO")
+    // User rating
+    const starElements = document.querySelectorAll('.own_rating');
+    const articleId = document.getElementById('article-details').getAttribute('data-article');
+    
+    starElements.forEach(star => {
+        star.addEventListener('click', function() {
+            const ratingValue = star.dataset.value;
+            console.log('User clicked on star with value:', ratingValue);
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            // on click all left stars shall get filled, the right stars not-filled
+            starElements.forEach((star, index) => {
+                    const starValue = parseInt(star.dataset.value, 10);
+                    if (starValue <= ratingValue) {
+                        star.src = '{% static "core/star-fill.svg" %}';
+                    } else {
+                        star.src = '{% static "core/star.svg" %}';
+                    }
+                });
+                
+            $.ajax({
+                type: 'POST',
+                url: '/article/rating/' + articleId ,  // Replace with your actual endpoint
+                data: { rating: ratingValue },
+                headers: { 'X-CSRFToken': csrftoken },
+                success: function (data) {
+                    console.log('Rating saved successfully:', data);
+                },
+                error: function (error) {
+                    console.error('Error saving rating:', error);
+                }
+            });
+        });
+    });
+
+    
+    // User like / dislike button
     document.addEventListener('DOMContentLoaded', function() {
         const buttons = document.querySelectorAll('.button');
 
@@ -56,5 +115,28 @@
             });
         });
     });
+
+
+    function likeArticle(articleId) {
+        sendLikeDislikeRequest('like', articleId);
+    }
+
+    function dislikeArticle(articleId) {
+        sendLikeDislikeRequest('dislike', articleId);
+    }
+
+    function sendLikeDislikeRequest(action, articleId) {
+        $.ajax({
+            type: 'POST',
+            url: `/${action}/${articleId}/`,
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' },  // Add CSRF token
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
 </script>
 {% endblock %}

@@ -15,8 +15,11 @@ from nltk.corpus import stopwords
 
 USE_MOCKED_DATA = config('USE_MOCKED_DATA', default=False, cast=bool)
 
-nltk.download('punkt')
-nltk.download('stopwords')
+# nltk.download('punkt')
+# nltk.download('stopwords')
+# nltk.download('punkt', download_dir='nltk_data/')
+# nltk.download('stopwords', download_dir='nltk_data/')
+nltk.data.path.append('nltk_data/')
 stop_words = set(stopwords.words("english"))
 
 def create_bag_of_words(article): 
@@ -60,10 +63,9 @@ def compute_similarity(text1, text2):
 
     # Compute cosine similarity
     similarity_matrix = cosine_similarity(X)
-
     # Extract the similarity value
     similarity = similarity_matrix[0, 1]
-
+    print(similarity)
     return similarity
 
 def trainAi():

@@ -1,10 +1,11 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from queue import PriorityQueue
 import random
+from django.db import IntegrityError
 from django.http import JsonResponse
 import requests
 
-from .models import Article, Category, TrainingArticle, UserProfile
+from .models import Article, ArticleRating, Category, TrainingArticle, UserProfile
 from decouple import config
 from .utils import readFile, createUrl, saveFile, text_from_article
 from .ai import create_bag_of_words, get_sorted_categories, predictCategory, compute_similarity
@@ -117,7 +118,6 @@ def fetchWithoutCategories():
                 # Skip it:
                 continue
             category = predictCategory(article_data)
-            feature_names, bag_of_words_matrix = create_bag_of_words(article_data)
             # Create a new Article object and save it to the database
             Article.objects.create(
                 title=article_data.get('title'),
@@ -129,8 +129,6 @@ def fetchWithoutCategories():
                 sourceName=article_data.get("source").get("source"),
                 content=article_data.get('content'),
                 category=Category.objects.get(name=category),
-                feature_names=feature_names,
-                bag_of_words_matrix=bag_of_words_matrix,
             )
 
 
@@ -338,3 +336,25 @@ def user_read_article(user_profile, article_id):
     user_profile.read_articles.add(article)
     user_profile.save()
     return user_profile
+
+
+def user_rates_article(user_profile, article, rating_value):
+    try:
+        # Try to get an existing rating
+        article_rating = ArticleRating.objects.get(user=user_profile, article=article)
+        # If it exists, update the rating
+        article_rating.rating = rating_value
+        article_rating.save()
+    except ArticleRating.DoesNotExist:
+        # If it doesn't exist, create a new rating
+        article_rating = ArticleRating.objects.create(
+            user=user_profile,
+            article=article,
+            rating=rating_value,
+        )
+        article_rating.save()
+    except IntegrityError as e:
+        # Handle any integrity errors, such as unique constraint violations
+        print(f"IntegrityError: {str(e)}")
+        raise e
+

@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "core",
-    "article"
+    "article",
+    "django_icons",
+    "fontawesomefree"
 ]
 
 MIDDLEWARE = [
@@ -124,6 +126,14 @@ LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
+
+
+DJANGO_ICONS = {
+    "ICONS": {
+        "edit": {"name": "far fa-pencil"},
+        "star": {"name": "far fa-star"},
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
