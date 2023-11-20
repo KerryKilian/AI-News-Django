@@ -316,19 +316,38 @@ def search_articles(search_term):
     return articles
 
 
-def user_likes(user_profile, article_id):
-    article = Article.objects.get(id=article_id)
-    field_value = getattr(user_profile, article.category.name)
-    field_value += 2
-    setattr(user_profile, article.category.name, field_value)
+# def user_likes(user_profile, article, points):
+#     field_name = article.category.name
+#     print("field_name")
+#     print(field_name)
+#     field_value = getattr(user_profile, field_name)
+#     field_value += points
+#     print("field_value")
+#     print(field_value)
+#     setattr(user_profile, field_name, field_value)
+#     user_profile.save()
+#     return field_value
+
+# def user_dislikes(user_profile, article, points):
+#     field_name = article.category.name
+#     print("field_name")
+#     print(field_name)
+#     field_value = getattr(user_profile, field_name)
+#     field_value -= points
+#     print("field_value")
+#     print(field_value)
+#     setattr(user_profile, field_name, field_value)
+#     user_profile.save()
+#     return field_value
+
+def user_changes_rating(user_profile, article, points):
+    field_name = article.category.name
+    field_value = getattr(user_profile, field_name)
+    field_value += points
+    setattr(user_profile, field_name, field_value)
+    user_profile.save()
     return field_value
 
-def user_dislikes(user_profile, article_id):
-    article = Article.objects.get(id=article_id)
-    field_value = getattr(user_profile, article.category.name)
-    field_value -= 1
-    setattr(user_profile, article.category.name, field_value)
-    return field_value
 
 
 def user_read_article(user_profile, article_id):
@@ -357,4 +376,15 @@ def user_rates_article(user_profile, article, rating_value):
         # Handle any integrity errors, such as unique constraint violations
         print(f"IntegrityError: {str(e)}")
         raise e
-
+    
+    # rate category for user
+    if rating_value == 1:
+        user_changes_rating(user_profile, article, -2)
+    elif rating_value == 2:
+        user_changes_rating(user_profile, article, -1)
+    elif rating_value == 3:
+        pass
+    elif rating_value == 4:
+        user_changes_rating(user_profile, article, 1)
+    elif rating_value == 5:
+        user_changes_rating(user_profile, article, 2)

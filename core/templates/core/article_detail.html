@@ -11,18 +11,7 @@
     <a href="{{article.url}}" class="px-6 py-3 mt-6 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">
         Continue reading {% if article.sourceName %}at {{article.sourceName}} {% endif%} 
     </a>
-
-    <div class="flex mt-4 space-x-4">
-        
-        
-        <button id="btn-thumbs-up" class="button thumbs-up rounded-xl p-4" onclick="likeArticle(article.id)">
-            <img src="{% static 'core/thumbs-up.svg' %}" alt="Thumbs Up" class="w-8 h-8">
-        </button>
-        <button id="btn-thumbs-down" class="button thumbs-down rounded-xl p-4" onclick="dislikeArticle(article.id)">
-            <img src="{% static 'core/thumbs-down.svg' %}" alt="Thumbs Down" class="w-8 h-8">
-        </button>
-        
-    </div>
+    
     <h2 class="mt-6 text-2xl font-bold">Ratings</h2> 
     <div class="flex">
         {% for i in stars_list %}
@@ -97,46 +86,5 @@
             });
         });
     });
-
-    
-    // User like / dislike button
-    document.addEventListener('DOMContentLoaded', function() {
-        const buttons = document.querySelectorAll('.button');
-
-        buttons.forEach(button => {
-            button.addEventListener('click', function() {
-                buttons.forEach(otherButton => {
-                    if (otherButton !== button) {
-                        otherButton.classList.remove('active');
-                    }
-                });
-
-                button.classList.toggle('active');
-            });
-        });
-    });
-
-
-    function likeArticle(articleId) {
-        sendLikeDislikeRequest('like', articleId);
-    }
-
-    function dislikeArticle(articleId) {
-        sendLikeDislikeRequest('dislike', articleId);
-    }
-
-    function sendLikeDislikeRequest(action, articleId) {
-        $.ajax({
-            type: 'POST',
-            url: `/${action}/${articleId}/`,
-            headers: { 'X-CSRFToken': '{{ csrf_token }}' },  // Add CSRF token
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (error) {
-                console.error(error);
-            }
-        });
-    }
 </script>
 {% endblock %}

@@ -4,7 +4,7 @@ import requests
 import json
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from .services import fetchTrainingArticles, getArticlesForUser, fetchWithoutCategories, saveTrainingJsons, search_articles, user_dislikes, user_likes, user_rates_article
+from .services import fetchTrainingArticles, getArticlesForUser, fetchWithoutCategories, saveTrainingJsons, search_articles, user_rates_article
 from .ai import trainAi
 import os
 from .models import Article, ArticleRating, TrainingArticle, UserProfile
@@ -64,32 +64,6 @@ def search(request):
     except Exception as e:
         return HttpResponse(status=500)
 
-@login_required
-def like_article(request, article_id):
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            user_profile = UserProfile.objects.get(user=request.user)
-            article = get_object_or_404(Article, pk=article_id)
-            new_value = user_likes(user_profile, article.id)
-            return HttpResponse(status=200)
-        else:
-            return HttpResponse(status=401) 
-
-    return HttpResponse(status=400) 
-
-@login_required
-def dislike_article(request, article_id):
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            user_profile = UserProfile.objects.get(user=request.user)
-            article = get_object_or_404(Article, pk=article_id)
-            new_value = user_dislikes(user_profile, article.id)
-            return HttpResponse(status=200)
-        else:
-            return HttpResponse(status=401) 
-
-    return HttpResponse(status=400) 
-
 
 @require_POST
 @login_required
@@ -99,7 +73,7 @@ def save_rating(request, article_id):
             try:
                 rating_value = request.POST.get('rating')
                 rating_value = int(rating_value)
-                rating_value += 1
+                # rating_value += 1
 
                 if 1 <= rating_value <= 5:
                     user_profile = UserProfile.objects.get(user=request.user)
