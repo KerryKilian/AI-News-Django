@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
 from article.models import ArticleComment, ArticleRating, ChatMessage, UserProfile
-from article.services import getArticlesForUser, user_read_article
+from article.services import getArticlesForUser, user_changes_rating, user_read_article
 from .forms import ChatForm, SignupForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -55,6 +55,8 @@ def article_detail(request, pk):
     comments = ArticleComment.objects.filter(article=article)
     messages = ChatMessage.objects.filter(article=article).order_by('-timestamp')[:50]
 
+    for rating in ratings.all():
+        print(rating.rating)
     if ratings is not None and len(ratings) > 0:
         average_rating = int(ratings.aggregate(Avg('rating'))['rating__avg'])
         average_rating = round(average_rating)
@@ -69,6 +71,7 @@ def article_detail(request, pk):
     try:
         user_rating = ArticleRating.objects.get(user=user_profile, article=article).rating
         user_rating = round(user_rating)
+        print("user_rating " + str(user_rating))
         user_stars_list = list(range(user_rating)) # [0,1,2]
         user_stars_until_5_list = list(range(5 - user_rating)) # [3,4]
     except ArticleRating.DoesNotExist:
@@ -119,3 +122,15 @@ def read_articles(request):
     articles = user_profile.read_articles.all()
     return render(request, 'core/read_articles.html', 
               {'articles': articles })    
+
+@login_required
+def rating(request, article_id):
+    if request.method == 'POST':
+        user_profile = UserProfile.objects.get(user=request.user)
+        article = Article.objects.get(pk=article_id)
+        rating = request.POST.get("rating")
+
+        user_changes_rating(user_profile, article, rating)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=405)

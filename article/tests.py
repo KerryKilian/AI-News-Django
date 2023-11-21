@@ -7,7 +7,7 @@ from .ai import create_bag_of_words, trainAi
 
 # Create your tests here.
 from .models import ArticleRating, Category, TrainingArticle, Article, UserProfile
-from .services import get_sorted_categories, getArticlesForUser, predictCategory, saveTrainingJsons, search_articles, user_read_article
+from .services import get_sorted_categories, getArticlesForUser, predictCategory, saveTrainingJsons, search_articles, user_changes_rating, user_read_article
 
 class ArticlesTest(TestCase):
     def setUp(self):
@@ -347,98 +347,154 @@ class ArticleSearchTest(TestCase):
         self.assertQuerysetEqual(articles, [])
 
 
-class SaveRatingViewTest(TestCase):
+# class SaveRatingViewTest(TestCase):
+#     def setUp(self):
+#         # Create a user
+#         self.user = User.objects.create_user(username='testuser', password='testpassword')
+
+#         # Create an article with the category "entertainment"
+#         self.category_entertainment = Category.objects.create(name='entertainment')
+#         self.article = Article.objects.create(
+#             title='Test Article',
+#             description='Test Description',
+#             author='Test Author',
+#             url='https://example.com',
+#             urlToImage='https://example.com/image.jpg',
+#             sourceName='Test Source',
+#             content='Test Content',
+#             category=self.category_entertainment,
+#         )
+
+#         # Create a user profile for the test user
+#         self.user_profile = UserProfile.objects.create(user=self.user, entertainment=10)
+
+#     def test_save_rating_1(self):
+#         self.client.login(username='testuser', password='testpassword')
+#         response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '1'}, follow=True)
+
+#         # Check the response status code
+#         self.assertEqual(response.status_code, 200)
+
+#         # Check the user_profile "entertainment" field
+#         self.user_profile.refresh_from_db()
+#         self.assertEqual(self.user_profile.entertainment, 8)
+
+#         # Check the ArticleRating object
+#         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
+#         self.assertEqual(article_rating.rating, 1)
+
+#     def test_save_rating_2(self):
+#         self.client.login(username='testuser', password='testpassword')
+#         response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '2'}, follow=True)
+
+#         # Check the response status code
+#         self.assertEqual(response.status_code, 200)
+
+#         # Check the user_profile "entertainment" field
+#         self.user_profile.refresh_from_db()
+#         self.assertEqual(self.user_profile.entertainment, 9)
+
+#         # Check the ArticleRating object
+#         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
+#         self.assertEqual(article_rating.rating, 2)
+
+#     def test_save_rating_3(self):
+#         self.client.login(username='testuser', password='testpassword')
+#         response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '3'}, follow=True)
+
+#         # Check the response status code
+#         self.assertEqual(response.status_code, 200)
+
+#         # Check the user_profile "entertainment" field
+#         self.user_profile.refresh_from_db()
+#         self.assertEqual(self.user_profile.entertainment, 10)
+
+#         # Check the ArticleRating object
+#         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
+#         self.assertEqual(article_rating.rating, 3)
+
+#     def test_save_rating_4(self):
+#         self.client.login(username='testuser', password='testpassword')
+#         response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '4'}, follow=True)
+
+#         # Check the response status code
+#         self.assertEqual(response.status_code, 200)
+
+#         # Check the user_profile "entertainment" field
+#         self.user_profile.refresh_from_db()
+#         self.assertEqual(self.user_profile.entertainment, 11)
+
+#         # Check the ArticleRating object
+#         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
+#         self.assertEqual(article_rating.rating, 4)
+
+#     def test_save_rating_5(self):
+#         self.client.login(username='testuser', password='testpassword')
+#         response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '5'}, follow=True)
+
+#         # Check the response status code
+#         self.assertEqual(response.status_code, 200)
+
+#         # Check the user_profile "entertainment" field
+#         self.user_profile.refresh_from_db()
+#         self.assertEqual(self.user_profile.entertainment, 12)
+
+#         # Check the ArticleRating object
+#         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
+#         self.assertEqual(article_rating.rating, 5)
+
+
+class RatingTestCase(TestCase):
     def setUp(self):
-        # Create a user
         self.user = User.objects.create_user(username='testuser', password='testpassword')
-
-        # Create an article with the category "entertainment"
-        self.category_entertainment = Category.objects.create(name='entertainment')
-        self.article = Article.objects.create(
-            title='Test Article',
-            description='Test Description',
-            author='Test Author',
-            url='https://example.com',
-            urlToImage='https://example.com/image.jpg',
-            sourceName='Test Source',
-            content='Test Content',
-            category=self.category_entertainment,
-        )
-
-        # Create a user profile for the test user
-        self.user_profile = UserProfile.objects.create(user=self.user, entertainment=10)
-
-    def test_save_rating_1(self):
+        self.category = Category.objects.create(name="general")
+        self.article = Article.objects.create(title='Test Article', content='Test content', category=self.category)
+        self.user_profile = UserProfile.objects.create(user=self.user)
+    def test_rating_view_post(self):
+        # Log in the user
         self.client.login(username='testuser', password='testpassword')
-        response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '1'}, follow=True)
 
-        # Check the response status code
+        # Send a POST request to the rating view
+        response = self.client.post(f'/article/{self.article.id}/rating/', {'rating': '1'}, follow=True)
+
+        # Check if the response status code is 200
         self.assertEqual(response.status_code, 200)
 
-        # Check the user_profile "entertainment" field
-        self.user_profile.refresh_from_db()
-        self.assertEqual(self.user_profile.entertainment, 8)
+        # Refresh the user and article instances from the database
+        self.user.refresh_from_db()
+        self.article.refresh_from_db()
 
-        # Check the ArticleRating object
-        article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
-        self.assertEqual(article_rating.rating, 1)
+        # Check if the user's like_articles is updated
+        self.assertIn(self.article, self.user.userprofile.like_articles.all())
 
-    def test_save_rating_2(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '2'}, follow=True)
+        # Check if the article's likes is updated
+        self.assertEqual(self.article.likes, 1)
 
-        # Check the response status code
-        self.assertEqual(response.status_code, 200)
+    # def test_user_changes_rating_function(self):
+    #     # Create a user profile
 
-        # Check the user_profile "entertainment" field
-        self.user_profile.refresh_from_db()
-        self.assertEqual(self.user_profile.entertainment, 9)
+    #     # Call the user_changes_rating function
+    #     user_changes_rating(self.user_profile, self.article, 1)
 
-        # Check the ArticleRating object
-        article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
-        self.assertEqual(article_rating.rating, 2)
+    #     # Refresh the user and article instances from the database
+    #     self.user.refresh_from_db()
+    #     self.article.refresh_from_db()
 
-    def test_save_rating_3(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '3'}, follow=True)
+    #     # Check if the user's like_articles is updated
+    #     self.assertIn(self.article, self.user_profile.like_articles.all())
 
-        # Check the response status code
-        self.assertEqual(response.status_code, 200)
+    #     # Check if the article's likes is updated
+    #     self.assertEqual(self.article.likes, 1)
 
-        # Check the user_profile "entertainment" field
-        self.user_profile.refresh_from_db()
-        self.assertEqual(self.user_profile.entertainment, 10)
+    #     # Call the user_changes_rating function again with a different rating
+    #     user_changes_rating(self.user_profile, self.article, -1)
 
-        # Check the ArticleRating object
-        article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
-        self.assertEqual(article_rating.rating, 3)
+    #     # Refresh the user and article instances from the database
+    #     self.user.refresh_from_db()
+    #     self.article.refresh_from_db()
 
-    def test_save_rating_4(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '4'}, follow=True)
+    #     # Check if the user's dislike_articles is updated
+    #     self.assertIn(self.article, self.user_profile.dislike_articles.all())
 
-        # Check the response status code
-        self.assertEqual(response.status_code, 200)
-
-        # Check the user_profile "entertainment" field
-        self.user_profile.refresh_from_db()
-        self.assertEqual(self.user_profile.entertainment, 11)
-
-        # Check the ArticleRating object
-        article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
-        self.assertEqual(article_rating.rating, 4)
-
-    def test_save_rating_5(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '5'}, follow=True)
-
-        # Check the response status code
-        self.assertEqual(response.status_code, 200)
-
-        # Check the user_profile "entertainment" field
-        self.user_profile.refresh_from_db()
-        self.assertEqual(self.user_profile.entertainment, 12)
-
-        # Check the ArticleRating object
-        article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
-        self.assertEqual(article_rating.rating, 5)
+    #     # Check if the article's dislikes is updated
+    #     self.assertEqual(self.article.dislikes, 1)

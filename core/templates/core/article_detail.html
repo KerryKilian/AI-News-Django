@@ -11,8 +11,16 @@
     <a href="{{article.url}}" class="px-6 py-3 mt-6 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">
         Continue reading {% if article.sourceName %}at {{article.sourceName}} {% endif%} 
     </a>
+
+    <h2 class="mt-6 text-2xl font-bold">Ratings</h2>
+    <div class="flex mt-2 items-center">
+        <img src="{% static 'core/thumbs-up.svg' %}" alt="Thumbs up" class="w-10 h-10 m-2 p-2 font-semibold bg-teal-500 rounded-xl hover:bg-teal-700" onclick="submitRating(1)">
+        <p class="font-bold m-2">{{article.likes}}</p>
+        <img src="{% static 'core/thumbs-down.svg' %}" alt="Thumbs down" class="w-10 h-10 m-2 p-2 font-semibold bg-gray-500 rounded-xl hover:bg-gray-700" onclick="submitRating(-1)">
+        <p class="font-bold m-2">{{article.dislikes}}</p>
+    </div>
     
-    <h2 class="mt-6 text-2xl font-bold">Ratings</h2> 
+    <!-- <h2 class="mt-6 text-2xl font-bold">Ratings</h2> 
     <div class="flex">
         {% for i in stars_list %}
         <img src="{% static 'core/star-fill.svg' %}" alt="Star" class="w-8 h-8 m-1">
@@ -26,7 +34,7 @@
         {% for i in stars_5_list %}
         <img src="{% static 'core/star.svg' %}" alt="Star" data-value={{i}} class="w-8 h-8 m-1 own_rating">
         {% endfor %}
-    </div>
+    </div> -->
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
 
@@ -35,61 +43,65 @@
         {% include 'core/article_chat.html' %}
     </div>
 </div>
-<style>
-    .button {
-        cursor: pointer;
-        border: none;
-        background-color: transparent;
-        display: flex;
-        align-items: center;
-        color: #000; /* Set the initial text color */
-    }
 
-    .button.thumbs-up.active {
-        background-color: green;
-        color: #fff; /* Set the text color when active */
-    }
-
-    .button.thumbs-down.active {
-        background-color: red;
-        color: #fff; /* Set the text color when active */
-    }
-</style>
 <script>
-    console.log("HELLO")
-    // User rating
-    const starElements = document.querySelectorAll('.own_rating');
-    const articleId = document.getElementById('article-details').getAttribute('data-article');
-    
-    starElements.forEach(star => {
-        star.addEventListener('click', function() {
-            const ratingValue = star.dataset.value;
-            console.log('User clicked on star with value:', ratingValue);
-            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-            // on click all left stars shall get filled, the right stars not-filled
-            starElements.forEach((star, index) => {
-                    const starValue = parseInt(star.dataset.value, 10);
-                    if (starValue <= ratingValue) {
-                        star.src = '{% static "core/star-fill.svg" %}';
-                    } else {
-                        star.src = '{% static "core/star.svg" %}';
-                    }
-                });
-                
-            $.ajax({
-                type: 'POST',
-                url: '/article/rating/' + articleId ,  // Replace with your actual endpoint
-                data: { rating: ratingValue },
-                headers: { 'X-CSRFToken': csrftoken },
-                success: function (data) {
-                    console.log('Rating saved successfully:', data);
-                },
-                error: function (error) {
-                    console.error('Error saving rating:', error);
-                }
-            });
+    function submitRating(rating) {
+        // Make a POST request using JavaScript fetch API
+        fetch('{% url "core:rating" article_id=article.id %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}',  // Include CSRF token
+            },
+            body: 'rating=' + rating,
+        })
+        .then(response => {
+            if (response.ok) {
+                // Handle success (if needed)
+                console.log('Rating submitted successfully');
+            } else {
+                // Handle errors (if needed)
+                console.error('Failed to submit rating');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
-    });
+    }
+    // console.log("HELLO")
+    // // User rating
+    // const starElements = document.querySelectorAll('.own_rating');
+    // const articleId = document.getElementById('article-details').getAttribute('data-article');
+    
+    // starElements.forEach(star => {
+    //     star.addEventListener('click', function() {
+    //         const ratingValue = star.dataset.value;
+    //         console.log('User clicked on star with value:', ratingValue);
+    //         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    //         // on click all left stars shall get filled, the right stars not-filled
+    //         starElements.forEach((star, index) => {
+    //                 const starValue = parseInt(star.dataset.value, 10);
+    //                 if (starValue <= ratingValue) {
+    //                     star.src = '{% static "core/star-fill.svg" %}';
+    //                 } else {
+    //                     star.src = '{% static "core/star.svg" %}';
+    //                 }
+    //             });
+                
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: '/article/rating/' + articleId ,  // Replace with your actual endpoint
+    //             data: { rating: ratingValue },
+    //             headers: { 'X-CSRFToken': csrftoken },
+    //             success: function (data) {
+    //                 console.log('Rating saved successfully:', data);
+    //             },
+    //             error: function (error) {
+    //                 console.error('Error saving rating:', error);
+    //             }
+    //         });
+    //     });
+    // });
 </script>
 {% endblock %}

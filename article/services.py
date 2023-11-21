@@ -341,11 +341,37 @@ def search_articles(search_term):
 #     return field_value
 
 def user_changes_rating(user_profile, article, points):
+    # change in userprofile
     field_name = article.category.name
     field_value = getattr(user_profile, field_name)
-    field_value += points
-    setattr(user_profile, field_name, field_value)
+    
+    # change in article
+    like_articles = user_profile.like_articles.all()
+    dislike_articles = user_profile.dislike_articles.all()
+    if int(points) > 0 and article not in like_articles:
+        article.likes += 1
+        user_profile.like_articles.add(article)
+        field_value += int(points)
+        setattr(user_profile, field_name, field_value)
+        if article in dislike_articles:
+            user_profile.dislike_articles.remove(article)
+            article.dislikes -= 1
+            field_value += int(points)
+            setattr(user_profile, field_name, field_value)
+    elif int(points) < 0 and article not in dislike_articles:
+        article.dislikes += 1
+        user_profile.dislike_articles.add(article)
+        field_value += int(points)
+        setattr(user_profile, field_name, field_value)
+        if article in like_articles:
+            user_profile.like_articles.remove(article)
+            article.likes -= 1
+            field_value += int(points)
+            setattr(user_profile, field_name, field_value)
+            
+
     user_profile.save()
+    article.save()
     return field_value
 
 
@@ -358,11 +384,13 @@ def user_read_article(user_profile, article_id):
 
 
 def user_rates_article(user_profile, article, rating_value):
+    print("User rates this article with " + str(rating_value))
     try:
         # Try to get an existing rating
         article_rating = ArticleRating.objects.get(user=user_profile, article=article)
         # If it exists, update the rating
         article_rating.rating = rating_value
+        
         article_rating.save()
     except ArticleRating.DoesNotExist:
         # If it doesn't exist, create a new rating

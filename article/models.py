@@ -41,6 +41,8 @@ class Article(models.Model):
     sourceName = models.CharField(max_length=255, null=True)
     content = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    likes = models.IntegerField(default=0, blank=True)
+    dislikes = models.IntegerField(default=0, blank=True)
     
     def __str__(self):
         return self.title
@@ -57,6 +59,8 @@ class UserProfile(models.Model):
     sports = models.IntegerField(default=0)
     technology = models.IntegerField(default=0)
     read_articles = models.ManyToManyField(Article, related_name='read_by_users', blank=True, default=[])
+    like_articles = models.ManyToManyField(Article, related_name='like_articles', blank=True, default=[])
+    dislike_articles = models.ManyToManyField(Article, related_name='dislike_articles', blank=True, default=[])
 
     def __str__(self):
         return self.user.username if self.user else "UserProfile"
@@ -75,6 +79,8 @@ class ArticleRating(models.Model):
     ]
     rating = models.IntegerField(choices=RATING_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
 
 class ArticleComment(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

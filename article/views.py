@@ -65,33 +65,33 @@ def search(request):
         return HttpResponse(status=500)
 
 
-@require_POST
-@login_required
-def save_rating(request, article_id):
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            try:
-                rating_value = request.POST.get('rating')
-                rating_value = int(rating_value)
-                # rating_value += 1
+# @require_POST
+# @login_required
+# def save_rating(request, article_id):
+#     if request.method == 'POST':
+#         if request.user.is_authenticated:
+#             try:
+#                 rating_value = request.POST.get('rating')
+#                 rating_value = int(rating_value)
+#                 # rating_value += 1
 
-                if 1 <= rating_value <= 5:
-                    user_profile = UserProfile.objects.get(user=request.user)
-                    article = get_object_or_404(Article, id=article_id)
+#                 if 1 <= rating_value <= 5:
+#                     user_profile = UserProfile.objects.get(user=request.user)
+#                     article = get_object_or_404(Article, id=article_id)
 
-                    try:
-                        user_rates_article(user_profile, article, rating_value)
-                        return HttpResponse(status=200)
-                    except IntegrityError as e:
-                        return JsonResponse({"error": "Error saving rating. Integrity error."}, status=400)
+#                     try:
+#                         user_rates_article(user_profile, article, rating_value)
+#                         return HttpResponse(status=200)
+#                     except IntegrityError as e:
+#                         return JsonResponse({"error": "Error saving rating. Integrity error."}, status=400)
 
-                else:
-                    return HttpResponse(status=400)
-            except Exception as e:
-                print(str(e))
-                return HttpResponse(status=400)
-        return HttpResponse(status=401)
-    else:
-        return HttpResponse(status=405)
+#                 else:
+#                     return HttpResponse(status=400)
+#             except Exception as e:
+#                 print(str(e))
+#                 return HttpResponse(status=400)
+#         return HttpResponse(status=401)
+#     else:
+#         return HttpResponse(status=405)
     
 

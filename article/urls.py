@@ -6,5 +6,5 @@ urlpatterns = [
     path("saveJsons", views.saveJsons, name="saveJsons"),
     path("train", views.train, name="train"),
     path("search", views.search, name="search"),
-    path('rating/<int:article_id>', views.save_rating, name='rating'),
+    # path('rating/<int:article_id>', views.save_rating, name='rating'),
 ]
