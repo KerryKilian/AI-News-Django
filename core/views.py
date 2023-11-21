@@ -111,4 +111,11 @@ def post_article_message(request, article_id):
             return JsonResponse(data)
 
     return JsonResponse({'error': 'Invalid request'})
-    
+
+
+@login_required
+def read_articles(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    articles = user_profile.read_articles.all()
+    return render(request, 'core/read_articles.html', 
+              {'articles': articles })    
