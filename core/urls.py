@@ -14,4 +14,6 @@ urlpatterns = [
     path("login/", auth_views.LoginView.as_view(template_name="core/login.html", authentication_form=LoginForm), name="login"),
     path("", views.index, name="index"),
     path('article/<int:pk>/', views.article_detail, name='article_detail'),
+    path('article/<int:article_id>/chat/', views.article_chat, name='article_chat'),
+    path('article/<int:article_id>/post_message/', views.post_article_message, name='post_article_message'),
 ]

@@ -93,3 +93,5 @@ def save_rating(request, article_id):
         return HttpResponse(status=401)
     else:
         return HttpResponse(status=405)
+    
+

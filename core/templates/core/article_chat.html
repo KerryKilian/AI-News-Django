@@ -1,0 +1,43 @@
+<div id="chat-box">
+    {% for message in messages reversed %}
+        <div class="mt-4 mb-4 border border-black rounded-xl p-4"">
+            <p><span class="font-bold">{{ message.user.username }}</span> on {{message.timestamp}}</p>
+            <p>{{ message.message }}</p>
+        </div>
+        
+    {% endfor %}
+</div>
+
+<form id="chat-form" action="{% url 'core:post_article_message' article_id=article.id %}" method="post">
+    {% csrf_token %}
+    <textarea name="message" required class="w-full mt-4 mb-4 border border-black rounded-xl p-4" rows=7 placeholder="Your Message"></textarea>
+    <br>
+    <button type="submit" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Send</button>
+</form>
+
+<script>
+    // Add JavaScript to submit the form asynchronously
+    document.getElementById('chat-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var form = this;
+        var url = form.action;  // Change this line
+        var formData = new FormData(form);
+
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error(data.error);
+            } else {
+                location.reload();
+            }
+        })
+        .catch(error => console.error(error));
+    });
+</script>

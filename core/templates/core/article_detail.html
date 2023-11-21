@@ -29,6 +29,11 @@
     </div>
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
+
+    <div id="public-chat">
+        <h2 class="mt-6 text-2xl font-bold">Discussion</h2>
+        {% include 'core/article_chat.html' %}
+    </div>
 </div>
 <style>
     .button {

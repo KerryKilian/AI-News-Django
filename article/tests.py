@@ -398,11 +398,47 @@ class SaveRatingViewTest(TestCase):
         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
         self.assertEqual(article_rating.rating, 2)
 
-    # def test_save_rating_3(self):
-    #     # Similar structure as test_save_rating_1 and test_save_rating_2 with rating value 3
+    def test_save_rating_3(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '3'}, follow=True)
 
-    # def test_save_rating_4(self):
-    #     # Similar structure as test_save_rating_1 and test_save_rating_2 with rating value 4
+        # Check the response status code
+        self.assertEqual(response.status_code, 200)
 
-    # def test_save_rating_5(self):
-    #     # Similar structure as test_save_rating_1 and test_save_rating_2 with rating value 5
+        # Check the user_profile "entertainment" field
+        self.user_profile.refresh_from_db()
+        self.assertEqual(self.user_profile.entertainment, 10)
+
+        # Check the ArticleRating object
+        article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
+        self.assertEqual(article_rating.rating, 3)
+
+    def test_save_rating_4(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '4'}, follow=True)
+
+        # Check the response status code
+        self.assertEqual(response.status_code, 200)
+
+        # Check the user_profile "entertainment" field
+        self.user_profile.refresh_from_db()
+        self.assertEqual(self.user_profile.entertainment, 11)
+
+        # Check the ArticleRating object
+        article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
+        self.assertEqual(article_rating.rating, 4)
+
+    def test_save_rating_5(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '5'}, follow=True)
+
+        # Check the response status code
+        self.assertEqual(response.status_code, 200)
+
+        # Check the user_profile "entertainment" field
+        self.user_profile.refresh_from_db()
+        self.assertEqual(self.user_profile.entertainment, 12)
+
+        # Check the ArticleRating object
+        article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
+        self.assertEqual(article_rating.rating, 5)
