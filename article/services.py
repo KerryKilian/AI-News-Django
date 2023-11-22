@@ -321,31 +321,6 @@ def search_articles(search_term):
     )
     return articles
 
-
-# def user_likes(user_profile, article, points):
-#     field_name = article.category.name
-#     print("field_name")
-#     print(field_name)
-#     field_value = getattr(user_profile, field_name)
-#     field_value += points
-#     print("field_value")
-#     print(field_value)
-#     setattr(user_profile, field_name, field_value)
-#     user_profile.save()
-#     return field_value
-
-# def user_dislikes(user_profile, article, points):
-#     field_name = article.category.name
-#     print("field_name")
-#     print(field_name)
-#     field_value = getattr(user_profile, field_name)
-#     field_value -= points
-#     print("field_value")
-#     print(field_value)
-#     setattr(user_profile, field_name, field_value)
-#     user_profile.save()
-#     return field_value
-
 def user_changes_rating(user_profile, article, points):
     # change in userprofile
     field_name = article.category.name
