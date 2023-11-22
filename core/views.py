@@ -50,44 +50,15 @@ def index(request):
 def article_detail(request, pk):
     user_profile = UserProfile.objects.get(user=request.user)
     article = get_object_or_404(Article, pk=pk)
-    new_value = user_read_article(user_profile, article)
+    user_read_article(user_profile, article)
     ratings = ArticleRating.objects.filter(article=article)
     comments = ArticleComment.objects.filter(article=article)
     messages = ChatMessage.objects.filter(article=article).order_by('-timestamp')[:50]
 
-    for rating in ratings.all():
-        print(rating.rating)
-    if ratings is not None and len(ratings) > 0:
-        average_rating = int(ratings.aggregate(Avg('rating'))['rating__avg'])
-        average_rating = round(average_rating)
-        stars_list = list(range(average_rating))# [0,1,2]
-        stars_until_5_list = list(range(5 - average_rating)) # [3,4]
-    else: 
-        average_rating = 0
-        stars_list = [0]
-        stars_until_5_list = list(range(4))
-
-    # Calculate the user's rating for this article
-    try:
-        user_rating = ArticleRating.objects.get(user=user_profile, article=article).rating
-        user_rating = round(user_rating)
-        print("user_rating " + str(user_rating))
-        user_stars_list = list(range(user_rating)) # [0,1,2]
-        user_stars_until_5_list = list(range(5 - user_rating)) # [3,4]
-    except ArticleRating.DoesNotExist:
-        user_rating = 0
-        user_stars_list = [0]
-        user_stars_until_5_list = list(range(4))
     return render(request, 'core/article_detail.html', 
                   {'article': article, 
                    'ratings': ratings, 
-                   'comments': comments, 
-                   'average_rating': average_rating, 
-                   "stars_list": stars_list, 
-                   "stars_until_5_list": stars_until_5_list,
-                   "stars_5_list": [0,1,2,3,4],
-                   "user_stars_list": user_stars_list,
-                   "user_stars_until_5_list": user_stars_until_5_list,
+                   'comments': comments,
                    "messages": messages
                    })
 

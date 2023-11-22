@@ -1,8 +1,8 @@
 {% extends "core/base.html" %} 
-{% block title %}Read Articles{% endblock %} 
+{% block title %}{% trans 'read_articles_page_title' %}{% endblock %} 
 {% block content %}
 <div class="w-1/2 my-6 mx-auto p-6 bg-gray-100 rounded-xl">
-  <h1 class="mb-6 text-3xl">Read Articles</h1>
+  <h1 class="mb-6 text-3xl">{% trans 'read_articles_title' %}</h1>
   {% include "core/articleslist.html" %}
 </div>
 

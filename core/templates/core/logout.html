@@ -1,7 +1,7 @@
-<a href="{% url 'logout' %}">Logout</a>
+<a href="{% url 'logout' %}">{% trans 'logout_title_label' %}</a>
 
 <!-- example using a form and button -->
 <form action="{% url 'logout' %}" method="post">
     {% csrf_token %}
-    <button type="submit">Logout</button>
+    <button type="submit">{% trans 'logout_btn' %}</button>
 </form>
