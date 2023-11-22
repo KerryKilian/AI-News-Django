@@ -68,7 +68,7 @@ def compute_similarity(text1, text2):
     print(similarity)
     return similarity
 
-def trainAi():
+def train_ai_with_training_articles():
     # Sample dataset (you should replace this with your own data)
     articles = TrainingArticle.objects.all()
     articles_data = [{

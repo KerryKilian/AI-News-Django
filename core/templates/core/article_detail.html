@@ -3,7 +3,11 @@
 {% block content %}
 {% load static %}
 {% load icons %}
+<a href="/" class="px-6 py-3 mt-6 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">
+    Back to Homepage
+</a>
 <div class="w-3/4 my-6 mx-auto p-6 bg-gray-100 rounded-xl" data-article="{{ article.id }}" id="article-details">
+    
     <h1 class="mb-6 text-5xl font-bold">{{ article.title }}</h1>
     <img src="{{article.urlToImage}}" class="rounded-xl" alt="{{article.title}}">
     <h2 class="mt-6 text-2xl font-bold">{{article.description}}</h2>
@@ -56,6 +60,7 @@
             body: 'rating=' + rating,
         })
         .then(response => {
+            location.reload();
             if (response.ok) {
                 // Handle success (if needed)
                 console.log('Rating submitted successfully');

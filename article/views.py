@@ -4,10 +4,12 @@ import requests
 import json
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from .services import fetchTrainingArticles, getArticlesForUser, fetchWithoutCategories, saveTrainingJsons, search_articles, user_rates_article
-from .ai import trainAi
+
+from article.utils import readFile
+from .services import getArticlesForUser, fetchWithoutCategories, search_articles, user_rates_article
+from .ai import train_ai_with_training_articles
 import os
-from .models import Article, ArticleRating, TrainingArticle, UserProfile
+from .models import Article, ArticleRating, Category, TrainingArticle, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth.models import User
@@ -16,25 +18,49 @@ from django.views.decorators.http import require_POST
 @require_http_methods(["GET"])
 
 
-def trainingNewsData(request):
-    '''
-    DEPRECATED. DO NOT USE! Requests News Articles for training the ai. Shall be called when server started.
-    '''
-    return fetchTrainingArticles()
+# def trainingNewsData(request):
+#     '''
+#     DEPRECATED. DO NOT USE! Requests News Articles for training the ai. Shall be called when server started.
+#     '''
+#     return fetchTrainingArticles()
 
 
-def train(request):
-    '''
-    shall be called when server started
-    '''
-    predicted = trainAi()
-    return JsonResponse({'predicted': str(predicted)})
+# def train(request):
+#     '''
+#     shall be called when server started
+#     '''
+#     predicted = trainAi()
+#     return JsonResponse({'predicted': str(predicted)})
 
-def newsData(request):
-    '''
-    fetches new articles
-    '''
-    fetchWithoutCategories()
+# def newsData(request):
+#     '''
+#     fetches new articles
+#     '''
+#     fetchWithoutCategories()
+
+def train_ai(request):
+    # Step 1 : Add Articles to TrainingArticles Database
+    category_names = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
+    for category_name in category_names:
+        category, created = Category.objects.get_or_create(name=category_name)
+        for filename in [category_name, f"{category_name}-chatgpt"]:
+            success, articles_data = readFile(filename)
+            for article in articles_data:
+                existing_article = TrainingArticle.objects.filter(title=article.get('title')).first()
+                if existing_article is None:
+                    # Create a new TrainingArticle object and save it to the database
+                    TrainingArticle.objects.create(
+                        title=article.get('title'),
+                        description=article.get('description'),
+                        category=category  # Assign the Category object
+                    )
+    
+    
+    # Step 2 : Train AI with TrainingArticles
+    train_ai_with_training_articles()
+
+    return HttpResponse(status=200)
+
 
 @login_required
 def newsForUser(request):

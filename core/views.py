@@ -50,7 +50,7 @@ def index(request):
 def article_detail(request, pk):
     user_profile = UserProfile.objects.get(user=request.user)
     article = get_object_or_404(Article, pk=pk)
-    new_value = user_read_article(user_profile, article.id)
+    new_value = user_read_article(user_profile, article)
     ratings = ArticleRating.objects.filter(article=article)
     comments = ArticleComment.objects.filter(article=article)
     messages = ChatMessage.objects.filter(article=article).order_by('-timestamp')[:50]

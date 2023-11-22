@@ -310,9 +310,9 @@ class UserArticlesTest(TestCase):
         user = User.objects.get(username='testuser')
         user_profile = UserProfile.objects.get(user=user)
 
-        user_read_article(user_profile, article1.id)
-        user_read_article(user_profile, article2.id)
-        user_read_article(user_profile, article3.id)
+        user_read_article(user_profile, article1)
+        user_read_article(user_profile, article2)
+        user_read_article(user_profile, article3)
 
         self.assertIn(article1, user_profile.read_articles.all())
         self.assertIn(article2, user_profile.read_articles.all())
