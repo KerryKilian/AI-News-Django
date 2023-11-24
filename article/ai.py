@@ -162,5 +162,5 @@ def predictCategory(article):
     new_text_tfidf = tfidf_vectorizer.transform(new_text)
     
     predicted_category = classifier.predict(new_text_tfidf)
-    
+    # print("PREDICTED CATEGORY: " + str(predicted_category))
     return predicted_category[0]

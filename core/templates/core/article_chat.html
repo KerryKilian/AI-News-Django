@@ -1,3 +1,4 @@
+{% load i18n %}
 <div id="chat-box">
     {% for message in messages reversed %}
         <div class="mt-4 mb-4 border border-black rounded-xl p-4"">
@@ -12,7 +13,7 @@
     {% csrf_token %}
     <textarea name="message" required class="w-full mt-4 mb-4 border border-black rounded-xl p-4" rows=7 placeholder="Your Message"></textarea>
     <br>
-    <button type="submit" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Send</button>
+    <button type="submit" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">{% trans 'send_btn' %}</button>
 </form>
 
 <script>

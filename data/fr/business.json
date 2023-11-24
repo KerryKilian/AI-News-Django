@@ -1,0 +1,262 @@
+[
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Économie Matin",
+      "title": "Electricité : faut-il craindre des coupures cet hiver ? - Économie Matin",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiO2h0dHBzOi8vd3d3LmVjb25vbWllbWF0aW4uZnIvZWxlY3RyaWNpdGUtY291cHVyZS1oaXZlci1ldGF00gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T14:00:01Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Le Figaro",
+      "title": "Black Friday : Bruno Le Maire juge «maladroite» la publicité de l'Ademe qui «déconseille» les achats - Le Figaro",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMihQFodHRwczovL3d3dy5sZWZpZ2Fyby5mci9jb25zby9ibGFjay1mcmlkYXktYnJ1bm8tbGUtbWFpcmUtanVnZS1tYWxhZHJvaXRlLWxhLXB1YmxpY2l0ZS1kZS1sLWFkZW1lLXF1aS1kZWNvbnNlaWxsZS1sZXMtYWNoYXRzLTIwMjMxMTIz0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T13:40:33Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "www.econostrum.info",
+      "title": "Plan énergétique : ce que prévoit la France pour sortir de sa dépendance aux énergies fossiles - www.econostrum.info",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiQWh0dHBzOi8vZWNvbm9zdHJ1bS5pbmZvL3BsYW4tZnJhbmNlLWRlcGVuZGFuY2UtZW5lcmdpZXMtZm9zc2lsZXMv0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T13:11:08Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Journal du geek",
+      "title": "Linky : c'est quoi cette pratique illégale qui permet de faire baisser sa facture électrique ? - Journal du geek",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMigwFodHRwczovL3d3dy5qb3VybmFsZHVnZWVrLmNvbS8yMDIzLzExLzIzL2xpbmt5LWNlc3QtcXVvaS1jZXR0ZS1wcmF0aXF1ZS1pbGxlZ2FsZS1xdWktcGVybWV0LWRlLWZhaXJlLWJhaXNzZXItc2EtZmFjdHVyZS1lbGVjdHJpcXVlL9IBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T12:30:59Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "JDN",
+      "title": "Q* : cette IA (trop intelligente ?) qui aurait conduit à l'éviction de Sam Altman d'OpenAI - JDN",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMikwFodHRwczovL3d3dy5qb3VybmFsZHVuZXQuY29tL2ludGVsbGlnZW5jZS1hcnRpZmljaWVsbGUvMTUyNjQ2MS1xLWNldHRlLWlhLXRyb3AtaW50ZWxsaWdlbnRlLXF1aS1hdXJhaXQtY29uZHVpdC1hLWwtZXZpY3Rpb24tZGUtc2FtLWFsdG1hbi1kLW9wZW5haS_SAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T11:41:51Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Sud Ouest",
+      "title": "Chômage des 55 ans et + : Bruno Le Maire remet en cause la durée d'indemnisation - Sud Ouest",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMigQFodHRwczovL3d3dy5zdWRvdWVzdC5mci9lY29ub21pZS9lbXBsb2kvY2hvbWFnZS1kZXMtNTUtYW5zLWV0LWJydW5vLWxlLW1haXJlLXJlbWV0LWVuLWNhdXNlLWxhLWR1cmVlLWQtaW5kZW1uaXNhdGlvbi0xNzU2NDgyMS5waHDSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T11:31:57Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Le Monde",
+      "title": "A l'approche des élections au Royaume-Uni, le gouvernement baisse (un peu) les impôts - Le Monde",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMilwFodHRwczovL3d3dy5sZW1vbmRlLmZyL2Vjb25vbWllL2FydGljbGUvMjAyMy8xMS8yMy9hLWwtYXBwcm9jaGUtZGVzLWVsZWN0aW9ucy1hdS1yb3lhdW1lLXVuaS1sZS1nb3V2ZXJuZW1lbnQtYmFpc3NlLXVuLXBldS1sZXMtaW1wb3RzXzYyMDE4ODRfMzIzNC5odG1s0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T11:00:06Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "www.econostrum.info",
+      "title": "Déficit budgétaire : la Commission européenne invite la France à revoir ses dépenses excessives - www.econostrum.info",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiS2h0dHBzOi8vZWNvbm9zdHJ1bS5pbmZvL2RlZmljaXQtYnVkZ2V0YWlyZS1sYS1mcmFuY2UtY29tbWlzc2lvbi1ldXJvcGVlbm5lL9IBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T10:38:50Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "20 Minutes",
+      "title": "Sursis des titres-restaurants jusqu'à fin 2024 pour les courses alimentaires - 20 Minutes",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMib2h0dHBzOi8vd3d3LjIwbWludXRlcy5mci9zb2NpZXRlLzQwNjM2OTMtMjAyMzExMjMtdGl0cmVzLXJlc3RhdXJhbnRzLXN1cnNpcy1jb3Vyc2VzLWFsaW1lbnRhaXJlcy1qdXNxdS1maW4tMjAyNNIBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T10:21:53Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "LaDepeche.fr",
+      "title": "Une entreprise de rénovation qui avait escroqué des Lotois condamnée par la justice - LaDepeche.fr",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMihAFodHRwczovL3d3dy5sYWRlcGVjaGUuZnIvMjAyMy8xMS8yMy91bmUtZW50cmVwcmlzZS1kZS1yZW5vdmF0aW9uLXF1aS1hdmFpdC1lc2Nyb3F1ZS1kZXMtbG90b2lzLWNvbmRhbW5lZS1wYXItbGEtanVzdGljZS0xMTU5Nzg2NS5waHDSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T10:07:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Le Monde",
+      "title": "« Safran, victime des chausse-trapes en matière d'Europe de la défense » - Le Monde",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiiAFodHRwczovL3d3dy5sZW1vbmRlLmZyL2Vjb25vbWllL2FydGljbGUvMjAyMy8xMS8yMy9zYWZyYW4tdmljdGltZS1kZXMtY2hhdXNzZS10cmFwZXMtZW4tbWF0aWVyZS1kLWV1cm9wZS1kZS1sYS1kZWZlbnNlXzYyMDE4NzFfMzIzNC5odG1s0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T09:41:36Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "LaDepeche.fr",
+      "title": "Intéressement et participation : ce que la loi sur le \"partage de la valeur\" va changer pour les salariés - LaDepeche.fr",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMilgFodHRwczovL3d3dy5sYWRlcGVjaGUuZnIvMjAyMy8xMS8yMy9pbnRlcmVzc2VtZW50LWV0LXBhcnRpY2lwYXRpb24tY2UtcXVlLWxhLWxvaS1zdXItbGUtcGFydGFnZS1kZS1sYS12YWxldXItdmEtY2hhbmdlci1wb3VyLWxlcy1zYWxhcmllcy0xMTU5NjMwNS5waHDSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T09:35:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "BFM Business",
+      "title": "Michel-Édouard Leclerc veut aussi installer des centres de télémédecine dans les supermarchés - BFM Business",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMikQFodHRwczovL3d3dy5iZm10di5jb20vZWNvbm9taWUvbWljaGVsLWVkb3VhcmQtbGVjbGVyYy12ZXV0LWF1c3NpLWluc3RhbGxlci1kZXMtY2VudHJlcy1kZS10ZWxlbWVkZWNpbmUtZGFucy1sZXMtc3VwZXJtYXJjaGVzX0FWLTIwMjMxMTIzMDM4Mi5odG1s0gGVAWh0dHBzOi8vd3d3LmJmbXR2LmNvbS9hbXAvZWNvbm9taWUvbWljaGVsLWVkb3VhcmQtbGVjbGVyYy12ZXV0LWF1c3NpLWluc3RhbGxlci1kZXMtY2VudHJlcy1kZS10ZWxlbWVkZWNpbmUtZGFucy1sZXMtc3VwZXJtYXJjaGVzX0FWLTIwMjMxMTIzMDM4Mi5odG1s?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T08:57:41Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Voiles et Voiliers",
+      "title": "Visé par une enquête pour abus de confiance, Yvan Bourgnon quitte la tête de son ONG - Voiles et Voiliers",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMitwFodHRwczovL3ZvaWxlc2V0dm9pbGllcnMub3Vlc3QtZnJhbmNlLmZyL3NraXBwZXIveXZhbi1ib3VyZ25vbi92aXNlLXBhci11bmUtZW5xdWV0ZS1wb3VyLWFidXMtZGUtY29uZmlhbmNlLXl2YW4tYm91cmdub24tcXVpdHRlLWxhLXRldGUtZGUtc29uLW9uZy00OWE5NDc1Mi04OWRiLTExZWUtYTFjMC04Y2VmMTRiZWRmOTPSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T08:54:13Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "La Tribune.fr",
+      "title": "La Cour des comptes dresse un bilan en demi-teinte de la politique de relocalisation du gouvernement - La Tribune.fr",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMimQFodHRwczovL3d3dy5sYXRyaWJ1bmUuZnIvZWNvbm9taWUvZnJhbmNlL2xhLWNvdXItZGVzLWNvbXB0ZXMtZHJlc3NlLXVuLWJpbGFuLWVuLWRlbWktdGVpbnRlLWRlLWxhLXBvbGl0aXF1ZS1kZS1yZWxvY2FsaXNhdGlvbi1kdS1nb3V2ZXJuZW1lbnQtOTgzODk4Lmh0bWzSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T08:43:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Automobile Propre",
+      "title": "Les forces de l’ordre françaises ont reçu des BMW X5 à hydrogène - Automobile Propre",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMibWh0dHBzOi8vd3d3LmF1dG9tb2JpbGUtcHJvcHJlLmNvbS9ibXctbWV0LWRldXgtaXg1LWh5ZHJvZ2VuLWEtbGEtZGlzcG9zaXRpb24tZGVzLWZvcmNlcy1kZS1sb3JkcmUtZnJhbmNhaXNlcy_SAXFodHRwczovL3d3dy5hdXRvbW9iaWxlLXByb3ByZS5jb20vYm13LW1ldC1kZXV4LWl4NS1oeWRyb2dlbi1hLWxhLWRpc3Bvc2l0aW9uLWRlcy1mb3JjZXMtZGUtbG9yZHJlLWZyYW5jYWlzZXMvYW1wLw?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T08:35:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Reporterre",
+      "title": "Rénovation thermique : pourquoi ça bloque - Reporterre",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiPmh0dHBzOi8vcmVwb3J0ZXJyZS5uZXQvUmVub3ZhdGlvbi10aGVybWlxdWUtcG91cnF1b2ktY2EtYmxvcXVl0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T08:17:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "BFM Immo",
+      "title": "Crédit immobilier: le gouverneur de la Banque de France recadre les banques qui ne jouent pas le jeu - BFM Immo",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiqAFodHRwczovL3d3dy5iZm10di5jb20vaW1tb2JpbGllci9jcmVkaXQtZW1wcnVudC9jcmVkaXQtaW1tb2JpbGllci1sZS1nb3V2ZXJuZXVyLWRlLWxhLWJhbnF1ZS1kZS1mcmFuY2UtcmVjYWRyZS1sZXMtYmFucXVlcy1xdWktbmUtam91ZW50LXBhcy1sZS1qZXVfQUQtMjAyMzExMjMwMzM0Lmh0bWzSAawBaHR0cHM6Ly93d3cuYmZtdHYuY29tL2FtcC9pbW1vYmlsaWVyL2NyZWRpdC1lbXBydW50L2NyZWRpdC1pbW1vYmlsaWVyLWxlLWdvdXZlcm5ldXItZGUtbGEtYmFucXVlLWRlLWZyYW5jZS1yZWNhZHJlLWxlcy1iYW5xdWVzLXF1aS1uZS1qb3VlbnQtcGFzLWxlLWpldV9BRC0yMDIzMTEyMzAzMzQuaHRtbA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T08:10:36Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Boursorama",
+      "title": "Les Bourses européennes attendues dispersées avant les PMI - Boursorama",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiiAFodHRwczovL3d3dy5ib3Vyc29yYW1hLmNvbS9ib3Vyc2UvYWN0dWFsaXRlcy9sZXMtYm91cnNlcy1ldXJvcGVlbm5lcy1hdHRlbmR1ZXMtZGlzcGVyc2Vlcy1hdmFudC1sZXMtcG1pLTQ1MzdjNjRmYzRiYjEzMDVkMWJlMTNlNTlhOTMxY2Zj0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T07:26:51Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Zonebourse.com",
+      "title": "En direct des marchés : Engie, EssilorLuxottica, BNP Paribas, Stellantis, Voltalia, Novo Nordisk ... - Zonebourse.com",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMikAFodHRwczovL3d3dy56b25lYm91cnNlLmNvbS9hY3R1YWxpdGUtYm91cnNlL0VuLWRpcmVjdC1kZXMtbWFyY2hlcy1FbmdpZS1Fc3NpbG9yTHV4b3R0aWNhLUJOUC1QYXJpYmFzLVN0ZWxsYW50aXMtVm9sdGFsaWEtTm92by1Ob3JkaXNrLS00NTQyNDM4NS_SAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T07:17:44Z",
+      "content": null
+    }
+  ]

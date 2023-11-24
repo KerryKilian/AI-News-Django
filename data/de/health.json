@@ -1,0 +1,262 @@
+[
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "SAT.1",
+      "title": "Abnehmen mit Switchel: So schmilzt das Fett besonders effektiv - SAT.1",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMibmh0dHBzOi8vd3d3LnNhdDEuZGUvdGhlbWVuL2ZpdC1nZXN1bmQvbmV3cy9hYm5laG1lbi1taXQtc3dpdGNoZWwtc28tc2NobWlsenQtZGFzLWZldHQtYmVzb25kZXJzLWVmZmVrdGl2LTcwNDE40gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T14:36:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "fr.de",
+      "title": "\"Komplement, was?\"- Novartis und Slam Poet machen auf seltene Erkrankungen aufmerksam - fr.de",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMigwFodHRwczovL3d3dy5mci5kZS9wcmVzc2VtaXR0ZWlsdW5nZW4va29tcGxlbWVudC13YXMtbm92YXJ0aXMtdW5kLXNsYW0tcG9ldC1tYWNoZW4tYXVmLXNlbHRlbmUtZXJrcmFua3VuZ2VuLWF1Zm1lcmtzYW0tOTI2OTEyNjAuaHRtbNIBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T14:00:20Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "SAT.1",
+      "title": "Abnehmen mit Kürbiskernen: So unterstützen sie deine Fettreduktion - SAT.1",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMidWh0dHBzOi8vd3d3LnNhdDEuZGUvdGhlbWVuL2ZpdC1nZXN1bmQvbmV3cy9hYm5laG1lbi1taXQta3VlcmJpc2tlcm5lbi1zby11bnRlcnN0dWV0emVuLXNpZS1kZWluZS1mZXR0cmVkdWt0aW9uLTMyMzc1N9IBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T13:33:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Medizin-Transparent.at",
+      "title": "Hilft Lavendelöl gegen Angst? - Medizin-Transparent.at",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiMWh0dHBzOi8vbWVkaXppbi10cmFuc3BhcmVudC5hdC9sYXZlbmRlbG9lbC1hbmdzdC_SAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T12:50:29Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Augsburger Allgemeine",
+      "title": "Ist Diabetes Typ 2 heilbar? Für Betroffene gibt es Hoffnung - Augsburger Allgemeine",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMieWh0dHBzOi8vd3d3LmF1Z3NidXJnZXItYWxsZ2VtZWluZS5kZS9wYW5vcmFtYS9pc3QtZGlhYmV0ZXMtdHlwLTItaGVpbGJhci1mdWVyLWJldHJvZmZlbmUtZ2lidC1lcy1ob2ZmbnVuZy1pZDY4NTkwMDIxLmh0bWzSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T12:32:26Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "SAT.1",
+      "title": "Abnehmen mit Haferflocken: Wie sie dich fit und gesund fühlen lassen - SAT.1",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMidWh0dHBzOi8vd3d3LnNhdDEuZGUvdGhlbWVuL2ZpdC1nZXN1bmQvbmV3cy9hYm5laG1lbi1taXQtaGFmZXJmbG9ja2VuLXdpZS1zaWUtZGljaC1maXQtdW5kLWdlc3VuZC1mdWVobGVuLWxhc3Nlbi03MTg3MNIBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T12:26:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "SAT.1",
+      "title": "Abnehmen im Sitzen: Dieser Muskel beschleunigt deine Fettverbrennung - SAT.1",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMidGh0dHBzOi8vd3d3LnNhdDEuZGUvdGhlbWVuL2ZpdC1nZXN1bmQvbmV3cy9hYm5laG1lbi1pbS1zaXR6ZW4tZGllc2VyLW11c2tlbC1iZXNjaGxldW5pZ3QtZGVpbmUtZmV0dHZlcmJyZW5udW5nLTczNjkx0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T11:51:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "FUNDSCENE",
+      "title": "Tripe B.Complex: Dein Begleiter durch die kalte Jahreszeit! - Politics, Economy & Finance - FUNDSCENE",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiJmh0dHBzOi8vZnVuZHNjZW5lLmNvbS90cmlwZS1iLWNvbXBsZXgv0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T11:27:10Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Onmeda.de",
+      "title": "Bronchitis: 9 typische Symptome - Onmeda.de",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiWGh0dHBzOi8vd3d3Lm9ubWVkYS5kZS9rcmFua2hlaXRlbi9ha3V0ZS1icm9uY2hpdGlzL2dhbGVyaWUtYnJvbmNoaXRpcy1zeW1wdG9tZS1pZDIxNjA5NS_SAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T11:15:11Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "onvista",
+      "title": "IRW-News: Recce Pharmaceuticals Ltd.: Recce erhält Patentschutz für RECCE®-Antiinfektiva in Kanada - onvista",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMilQFodHRwczovL3d3dy5vbnZpc3RhLmRlL25ld3MvMjAyMy8xMS0yMy1pcnctbmV3cy1yZWNjZS1waGFybWFjZXV0aWNhbHMtbHRkLXJlY2NlLWVyaGFlbHQtcGF0ZW50c2NodXR6LWZ1ZXItcmVjY2UtYW50aWluZmVrdGl2YS1pbi1rYW5hZGEtMC0xMC0yNjIwNjg3ONIBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T10:39:01Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "European Scientist",
+      "title": "Antibiotika: Hoffnung gegen resistente Bakterien dank einer Wanze - European Scientist",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMigwFodHRwczovL3d3dy5ldXJvcGVhbnNjaWVudGlzdC5jb20vZGUvdm9uLWRlci1yZWRha3Rpb24tYXVzZ2V3YWhsdC9hbnRpYmlvdGlrYS1ob2ZmbnVuZy1nZWdlbi1yZXNpc3RlbnRlLWJha3Rlcmllbi1kYW5rLWVpbmVyLXdhbnplL9IBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T10:37:40Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "SAT.1",
+      "title": "Heilendes Essen - so förderst du deine Gesundheit - SAT.1",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMifmh0dHBzOi8vd3d3LnNhdDEuZGUvdGhlbWVuL2ZpdC1nZXN1bmQvbmV3cy9lbnR6dWVuZHVuZ3NoZW1tZW5kZXMtZXNzZW4tZm9sZ2VuZGUtbGViZW5zbWl0dGVsLXdpcmtlbi1lbnR6dWVuZHVuZ3NoZW1tZW5kLTMyMzQ3ONIBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T10:35:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "inFranken.de",
+      "title": "Cholesterinwerte senken - diese 6 Lebensmittel können dir helfen - inFranken.de",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMigwFodHRwczovL3d3dy5pbmZyYW5rZW4uZGUvcmF0Z2ViZXIvZ2VzdW5kaGVpdC9lcm5hZWhydW5nL2Nob2xlc3Rlcmlud2VydGUtc2Vua2VuLWRpZXNlLTYtbGViZW5zbWl0dGVsLWtvZW5uZW4tZGlyLWhlbGZlbi1hcnQtNTQ0OTUwMtIBgwFodHRwczovL2FtcC5pbmZyYW5rZW4uZGUvcmF0Z2ViZXIvZ2VzdW5kaGVpdC9lcm5hZWhydW5nL2Nob2xlc3Rlcmlud2VydGUtc2Vua2VuLWRpZXNlLTYtbGViZW5zbWl0dGVsLWtvZW5uZW4tZGlyLWhlbGZlbi1hcnQtNTQ0OTUwMg?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T09:54:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "ProSieben",
+      "title": "Kollagen als Jungbrunnen: So wirkt das Produkt für eine strahlende Schönheit - ProSieben",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMihwFodHRwczovL3d3dy5wcm9zaWViZW4uZGUvdGhlbWVuL2JlYXV0eS1mYXNoaW9uL25ld3Mva29sbGFnZW4tYWxzLWp1bmdicnVubmVuLXNvLXdpcmt0LWRhcy1wcm9kdWt0LWZ1ZXItZWluZS1zdHJhaGxlbmRlLXNjaG9lbmhlaXQtNjY0MDDSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T09:48:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Stuttgarter Zeitung",
+      "title": "Flohsamenschalen richtig einnehmen (Anleitung) - Stuttgarter Zeitung",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMic2h0dHBzOi8vd3d3LnN0dXR0Z2FydGVyLXplaXR1bmcuZGUvaW5oYWx0LmZsb2hzYW1lbnNjaGFsZW4tZWlubmVobWVuLW1oc2QuMDg1Y2MyM2UtYTgwNC00MDBkLTk2ODctOGNjODc4NTk3MWFiLmh0bWzSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T09:40:59Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "NRZ News",
+      "title": "Vor Dänemark-Reise: Impfschutz gegen Keuchhusten überprüfen - NRZ News",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiZ2h0dHBzOi8vd3d3Lm5yei5kZS9yZWlzZS92b3ItZGFlbmVtYXJrLXJlaXNlLWltcGZzY2h1dHotZ2VnZW4ta2V1Y2hodXN0ZW4tdWViZXJwcnVlZmVuLWlkMjQwNjU1OTI4Lmh0bWzSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T09:09:26Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "SAT.1",
+      "title": "Stimmungsaufhellende Lebensmittel: 15 passende \"Happy Foods\" von Avocado bis Zwiebel - SAT.1",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiggFodHRwczovL3d3dy5zYXQxLmRlL3RoZW1lbi9maXQtZ2VzdW5kL25ld3Mvc3RpbW11bmdzYXVmaGVsbGVuZGUtbGViZW5zbWl0dGVsMTUtcGFzc2VuZGUtaGFwcHktZm9vZHMtdm9uLWF2b2NhZG8tYmlzLXp3aWViZWwtMzIwNzk10gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T09:05:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Vital",
+      "title": "Finger weg: Diese 3 Nahrungsergänzungsmittel sind bei Überdosierung gefährlich - Vital",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiemh0dHBzOi8vd3d3LnZpdGFsLmRlL2dlc3VuZGhlaXQvZmluZ2VyLXdlZy1kaWVzZS0zLW5haHJ1bmdzZXJnYWVuenVuZ3NtaXR0ZWwtc2luZC1iZWktdWViZXJkb3NpZXJ1bmctZ2VmYWVocmxpY2gtOTU3MC5odG1s0gF-aHR0cHM6Ly93d3cudml0YWwuZGUvZ2VzdW5kaGVpdC9maW5nZXItd2VnLWRpZXNlLTMtbmFocnVuZ3NlcmdhZW56dW5nc21pdHRlbC1zaW5kLWJlaS11ZWJlcmRvc2llcnVuZy1nZWZhZWhybGljaC05NTcwLmh0bWw_YW1w?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T08:36:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "medonline",
+      "title": "BMI-Variabilität: Gefährlicher Jo-Jo-Effekt - medonline",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiX2h0dHBzOi8vbWVkb25saW5lLmF0L25ld3MvaW5uZXJlLW1lZGl6aW4vMTAxNzE5NTgvYm1pLXZhcmlhYmlsaXRhZXQtZ2VmYWVocmxpY2hlci1qby1qby1lZmZla3Qv0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T08:00:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "inFranken.de",
+      "title": "Anzeichen von Blut in der Lunge - was alles hinter dem Symptom stecken kann - inFranken.de",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiemh0dHBzOi8vd3d3LmluZnJhbmtlbi5kZS9yYXRnZWJlci9nZXN1bmRoZWl0L2JsdXQtaW4tZGVyLWx1bmdlLWx1bmdlbmVya3Jhbmt1bmctdmVybGV0enVuZy1vZGVyLWtyZWJzLXN5bXB0b21lLWFydC01Nzg2Mzc50gF6aHR0cHM6Ly9hbXAuaW5mcmFua2VuLmRlL3JhdGdlYmVyL2dlc3VuZGhlaXQvYmx1dC1pbi1kZXItbHVuZ2UtbHVuZ2VuZXJrcmFua3VuZy12ZXJsZXR6dW5nLW9kZXIta3JlYnMtc3ltcHRvbWUtYXJ0LTU3ODYzNzk?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T07:26:00Z",
+      "content": null
+    }
+  ]

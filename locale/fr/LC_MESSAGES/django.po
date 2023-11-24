@@ -16,31 +16,30 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 #: .\core\templates\core\article_chat.html:4
 msgid "written_on_text"
-msgstr "written on"
+msgstr "écrit le"
 
 #: .\core\templates\core\article_chat.html:15
 msgid "send_btn"
-msgstr "Send"
+msgstr "Envoyer"
 
 #: .\core\templates\core\article_detail.html:8
 msgid "back_to_homepage_btn"
-msgstr "Back to homepage"
+msgstr "Retour à la page d'accueil"
 
 #: .\core\templates\core\article_detail.html:17
 msgid "continue_reading_btn"
-msgstr "Continue reading"
+msgstr "Continuer la lecture"
 
 #: .\core\templates\core\article_detail.html:17
 msgid "continue_reading_at_btn"
-msgstr "Continue reading at"
+msgstr "Continuer la lecture à"
 
 #: .\core\templates\core\article_detail.html:20
 msgid "rating"
-msgstr "Rating"
+msgstr "Évaluation"
 
 #: .\core\templates\core\article_detail.html:33
 msgid "discussion_title"
@@ -48,35 +47,35 @@ msgstr "Discussion"
 
 #: .\core\templates\core\articleslist.html:26
 msgid "recognized_by_ai_label"
-msgstr "Recognized by AI"
+msgstr "Reconnu par l'IA"
 
 #: .\core\templates\core\base.html:10 .\core\templates\core\index.html:2
 msgid "news_page_title"
-msgstr "News"
+msgstr "Actualités"
 
 #: .\core\templates\core\base.html:17 .\core\templates\core\index.html:5
 msgid "news_title"
-msgstr "Your News"
+msgstr "Vos actualités"
 
 #: .\core\templates\core\base.html:52
 msgid "read_articles_btn"
-msgstr "Read articles"
+msgstr "Lire les articles"
 
 #: .\core\templates\core\base.html:56 .\core\templates\core\logout.html:6
 msgid "logout_btn"
-msgstr "Logout"
+msgstr "Se déconnecter"
 
 #: .\core\templates\core\base.html:61
 msgid "signup_btn"
-msgstr "Signup"
+msgstr "S'inscrire"
 
 #: .\core\templates\core\base.html:67
 msgid "login_btn"
-msgstr "Login"
+msgstr "Se connecter"
 
 #: .\core\templates\core\base.html:76
 msgid "footer_about_title"
-msgstr "About"
+msgstr "À propos"
 
 #: .\core\templates\core\base.html:85
 msgid "footer_menu"
@@ -84,67 +83,67 @@ msgstr "Menu"
 
 #: .\core\templates\core\base.html:88
 msgid "footer_about"
-msgstr "About"
+msgstr "À propos"
 
 #: .\core\templates\core\base.html:94
 msgid "footer_contact"
-msgstr "Kontakt"
+msgstr "Contact"
 
 #: .\core\templates\core\base.html:98
 msgid "footer_privacy"
-msgstr "Privacy"
+msgstr "Confidentialité"
 
 #: .\core\templates\core\base.html:102
 msgid "footer_terms_of_use"
-msgstr "Terms of use"
+msgstr "Conditions d'utilisation"
 
 #: .\core\templates\core\login.html:2
 msgid "login_page_title"
-msgstr "Login"
+msgstr "Se connecter"
 
 #: .\core\templates\core\login.html:5
 msgid "login_title"
-msgstr "Login"
+msgstr "Se connecter"
 
 #: .\core\templates\core\login.html:9 .\core\templates\core\signup.html:10
 msgid "username_label"
-msgstr "Username"
+msgstr "Nom d'utilisateur"
 
 #: .\core\templates\core\login.html:13 .\core\templates\core\signup.html:18
 msgid "password_label"
-msgstr "Password"
+msgstr "Mot de passe"
 
 #: .\core\templates\core\login.html:23 .\core\templates\core\signup.html:35
 msgid "submit_btn"
-msgstr "Submit"
+msgstr "Soumettre"
 
 #: .\core\templates\core\logout.html:1
 msgid "logout_title_label"
-msgstr "Logout"
+msgstr "Se déconnecter"
 
 #: .\core\templates\core\read_articles.html:2
 msgid "read_articles_page_title"
-msgstr "Read Articles"
+msgstr "Lire les articles"
 
 #: .\core\templates\core\read_articles.html:5
 msgid "read_articles_title"
-msgstr "Read Articles"
+msgstr "Lire les articles"
 
 #: .\core\templates\core\search.html:2
 msgid "search_results_title"
-msgstr "Search results"
+msgstr "Résultats de la recherche"
 
 #: .\core\templates\core\search.html:5
 msgid "search_results_for_title"
-msgstr "Search results for"
+msgstr "Résultats de la recherche pour"
 
 #: .\core\templates\core\signup.html:2
 msgid "signup_page_title"
-msgstr "Signup"
+msgstr "S'inscrire"
 
 #: .\core\templates\core\signup.html:5
 msgid "signup_title"
-msgstr "Signup"
+msgstr "S'inscrire"
 
 #: .\core\templates\core\signup.html:14
 msgid "email_label"
@@ -152,22 +151,19 @@ msgstr "Email"
 
 #: .\core\templates\core\signup.html:22
 msgid "repeat_password_label"
-msgstr "Repeat Password"
+msgstr "Répéter le mot de passe"
 
 #: .\newski\settings.py:147
 msgid "English"
-msgstr "English"
+msgstr "Anglais"
 
 #: .\newski\settings.py:148
 msgid "German"
-msgstr "German"
+msgstr "Allemand"
 
 #: .\newski\settings.py:149
 msgid "French"
-msgstr "French"
+msgstr "Français"
 
 msgid "search_label"
-msgstr "Search"
-
-#~ msgid "Back"
-#~ msgstr "Back to Homepage"
+msgstr "Chercher"

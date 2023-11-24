@@ -71,38 +71,38 @@ API_KEY = config('API_KEY')
 
 
 
-# def saveTrainingJsons():
-#     '''
-#     reads all json files which contain training data for the AI and saves it as trainings articles into database
-#     '''
+def saveTrainingJsons():
+    '''
+    reads all json files which contain training data for the AI and saves it as trainings articles into database
+    '''
 
-#     # Define the category names
-#     category_names = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
+    # Define the category names
+    category_names = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
 
-#     for category_name in category_names:
-#         try:
-#             # Retrieve the Category object or create it if it doesn't exist
-#             category, created = Category.objects.get_or_create(name=category_name)
+    for category_name in category_names:
+        try:
+            # Retrieve the Category object or create it if it doesn't exist
+            category, created = Category.objects.get_or_create(name=category_name)
 
-#             # Iterate through possible file name variations
-#             for filename in [category_name, f"{category_name}-chatgpt"]:
-#                 success, articles_data = readFile(filename)
-#                 if success:
-#                     for article_data in articles_data:
-#                         existing_article = TrainingArticle.objects.filter(title=article_data.get('title')).first()
-#                         if existing_article is None:
-#                             # Create a new TrainingArticle object and save it to the database
-#                             TrainingArticle.objects.create(
-#                                 title=article_data.get('title'),
-#                                 description=article_data.get('description'),
-#                                 category=category  # Assign the Category object
-#                             )
-#                             print("New Article added: " + article_data.get("title"))
-#         except Exception as e:
-#             # Handle exceptions, such as if a category doesn't exist
-#             return False, e
+            # Iterate through possible file name variations
+            for filename in [category_name, f"{category_name}-chatgpt"]:
+                success, articles_data = readFile(filename)
+                if success:
+                    for article_data in articles_data:
+                        existing_article = TrainingArticle.objects.filter(title=article_data.get('title')).first()
+                        if existing_article is None:
+                            # Create a new TrainingArticle object and save it to the database
+                            TrainingArticle.objects.create(
+                                title=article_data.get('title'),
+                                description=article_data.get('description'),
+                                category=category  # Assign the Category object
+                            )
+                            # print("New Article added: " + article_data.get("title"))
+        except Exception as e:
+            # Handle exceptions, such as if a category doesn't exist
+            return False, e
 
-#     return True, "success"
+    return True, "success"
 
 
 
@@ -144,6 +144,8 @@ def categoriesAlgorithm(user_profile):
     
     sorted_categories = get_sorted_categories(user_profile=user_profile)
 
+    countries = ["us","de","fr"]
+
     # request Articles
     cache_key = f'last_fetch_date'
     last_fetch_date = cache.get(cache_key)
@@ -165,7 +167,7 @@ def categoriesAlgorithm(user_profile):
                 if existing_article:
                     continue
                 category = predictCategory(article_data)
-                feature_names, bag_of_words_matrix = create_bag_of_words(article_data)
+                # feature_names, bag_of_words_matrix = create_bag_of_words(article_data)
                 Article.objects.create(
                     title=article_data.get('title'),
                     description=article_data.get('description'),
@@ -176,8 +178,8 @@ def categoriesAlgorithm(user_profile):
                     sourceName=article_data.get("source").get("source"),
                     content=article_data.get('content'),
                     category=Category.objects.get(name=category),
-                    feature_names=feature_names,
-                    bag_of_words_matrix=bag_of_words_matrix,
+                    # feature_names=feature_names,
+                    # bag_of_words_matrix=bag_of_words_matrix,
                 )
                 
         else: # fetch real data
@@ -199,7 +201,7 @@ def categoriesAlgorithm(user_profile):
 
         if len(articles) != 0:  # if there are articles in this category in the headlines
             if category_number > 0:
-                for _ in range(category_number * 5): # as many articles as points in userprofile
+                for _ in range(category_number * 3): # as many articles as points in userprofile
                     # get articles which are not yet in positive and not read by user yet
                     available_articles = [
                         article for article in articles if article not in result and article not in user_profile.read_articles.all()

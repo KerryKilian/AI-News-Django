@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-
+{% load i18n %}
 <html>
   <head>
     <meta charset="utf-8" />
@@ -10,7 +10,7 @@
     <title>{% block title %}{% endblock %} | {% trans 'news_page_title' %}</title>
   </head>
   <body>
-    {% load i18n %}
+    
     <nav
       class="py-6 px-6 flex justify-between items-center border-b border-grey-200"
     >
@@ -19,7 +19,7 @@
         
 
         <form action="{% url 'search' %}" method="GET" class="flex items-center">
-          <input type="text" name="q" placeholder="Search" class="border p-2 rounded-l-xl focus:outline-none">
+          <input type="text" name="q" placeholder="{% trans 'search_label' %}" class="border p-2 rounded-l-xl focus:outline-none">
           <button type="submit" class="bg-teal-500 p-2 focus:outline-none hover:bg-teal-700 rounded-r-xl">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                   class="h-6 w-6 text-white rounded-xl">
@@ -73,7 +73,7 @@
 
     <footer class="py-6 px-6 flex justify-between bg-gray-800">
       <div class="w-2/3 pr-10">
-        <h3 class="mb-5 font-semibold text-gray-400">About</h3>
+        <h3 class="mb-5 font-semibold text-gray-400">{% trans 'footer_about_title' %}</h3>
         <p class="text-lg text-gray-500">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur
           itaque molestias dolores aliquid! Ex dignissimos quod sapiente sequi.

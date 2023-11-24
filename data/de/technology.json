@@ -1,0 +1,262 @@
+[
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "CHIP Online Deutschland",
+      "title": "Google Maps wird noch besser: Die Navigation erhält gleich drei neue Features - CHIP - CHIP Online Deutschland",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiZGh0dHBzOi8vd3d3LmNoaXAuZGUvbmV3cy9Hb29nbGUtTWFwcy1lcmhhZWx0LW5hZWNoc3Rlcy1VcGRhdGUtRGllc2UtRmVhdHVyZXMtc2luZC1uZXVfMTg1MDMwMjAyLmh0bWzSAW9odHRwczovL3d3dy5jaGlwLmRlL25ld3MvR29vZ2xlLU1hcHMtZXJoYWVsdC1uYWVjaHN0ZXMtVXBkYXRlLURpZXNlLUZlYXR1cmVzLXNpbmQtbmV1XzE4NTAzMDIwMi5odG1sP2xheW91dD1hbXA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T14:40:11Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Handelsblatt ",
+      "title": "Erneuerbare Energie: Darum zweifeln noch viele am Wasserstoff - Handelsblatt ",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMie2h0dHBzOi8vd3d3LmhhbmRlbHNibGF0dC5jb20vdW50ZXJuZWhtZW4vZW5lcmdpZS9lcm5ldWVyYmFyZS1lbmVyZ2llLWRhcnVtLXp3ZWlmZWxuLW5vY2gtdmllbGUtYW0td2Fzc2Vyc3RvZmYvMjk1MTQ3MjYuaHRtbNIBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T14:33:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Golem.de",
+      "title": "Humane AI Pin: Kann ein KI-Wearable schon ein Smartphone ersetzen? - Golem.de - Golem.de",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMia2h0dHBzOi8vd3d3LmdvbGVtLmRlL25ld3MvaHVtYW5lLWFpLXBpbi1rYW5uLWVpbi1raS13ZWFyYWJsZS1zY2hvbi1laW4tc21hcnRwaG9uZS1lcnNldHplbi0yMzExLTE3OTcwNy5odG1s0gFvaHR0cHM6Ly93d3cuZ29sZW0uZGUvbmV3cy9odW1hbmUtYWktcGluLWthbm4tZWluLWtpLXdlYXJhYmxlLXNjaG9uLWVpbi1zbWFydHBob25lLWVyc2V0emVuLTIzMTEtMTc5NzA3LmFtcC5odG1s?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T14:15:05Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "ComputerBase",
+      "title": "Redmagic 4K Gaming Monitor: Mit 5.088 Mini-LED-Zonen überbietet er alle - ComputerBase",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMibGh0dHBzOi8vd3d3LmNvbXB1dGVyYmFzZS5kZS8yMDIzLTExL3JlZG1hZ2ljLTRrLWdhbWluZy1tb25pdG9yLW1pdC01LTA4OC1taW5pLWxlZC16b25lbi11ZWJlcmJpZXRldC1lci1hbGxlL9IBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T14:09:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "n-tv NACHRICHTEN",
+      "title": "\"Das ist irre\": Musk schimpft auf Streiks im schwedischen Teslawerk - n-tv.de - n-tv NACHRICHTEN",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiZWh0dHBzOi8vd3d3Lm4tdHYuZGUvcGFub3JhbWEvTXVzay1zY2hpbXBmdC1hdWYtU3RyZWlrcy1pbS1zY2h3ZWRpc2NoZW4tVGVzbGF3ZXJrLWFydGljbGUyNDU1MjE5OC5odG1s0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T14:03:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "DER SPIEGEL",
+      "title": "True-Wireless-Kopfhörer im Test: Sony, Bose, Philips, LG, Denon, Jabar, Poly, Earfun, Huawei, Anker und andere - DER SPIEGEL",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMitAFodHRwczovL3d3dy5zcGllZ2VsLmRlL3Rlc3RzL2VsZWt0cm9uaWsvdHJ1ZS13aXJlbGVzcy1rb3BmaG9lcmVyLWltLXRlc3Qtc29ueS1ib3NlLXBoaWxpcHMtbGctZGVub24tamFiYXItcG9seS1lYXJmdW4taHVhd2VpLWFua2VyLXVuZC1hbmRlcmUtYS05MDFhNTE3OC0wZTgxLTQyMDYtOGVjZC1lMmE2OTQ5NzU2YmLSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T13:31:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "heise online",
+      "title": "Cloud-Computing-Software ownCloud und Nextcloud angreifbar - heise online",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiYWh0dHBzOi8vd3d3LmhlaXNlLmRlL25ld3MvQ2xvdWQtQ29tcHV0aW5nLVNvZnR3YXJlLW93bkNsb3VkLXVuZC1OZXh0Y2xvdWQtYW5ncmVpZmJhci05NTM3NjUwLmh0bWzSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T13:24:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "ComputerBase",
+      "title": "Dell, Lenovo und Microsoft: Forscher umgehen Login per Fingerabdruck unter Windows - ComputerBase",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMidWh0dHBzOi8vd3d3LmNvbXB1dGVyYmFzZS5kZS8yMDIzLTExL2RlbGwtbGVub3ZvLXVuZC1taWNyb3NvZnQtZm9yc2NoZXItdW1nZWhlbi1sb2dpbi1wZXItZmluZ2VyYWJkcnVjay11bnRlci13aW5kb3dzL9IBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T12:48:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "CHIP Online Deutschland",
+      "title": "Warnung des BSI: Viele Browser-Nutzer müssen jetzt updaten - CHIP - CHIP Online Deutschland",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiWWh0dHBzOi8vd3d3LmNoaXAuZGUvbmV3cy9Ccm93c2VyLVVzZXItc29sbHRlbi1uYWNoLVdhcm51bmctZGVzLUJTSS11cGRhdGVuXzE4NTAzNDQ0NS5odG1s0gFkaHR0cHM6Ly93d3cuY2hpcC5kZS9uZXdzL0Jyb3dzZXItVXNlci1zb2xsdGVuLW5hY2gtV2FybnVuZy1kZXMtQlNJLXVwZGF0ZW5fMTg1MDM0NDQ1Lmh0bWw_bGF5b3V0PWFtcA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T12:41:10Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "CHIP Online Deutschland",
+      "title": "Microsoft Office 2024 kommt: Eine wichtige Sache lässt viele Nutzer aufatmen - CHIP Online Deutschland",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMidGh0dHBzOi8vd3d3LmNoaXAuZGUvbmV3cy9NaWNyb3NvZnQtT2ZmaWNlLTIwMjQta29tbXQtRWluZS13aWNodGlnZS1TYWNoZS1sYWVzc3QtdmllbGUtTnV0emVyLWF1ZmF0bWVuXzE4NTA0MTU1OC5odG1s0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T12:33:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "inside digital",
+      "title": "Apple macht Schluss: Davon müssen sich iPhone-Nutzer endgültig verabschieden - inside digital",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMicGh0dHBzOi8vd3d3Lmluc2lkZS1kaWdpdGFsLmRlL25ld3MvYXBwbGUtbWFjaHQtc2NobHVzcy1kYXZvbi1tdWVzc2VuLXNpY2gtaXBob25lLW51dHplci1lbmRndWVsdGlnLXZlcmFic2NoaWVkZW7SAXRodHRwczovL3d3dy5pbnNpZGUtZGlnaXRhbC5kZS9uZXdzL2FwcGxlLW1hY2h0LXNjaGx1c3MtZGF2b24tbXVlc3Nlbi1zaWNoLWlwaG9uZS1udXR6ZXItZW5kZ3VlbHRpZy12ZXJhYnNjaGllZGVuL2FtcA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T12:28:16Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Golem.de",
+      "title": "Spotify-Konkurrenz: Preiserhöhung bei Deezer - Golem.de - Golem.de",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiV2h0dHBzOi8vd3d3LmdvbGVtLmRlL25ld3Mvc3BvdGlmeS1rb25rdXJyZW56LXByZWlzZXJob2VodW5nLWJlaS1kZWV6ZXItMjMxMS0xNzk3MDAuaHRtbNIBW2h0dHBzOi8vd3d3LmdvbGVtLmRlL25ld3Mvc3BvdGlmeS1rb25rdXJyZW56LXByZWlzZXJob2VodW5nLWJlaS1kZWV6ZXItMjMxMS0xNzk3MDAuYW1wLmh0bWw?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T11:45:02Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "ComputerBase",
+      "title": "VP4000 Mini: Die nächste M.2-SSD im Kleinstformat kommt von Patriot - ComputerBase",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiaGh0dHBzOi8vd3d3LmNvbXB1dGVyYmFzZS5kZS8yMDIzLTExL3ZwNDAwMC1taW5pLWRpZS1uYWVjaHN0ZS1tLTItc3NkLWltLWtsZWluc3Rmb3JtYXQta29tbXQtdm9uLXBhdHJpb3Qv0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T11:15:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "GameStar",
+      "title": "Die RTX 4080 von Nvidia günstig kaufen: Das beste Angebot gibt's gerade bei Mindfactory! - GameStar",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMia2h0dHBzOi8vd3d3LmdhbWVzdGFyLmRlL2FydGlrZWwvcnR4LTQwODAtbnZpZGlhLW1pbmRmYWN0b3J5LWFuZ2Vib3QtNGstZ3JhZmlra2FydGUtcGF0aHRyYWNpbmcsMzQwNDM1MS5odG1s0gEA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T11:06:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Golem.de",
+      "title": "Sammelklage: Playstation Store könnte Sony 7,2 Milliarden Euro kosten - Golem.de - Golem.de",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMicGh0dHBzOi8vd3d3LmdvbGVtLmRlL25ld3Mvc2FtbWVsa2xhZ2UtcGxheXN0YXRpb24tc3RvcmUta29lbm50ZS1zb255LTctMi1taWxsaWFyZGVuLWV1cm8ta29zdGVuLTIzMTEtMTc5Njk4Lmh0bWzSAXRodHRwczovL3d3dy5nb2xlbS5kZS9uZXdzL3NhbW1lbGtsYWdlLXBsYXlzdGF0aW9uLXN0b3JlLWtvZW5udGUtc29ueS03LTItbWlsbGlhcmRlbi1ldXJvLWtvc3Rlbi0yMzExLTE3OTY5OC5hbXAuaHRtbA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T10:58:02Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "Handelsblatt ",
+      "title": "Markentreue: Mercedes strebt nach Kundenbindung im Stil von Apple - Handelsblatt ",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMigQFodHRwczovL3d3dy5oYW5kZWxzYmxhdHQuY29tL3VudGVybmVobWVuL2luZHVzdHJpZS9tYXJrZW50cmV1ZS1tZXJjZWRlcy1zdHJlYnQtbmFjaC1rdW5kZW5iaW5kdW5nLWltLXN0aWwtdm9uLWFwcGxlLzI5NTAwOTgyLmh0bWzSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T10:50:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "ComputerBase",
+      "title": "Android-Updates: Samsung gibt Zeitplan für zahlreiche Modelle bekannt - ComputerBase",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiamh0dHBzOi8vd3d3LmNvbXB1dGVyYmFzZS5kZS8yMDIzLTExL2FuZHJvaWQtdXBkYXRlcy1zYW1zdW5nLWdpYnQtemVpdHBsYW4tZnVlci16YWhscmVpY2hlLW1vZGVsbGUtYmVrYW5udC_SAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T10:44:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "DER SPIEGEL",
+      "title": "Vodafone verschenkt im Dezember 500 Gigabyte Datenvolumen - DER SPIEGEL - DER SPIEGEL",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMihAFodHRwczovL3d3dy5zcGllZ2VsLmRlL25ldHp3ZWx0L3dlYi92b2RhZm9uZS12ZXJzY2hlbmt0LWltLWRlemVtYmVyLTUwMC1naWdhYnl0ZS1kYXRlbnZvbHVtZW4tYS1iNDQ2YmMyNi1mYTYxLTRlMDAtODJlNy0xNzljNTMxZWE3MGTSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T10:39:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "GIGA",
+      "title": "Für 169 Euro: Dieses Handy ist eine Ohrfeige für Apple und Samsung - GIGA",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMiYGh0dHBzOi8vd3d3LmdpZ2EuZGUvYXJ0aWtlbC9mdWVyLTE2OS1ldXJvLWRpZXNlcy1oYW5keS1pc3QtZWluZS1vaHJmZWlnZS1mdWVyLWFwcGxlLXVuZC1zYW1zdW5nL9IBAA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T09:37:11Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "google-news",
+        "name": "Google News"
+      },
+      "author": "fr.de",
+      "title": "WhatsApp-Service bald nicht mehr kostenlos - Änderung startet im Dezember - fr.de",
+      "description": null,
+      "url": "https://news.google.com/rss/articles/CBMieWh0dHBzOi8vd3d3LmZyLmRlL3ZlcmJyYXVjaGVyL2dvb2dsZS1tZXNzZW5nZXItaGFuZHktd2hhdHNhcHAtc2VydmljZS1rb3N0ZW4tYW5kcm9pZC1udXR6ZXItZGV6ZW1iZXItaWNsb3VkLTkyNjg1NzAyLmh0bWzSAQA?oc=5",
+      "urlToImage": null,
+      "publishedAt": "2023-11-23T09:06:00Z",
+      "content": null
+    }
+  ]

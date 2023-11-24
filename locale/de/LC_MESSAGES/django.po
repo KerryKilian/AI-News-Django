@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-22 16:58+0100\n"
+"POT-Creation-Date: 2023-11-22 17:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,14 +18,157 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: .\core\templates\core\article_chat.html:4
+msgid "written_on_text"
+msgstr "geschrieben am"
+
+#: .\core\templates\core\article_chat.html:15
+msgid "send_btn"
+msgstr "Senden"
+
 #: .\core\templates\core\article_detail.html:8
-msgid "Back"
+msgid "back_to_homepage_btn"
 msgstr "Zurück zur Startseite"
+
+#: .\core\templates\core\article_detail.html:17
+msgid "continue_reading_btn"
+msgstr "Weiterlesen"
+
+#: .\core\templates\core\article_detail.html:17
+msgid "continue_reading_at_btn"
+msgstr "auf"
+
+#: .\core\templates\core\article_detail.html:20
+msgid "rating"
+msgstr "Bewertungen"
+
+#: .\core\templates\core\article_detail.html:33
+msgid "discussion_title"
+msgstr "Diskussion"
+
+#: .\core\templates\core\articleslist.html:26
+msgid "recognized_by_ai_label"
+msgstr "Erkannt durch KI"
+
+#: .\core\templates\core\base.html:10 .\core\templates\core\index.html:2
+msgid "news_page_title"
+msgstr "Nachrichten"
+
+#: .\core\templates\core\base.html:17 .\core\templates\core\index.html:5
+msgid "news_title"
+msgstr "Nachrichten"
+
+#: .\core\templates\core\base.html:52
+msgid "read_articles_btn"
+msgstr "Gelesene Artikel"
+
+#: .\core\templates\core\base.html:56 .\core\templates\core\logout.html:6
+msgid "logout_btn"
+msgstr "Ausloggen"
+
+#: .\core\templates\core\base.html:61
+msgid "signup_btn"
+msgstr "Registrieren"
+
+#: .\core\templates\core\base.html:67
+msgid "login_btn"
+msgstr "Einloggen"
+
+#: .\core\templates\core\base.html:76
+msgid "footer_about_title"
+msgstr "Über uns"
+
+#: .\core\templates\core\base.html:85
+msgid "footer_menu"
+msgstr "Menü"
+
+#: .\core\templates\core\base.html:88
+msgid "footer_about"
+msgstr "Über"
+
+#: .\core\templates\core\base.html:94
+msgid "footer_contact"
+msgstr "Kontakt"
+
+#: .\core\templates\core\base.html:98
+msgid "footer_privacy"
+msgstr "Privatsphäre"
+
+#: .\core\templates\core\base.html:102
+msgid "footer_terms_of_use"
+msgstr "Impressum"
+
+#: .\core\templates\core\login.html:2
+msgid "login_page_title"
+msgstr "Login"
+
+#: .\core\templates\core\login.html:5
+msgid "login_title"
+msgstr "Login"
+
+#: .\core\templates\core\login.html:9 .\core\templates\core\signup.html:10
+msgid "username_label"
+msgstr "Benutzername"
+
+#: .\core\templates\core\login.html:13 .\core\templates\core\signup.html:18
+msgid "password_label"
+msgstr "Passwort"
+
+#: .\core\templates\core\login.html:23 .\core\templates\core\signup.html:35
+msgid "submit_btn"
+msgstr "Bestätigen"
+
+#: .\core\templates\core\logout.html:1
+msgid "logout_title_label"
+msgstr "Logout"
+
+#: .\core\templates\core\read_articles.html:2
+msgid "read_articles_page_title"
+msgstr "Gelesene Artikel"
+
+#: .\core\templates\core\read_articles.html:5
+msgid "read_articles_title"
+msgstr "Gelesene Artikel"
+
+#: .\core\templates\core\search.html:2
+msgid "search_results_title"
+msgstr "Suchergebnisse"
+
+#: .\core\templates\core\search.html:5
+msgid "search_results_for_title"
+msgstr "Suchergebnisse für"
+
+#: .\core\templates\core\signup.html:2
+msgid "signup_page_title"
+msgstr "Registrieren"
+
+#: .\core\templates\core\signup.html:5
+msgid "signup_title"
+msgstr "Registrieren"
+
+#: .\core\templates\core\signup.html:14
+msgid "email_label"
+msgstr "Email"
+
+#: .\core\templates\core\signup.html:22
+msgid "repeat_password_label"
+msgstr "Passwort wiederholen"
 
 #: .\newski\settings.py:147
 msgid "English"
-msgstr ""
+msgstr "Englisch"
 
 #: .\newski\settings.py:148
 msgid "German"
-msgstr ""
+msgstr "Deutsch"
+
+#: .\newski\settings.py:149
+msgid "French"
+msgstr "Französisch"
+
+msgid "search_label"
+msgstr "Suche"
+
+
+#~ msgid "Back"
+#~ msgstr "Zurück zur Startseite"

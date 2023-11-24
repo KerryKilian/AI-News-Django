@@ -19,17 +19,20 @@ CATEGORY_CHOICES = [
     ('technology', 'Technology'),
 ]
 
+CATEGORY_CHOICES = [
+    ('us', 'us'),
+    ('de', 'de'),
+    ('fr', 'fr'),
+]
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
-    
 
-
-    
-
-
+class Country(models.Model):
+    name = models.CharField(max_length=2)
     
 class Article(models.Model):
     title = models.TextField(blank=True, null=True)
@@ -103,8 +106,7 @@ class TrainingArticle(models.Model):
     sourceName = models.CharField(max_length=255, null=True)
     content = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-    feature_names = models.TextField(null=True)
-    bag_of_words_matrix = models.BinaryField(null=True)
+    # country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.title
