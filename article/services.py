@@ -167,7 +167,6 @@ def categoriesAlgorithm(user_profile):
                 if existing_article:
                     continue
                 category = predictCategory(article_data)
-                # feature_names, bag_of_words_matrix = create_bag_of_words(article_data)
                 Article.objects.create(
                     title=article_data.get('title'),
                     description=article_data.get('description'),
@@ -178,8 +177,6 @@ def categoriesAlgorithm(user_profile):
                     sourceName=article_data.get("source").get("source"),
                     content=article_data.get('content'),
                     category=Category.objects.get(name=category),
-                    # feature_names=feature_names,
-                    # bag_of_words_matrix=bag_of_words_matrix,
                 )
                 
         else: # fetch real data
