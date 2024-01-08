@@ -59,7 +59,7 @@ msgstr "Vos actualités"
 
 #: .\core\templates\core\base.html:52
 msgid "read_articles_btn"
-msgstr "Lire les articles"
+msgstr "articles lus"
 
 #: .\core\templates\core\base.html:56 .\core\templates\core\logout.html:6
 msgid "logout_btn"

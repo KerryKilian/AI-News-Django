@@ -1,8 +1,9 @@
+import os
 import nltk
 from sklearn.feature_extraction.text import CountVectorizer
 from decouple import config
 
-from .models import TrainingArticle
+from .models import Country, TrainingArticle
 import pandas as pd
 from .utils import text_from_article
 import joblib  
@@ -68,9 +69,9 @@ def compute_similarity(text1, text2):
     print(similarity)
     return similarity
 
-def train_ai_with_training_articles():
+def train_ai_with_training_articles(country = "us"):
     # Sample dataset (you should replace this with your own data)
-    articles = TrainingArticle.objects.all()
+    articles = TrainingArticle.objects.filter(country=Country.objects.get(name=country))
     articles_data = [{
         'title': article.title,
         'description': article.description,
@@ -109,27 +110,23 @@ def train_ai_with_training_articles():
     accuracy = accuracy_score(y_test, y_pred)
     print(f"Accuracy: {accuracy:.2f}")
     print(classification_report(y_test, y_pred))
-
-    # Inference with new text
-    # new_text = ["astronauts"]
-    # new_text_tfidf = tfidf_vectorizer.transform(new_text)
-    # predicted_category = classifier.predict(new_text_tfidf)
-    # print(f"Predicted Category: {predicted_category[0]}")
+    class_report = classification_report(y_test, y_pred, output_dict=True)
+    class_df = pd.DataFrame(class_report).transpose()
+    print(class_df)
     
-# Save the trained models as pickle files
-    with open('tfidf_vectorizer.pkl', 'wb') as f:
+    # Save the trained models as pickle files
+    folder_path = f'ai_model/{country}/'
+    os.makedirs(folder_path, exist_ok=True)
+
+    tfidf_vectorizer_path = os.path.join(folder_path, 'tfidf_vectorizer.pkl')
+    with open(tfidf_vectorizer_path, 'wb') as f:
         joblib.dump(tfidf_vectorizer, f)
 
-    with open('classifier.pkl', 'wb') as f:
+    # Save classifier.pkl
+    classifier_path = os.path.join(folder_path, 'classifier.pkl')
+    with open(classifier_path, 'wb') as f:
         joblib.dump(classifier, f)
-    # return predicted_category[0]
-    # data_folder = "ai-model"
-    # if not os.path.exists(data_folder):                     
-    #     os.makedirs(data_folder)
-    # with open(os.path.join(data_folder, "tfidf_vectorizer.pkl"), 'wb') as file:
-    #     joblib.dump(tfidf_vectorizer, file)
-    # with open(os.path.join(data_folder, "classifier.pkl"), 'wb') as file:
-    #     joblib.dump(classifier, file)
+
 
 
 
@@ -147,16 +144,24 @@ def get_sorted_categories(user_profile):
 
 
 
-def predictCategory(article):
+def predictCategory(article, country = "us"):
     '''
     Predicts the category from a given article.
     '''
+    print("predictCategory")
     
     title = article.title if hasattr(article, 'title') else article.get('title')
     description = article.description if hasattr(article, 'description') else article.get('description')
     
-    tfidf_vectorizer = joblib.load('tfidf_vectorizer.pkl')
-    classifier = joblib.load('classifier.pkl')
+    # tfidf_vectorizer = joblib.load('tfidf_vectorizer.pkl')
+    # classifier = joblib.load('classifier.pkl')
+
+    tfidf_vectorizer_path = os.path.join('ai_model', country, 'tfidf_vectorizer.pkl')
+    tfidf_vectorizer = joblib.load(tfidf_vectorizer_path)
+
+    # Load classifier
+    classifier_path = os.path.join('ai_model', country, 'classifier.pkl')
+    classifier = joblib.load(classifier_path)
     
     new_text = [text_from_article(article)]
     new_text_tfidf = tfidf_vectorizer.transform(new_text)

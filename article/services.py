@@ -5,7 +5,7 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 import requests
 
-from .models import Article, ArticleRating, Category, TrainingArticle, UserProfile
+from .models import Article, ArticleRating, Category, Country, TrainingArticle, UserProfile
 from decouple import config
 from .utils import readFile, createUrl, saveFile, text_from_article
 from .ai import create_bag_of_words, get_sorted_categories, predictCategory, compute_similarity
@@ -21,8 +21,9 @@ from django.db.models import Q
 tfidf_vectorizer = None
 classifier = None
 # USE_MOCKED_DATA = config('USE_MOCKED_DATA', default=False, cast=bool)
-USE_MOCKED_DATA = True
+USE_MOCKED_DATA = False
 API_KEY = config('API_KEY')
+USE_CACHE = True
 
 # def fetchTrainingArticles():
 #     '''
@@ -108,21 +109,24 @@ def saveTrainingJsons():
 
 
 
-def fetchWithoutCategories():
+def fetchWithoutCategories(country = "us"):
     '''
     takes articles from database and trains the ki with categories
     '''
-    response = requests.get(createUrl(""))
+    print("fetchWithoutCategories")
+    print(createUrl("", country))
+    response = requests.get(createUrl("", country))
+    print(str(response))
     if response.status_code == 200:
         articles_data = response.json().get('articles', [])
         for article_data in articles_data:
+            print(article_data)
 
             existing_article = Article.objects.filter(title=article_data.get('title')).first()
             if existing_article:
-                # If the article with the same title exists, you can skip it or update it
-                # Skip it:
+                # If the article with the same title exists, you can skip it
                 continue
-            category = predictCategory(article_data)
+            category = predictCategory(article_data, country)
             # Create a new Article object and save it to the database
             Article.objects.create(
                 title=article_data.get('title'),
@@ -134,25 +138,31 @@ def fetchWithoutCategories():
                 sourceName=article_data.get("source").get("source"),
                 content=article_data.get('content'),
                 category=Category.objects.get(name=category),
+                country=Country.objects.get(name=country)
             )
 
 
 
 
 
-def categoriesAlgorithm(user_profile):
-    
+def categoriesAlgorithm(user_profile, country = "us"):
+    print("categoriesAlgorithm")
     sorted_categories = get_sorted_categories(user_profile=user_profile)
 
-    countries = ["us","de","fr"]
 
     # request Articles
-    cache_key = f'last_fetch_date'
-    last_fetch_date = cache.get(cache_key)
     today = datetime.now().date()
+    cache_key = f'last_fetch_date_{country}'
+    if USE_CACHE == True:
+        print("using cache")
+        last_fetch_date = cache.get(cache_key)
+    else:
+        print("not using cache")
+        last_fetch_date = None
 
     # If last fetch date is not set or it's not today, fetch the data
     if not last_fetch_date or last_fetch_date.date() != today:
+        print("fetching new data")
         # Update the last fetch date in the cache
         cache.set(cache_key, datetime.now(), timeout=timedelta(days=1).seconds)
         fetch_needed = True
@@ -176,25 +186,30 @@ def categoriesAlgorithm(user_profile):
                     publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
                     sourceName=article_data.get("source").get("source"),
                     content=article_data.get('content'),
-                    category=Category.objects.get(name=category),
+                    category=Category.objects.get(name=category)
                 )
                 
         else: # fetch real data
-            fetchWithoutCategories()
+            fetchWithoutCategories(country)
     else:
         fetch_needed = False
+        print("not fetching new data")
     
     # sort the categories by positive, zero or negative in the according list
     positive = []
     zero = []
     negative = []
     result = []
-
+    print(country)
+    country_db = Country.objects.get(name=country)
+    print(country_db)
 
     # get as many articles from database as specified in category_number
     for category_name, category_number in sorted_categories.items():
         category = Category.objects.get(name=category_name)
-        articles = Article.objects.filter(category=category)
+        print(category)
+        articles = Article.objects.filter(category=category, country=country_db)
+        print(len(articles))
 
         if len(articles) != 0:  # if there are articles in this category in the headlines
             if category_number > 0:
@@ -278,9 +293,10 @@ def categoriesAlgorithm(user_profile):
 #         return sorted_articles
 #     else:
 #         return articles
-def getArticlesForUser(user_profile):
+def getArticlesForUser(user_profile, country = "us"):
+    print("getArticlesForUser")
     # get Articles for user depending on categories with trained AI
-    articles, fetch_needed = categoriesAlgorithm(user_profile)
+    articles, fetch_needed = categoriesAlgorithm(user_profile, country)
 
     
 

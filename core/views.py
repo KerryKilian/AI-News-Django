@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from article.models import Article
 from django.db.models import Avg
+from django.utils.translation import get_language
 
 # Create your views here.
 
@@ -33,13 +34,17 @@ def index(request):
     '''
     homepage which displays articles depending on user
     '''
+    country = get_language()
+    print(str(country))
+    if country == "en":
+        country = "us"
     try:
         user = User.objects.get(id=request.user.id)
         user_profile = UserProfile.objects.get(user=user)
     except:
         return redirect("/login/")
     try:
-        articles = getArticlesForUser(user_profile)
+        articles = getArticlesForUser(user_profile, country)
     except:
         return HttpResponse(status=500)
     return render(request, 'core/index.html', {'articles': articles})

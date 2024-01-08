@@ -5,12 +5,13 @@ import re
 
 API_KEY = config('API_KEY')
 
-def readFile(category, chatgpt = False, country = "us"):
+def readFile(category, country = "us"):
     data_folder = f"data/{country}"
-    if chatgpt == False:
-        file_path = os.path.join(data_folder, category + ".json")
-    else: 
-        file_path = os.path.join(data_folder, category + "-chatgpt.json")
+    file_path = os.path.join(data_folder, category + ".json")
+    # if chatgpt == False:
+    #     file_path = os.path.join(data_folder, category + ".json")
+    # else: 
+    #     file_path = os.path.join(data_folder, category + "-chatgpt.json")
     
     if os.path.exists(file_path):
         try:
@@ -42,10 +43,10 @@ def createUrl(category = None, country = "us"):
     # if no category is given, then there is a normal request not for training data
     if category == "" or category == None:
         return (f'https://newsapi.org/v2/top-headlines?'
-       'country={country}'
+       f'country={country}&'
        'apiKey=' + API_KEY)
     return ('https://newsapi.org/v2/top-headlines?'
-       'country={country}&'
+       f'country={country}&'
        'category=' + category + '&from=2023-10-03&to=2023-10-13'
        '&apiKey=' + API_KEY)
     # return ('https://newsapi.org/v2/everything?'
