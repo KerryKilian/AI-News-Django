@@ -113,33 +113,33 @@ def fetchWithoutCategories(country = "us"):
     '''
     takes articles from database and trains the ki with categories
     '''
-    print("fetchWithoutCategories")
-    print(createUrl("", country))
+    
     response = requests.get(createUrl("", country))
-    print(str(response))
     if response.status_code == 200:
         articles_data = response.json().get('articles', [])
         for article_data in articles_data:
             print(article_data)
+            if article_data.get("title") != "[Removed]":
+            
 
-            existing_article = Article.objects.filter(title=article_data.get('title')).first()
-            if existing_article:
-                # If the article with the same title exists, you can skip it
-                continue
-            category = predictCategory(article_data, country)
-            # Create a new Article object and save it to the database
-            Article.objects.create(
-                title=article_data.get('title'),
-                description=article_data.get('description'),
-                author=article_data.get('author'),
-                url=article_data.get('url'),
-                urlToImage=article_data.get('urlToImage'),
-                publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
-                sourceName=article_data.get("source").get("source"),
-                content=article_data.get('content'),
-                category=Category.objects.get(name=category),
-                country=Country.objects.get(name=country)
-            )
+                existing_article = Article.objects.filter(title=article_data.get('title')).first()
+                if existing_article:
+                    # If the article with the same title exists, you can skip it
+                    continue
+                category = predictCategory(article_data, country)
+                # Create a new Article object and save it to the database
+                Article.objects.create(
+                    title=article_data.get('title'),
+                    description=article_data.get('description'),
+                    author=article_data.get('author'),
+                    url=article_data.get('url'),
+                    urlToImage=article_data.get('urlToImage'),
+                    publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
+                    sourceName=article_data.get("source").get("source"),
+                    content=article_data.get('content'),
+                    category=Category.objects.get(name=category),
+                    country=Country.objects.get(name=country)
+                )
 
 
 
@@ -173,21 +173,23 @@ def categoriesAlgorithm(user_profile, country = "us"):
             
             for article_data in data:
                 # Create a new Article object and save it to the database
-                existing_article = Article.objects.filter(title=article_data.get('title')).first()
-                if existing_article:
-                    continue
-                category = predictCategory(article_data)
-                Article.objects.create(
-                    title=article_data.get('title'),
-                    description=article_data.get('description'),
-                    author=article_data.get('author'),
-                    url=article_data.get('url'),
-                    urlToImage=article_data.get('urlToImage'),
-                    publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
-                    sourceName=article_data.get("source").get("source"),
-                    content=article_data.get('content'),
-                    category=Category.objects.get(name=category)
-                )
+                if article_data.get("title") != "[Removed]":
+
+                    existing_article = Article.objects.filter(title=article_data.get('title')).first()
+                    if existing_article:
+                        continue
+                    category = predictCategory(article_data)
+                    Article.objects.create(
+                        title=article_data.get('title'),
+                        description=article_data.get('description'),
+                        author=article_data.get('author'),
+                        url=article_data.get('url'),
+                        urlToImage=article_data.get('urlToImage'),
+                        publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
+                        sourceName=article_data.get("source").get("source"),
+                        content=article_data.get('content'),
+                        category=Category.objects.get(name=category)
+                    )
                 
         else: # fetch real data
             fetchWithoutCategories(country)
@@ -196,20 +198,13 @@ def categoriesAlgorithm(user_profile, country = "us"):
         print("not fetching new data")
     
     # sort the categories by positive, zero or negative in the according list
-    positive = []
-    zero = []
-    negative = []
     result = []
-    print(country)
     country_db = Country.objects.get(name=country)
-    print(country_db)
 
     # get as many articles from database as specified in category_number
     for category_name, category_number in sorted_categories.items():
         category = Category.objects.get(name=category_name)
-        print(category)
         articles = Article.objects.filter(category=category, country=country_db)
-        print(len(articles))
 
         if len(articles) != 0:  # if there are articles in this category in the headlines
             if category_number > 0:
@@ -240,16 +235,6 @@ def categoriesAlgorithm(user_profile, country = "us"):
                     result.append(selected_article)
 
 
-
-    # shuffle articles
-    # random.shuffle(positive)
-    # random.shuffle(zero)
-    # random.shuffle(negative)
-
-    # # append everything to the result list
-    # result.extend(positive)
-    # result.extend(zero)
-    # result.extend(negative)
     return result, fetch_needed
 
 
@@ -300,11 +285,8 @@ def getArticlesForUser(user_profile, country = "us"):
 
     
 
-
+    # sort Articles for user depending of bag of words
     if user_profile.read_articles.exists():
-        # sort Articles for user depending of bag of words
-
-        # user_article_text = text_from_article(user_profile.last_article)
         # extract text from the last three articles
         read_articles = user_profile.read_articles.all().order_by('-id')[:3]
         read_articles_text = ""

@@ -69,7 +69,7 @@ def train_ai(request):
     
     # Step 2 : Train AI with TrainingArticles
     for country in countries:
-        train_ai_with_training_articles(Country.objects.get(name=country))
+        train_ai_with_training_articles(country)
 
     return HttpResponse(status=200)
 

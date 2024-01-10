@@ -4,7 +4,9 @@
     <div class="mb-5 relative">
       <a href="{% url 'core:article_detail' article.id %}">
         <div>
-          <img src="{{article.urlToImage}}" class="rounded-t-xl" alt="{{article.title}}">
+          {% if article.urlToImage %}
+            <img src="{{ article.urlToImage }}" class="rounded-t-xl object-cover" alt="{{ article.title }}">
+          {% endif %}
           <!-- Add label to the top right corner -->
           <div class="group">
             <span class="absolute top-0 right-0 text-white p-2 rounded-tr-xl rounded-bl-xl 
@@ -31,7 +33,7 @@
         </div>
         <div class="p-6 bg-white rounded-xl">
           <h2 class="text-2xl">{{article.title}}</h2>
-          <p class="text-gray-500">{{article.description}}</p>
+          <p class="text-gray-500">{{ article.description|default:"" }}</p>
         </div>
       </a>
     </div>
