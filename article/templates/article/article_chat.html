@@ -9,7 +9,7 @@
     {% endfor %}
 </div>
 
-<form id="chat-form" action="{% url 'core:post_article_message' article_id=article.id %}" method="post">
+<form id="chat-form" action="{% url 'article:post_article_message' article_id=article.id %}" method="post">
     {% csrf_token %}
     <textarea name="message" required class="w-full mt-4 mb-4 border border-black rounded-xl p-4" rows=7 placeholder="Your Message"></textarea>
     <br>

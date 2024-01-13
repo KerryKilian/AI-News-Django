@@ -2,10 +2,11 @@
 
 {% for article in articles %}
     <div class="mb-5 relative">
-      <a href="{% url 'core:article_detail' article.id %}">
+      <a href="{% url 'article:article_detail' article.id %}">
         <div>
           {% if article.urlToImage %}
             <img src="{{ article.urlToImage }}" class="rounded-t-xl object-cover" alt="{{ article.title }}">
+
           {% endif %}
           <!-- Add label to the top right corner -->
           <div class="group">

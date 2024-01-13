@@ -6,39 +6,23 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from article.utils import readFile
-from .services import getArticlesForUser, fetchWithoutCategories, search_articles, user_rates_article
+from .services import getArticlesForUser, search_articles, user_read_article, user_changes_rating
 from .ai import train_ai_with_training_articles
 import os
-from .models import Article, ArticleRating, Category, Country, TrainingArticle, UserProfile
+from .models import Article, ArticleComment, ArticleRating, Category, ChatMessage, Country, TrainingArticle, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth.models import User
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import user_passes_test
 
 @require_http_methods(["GET"])
 
-
-# def trainingNewsData(request):
-#     '''
-#     DEPRECATED. DO NOT USE! Requests News Articles for training the ai. Shall be called when server started.
-#     '''
-#     return fetchTrainingArticles()
-
-
-# def train(request):
-#     '''
-#     shall be called when server started
-#     '''
-#     predicted = trainAi()
-#     return JsonResponse({'predicted': str(predicted)})
-
-# def newsData(request):
-#     '''
-#     fetches new articles
-#     '''
-#     fetchWithoutCategories()
-
+@user_passes_test(lambda u: u.username == 'admin')
 def train_ai(request):
+    '''
+    http endpoint for training the model based on the articles in data folder. Only accessible by admin user
+    '''
     # Step 1 : Add Articles to TrainingArticles Database
     category_names = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
     countries = ["us", "fr", "de"]
@@ -88,49 +72,73 @@ def newsForUser(request):
             return HttpResponse(status=404)
     else:
         return HttpResponse(status=401) 
-
-
-def saveJsons(request):
-    success, message = saveTrainingJsons()
-    return JsonResponse({'message': str(message)})
                        
 
 def search(request):
     query = request.GET.get('q', '')
     try:
         articles = search_articles(query)
-        return render(request, 'core/search.html', {'articles': articles, 'query': query})
+        return render(request, 'article/search.html', {'articles': articles, 'query': query})
     except Exception as e:
         return HttpResponse(status=500)
 
 
-# @require_POST
-# @login_required
-# def save_rating(request, article_id):
-#     if request.method == 'POST':
-#         if request.user.is_authenticated:
-#             try:
-#                 rating_value = request.POST.get('rating')
-#                 rating_value = int(rating_value)
-#                 # rating_value += 1
 
-#                 if 1 <= rating_value <= 5:
-#                     user_profile = UserProfile.objects.get(user=request.user)
-#                     article = get_object_or_404(Article, id=article_id)
+def article_detail(request, pk):
+    user_profile = UserProfile.objects.get(user=request.user)
+    article = get_object_or_404(Article, pk=pk)
+    user_read_article(user_profile, article)
+    ratings = ArticleRating.objects.filter(article=article)
+    comments = ArticleComment.objects.filter(article=article)
+    messages = ChatMessage.objects.filter(article=article).order_by('-timestamp')[:50]
 
-#                     try:
-#                         user_rates_article(user_profile, article, rating_value)
-#                         return HttpResponse(status=200)
-#                     except IntegrityError as e:
-#                         return JsonResponse({"error": "Error saving rating. Integrity error."}, status=400)
+    return render(request, 'article/article_detail.html', 
+                  {'article': article, 
+                   'ratings': ratings, 
+                   'comments': comments,
+                   "messages": messages
+                   })
 
-#                 else:
-#                     return HttpResponse(status=400)
-#             except Exception as e:
-#                 print(str(e))
-#                 return HttpResponse(status=400)
-#         return HttpResponse(status=401)
-#     else:
-#         return HttpResponse(status=405)
-    
+@login_required
+def article_chat(request, article_id):
+    article = Article.objects.get(pk=article_id)
+    messages = ChatMessage.objects.filter(article=article).order_by('-timestamp')[:50]
+    return render(request, 'article/article_chat.html', {'article': article, 'messages': messages})
 
+@login_required
+def post_article_message(request, article_id):
+    if request.method == 'POST':
+        user = request.user
+        article = Article.objects.get(pk=article_id)
+        message = request.POST.get('message')
+
+        if message:
+            chat_message = ChatMessage.objects.create(user=user, article=article, message=message)
+            data = {
+                'username': chat_message.user.username,
+                'message': chat_message.message,
+                'timestamp': chat_message.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            }
+            return JsonResponse(data)
+
+    return JsonResponse({'error': 'Invalid request'})
+
+
+@login_required
+def read_articles(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    articles = user_profile.read_articles.all()
+    return render(request, 'article/read_articles.html', 
+              {'articles': articles })    
+
+@login_required
+def rating(request, article_id):
+    if request.method == 'POST':
+        user_profile = UserProfile.objects.get(user=request.user)
+        article = Article.objects.get(pk=article_id)
+        rating = request.POST.get("rating")
+
+        user_changes_rating(user_profile, article, rating)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=405)

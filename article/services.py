@@ -238,46 +238,6 @@ def categoriesAlgorithm(user_profile, country = "us"):
     return result, fetch_needed
 
 
-# def getArticlesForUser(user_id):
-#     user_profile = UserProfile.objects.get(id=user_id)
-#     # get Articles for the user depending on categories with trained AI
-#     articles, fetch_needed = categoriesAlgorithm(user_profile)
-
-#     if user_profile.read_articles:
-#         # sort Articles for the user depending on the bag of words
-#         priority_queue = PriorityQueue()
-
-#         # Extract text from the last three articles
-#         read_articles = user_profile.read_articles.all().order_by('-id')[:3]
-#         read_articles_text = ""
-#         for article in read_articles:
-#             text = text_from_article(article)
-#             read_articles_text += text + "; "
-
-#         print(read_articles_text)
-
-#         for article in articles:
-#             print(text_from_article(article))
-#             print(read_articles_text)
-#             similarity = compute_similarity(text_from_article(article), read_articles_text)
-
-#             # Add the (similarity, article_id) pair to the priority queue
-#             priority_queue.put((-similarity, article.id))
-#             print("similarity: " + str(similarity))
-
-#         # Retrieve the sorted article IDs from the priority queue
-#         sorted_article_ids = []
-
-#         while not priority_queue.empty():
-#             _, article_id = priority_queue.get()
-#             sorted_article_ids.append(article_id)
-
-#         # Get the corresponding articles based on their IDs
-#         sorted_articles = Article.objects.filter(id__in=sorted_article_ids)
-
-#         return sorted_articles
-#     else:
-#         return articles
 def getArticlesForUser(user_profile, country = "us"):
     print("getArticlesForUser")
     # get Articles for user depending on categories with trained AI
@@ -319,6 +279,9 @@ def search_articles(search_term):
     return articles
 
 def user_changes_rating(user_profile, article, points):
+    """
+    user can rate an article
+    """
     # change in userprofile
     field_name = article.category.name
     field_value = getattr(user_profile, field_name)
@@ -359,6 +322,9 @@ def user_changes_rating(user_profile, article, points):
 
 
 def user_read_article(user_profile, article):
+    """
+    method for registring the article into the read_articles field
+    """
     user_profile.read_articles.add(article)
     field_value = getattr(user_profile, article.category.name)
     field_value += 1
@@ -368,6 +334,9 @@ def user_read_article(user_profile, article):
 
 
 def user_rates_article(user_profile, article, rating_value):
+    """
+    user can rate an article which is affecting the users interests profile
+    """
     print("User rates this article with " + str(rating_value))
     try:
         # Try to get an existing rating

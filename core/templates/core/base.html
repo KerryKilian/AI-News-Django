@@ -58,13 +58,13 @@
   <body>
     
     <nav
-      class="py-6 px-6 flex justify-between items-center border-b border-grey-200"
+      class="py-6 px-6 flex md:flex-col sm:flex-col lg:flex-row justify-between items-center border-b border-grey-200"
     >
       <a href="/" class="text-xl font-semibold">{% trans 'news_title' %}</a>
-      <div class="space-x-6 flex items-center">
+      <div class="space-x-6 flex md:flex-col sm:flex-col sm:space-y-3 md:space-y-3 lg:flex-row items-center">
         
 
-        <form action="{% url 'search' %}" method="GET" class="flex items-center">
+        <form action="{% url 'article:search' %}" method="GET" class="flex items-center">
           <input type="text" name="q" placeholder="{% trans 'search_label' %}" class="border p-2 rounded-l-xl focus:outline-none">
           <button type="submit" class="bg-teal-500 p-2 focus:outline-none hover:bg-teal-700 rounded-r-xl">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -96,7 +96,7 @@
 
         {% if request.user.is_authenticated %}
         <a
-          href="{% url 'core:read_articles' %}"
+          href="{% url 'article:read_articles' %}"
           class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700"
           >{% trans 'read_articles_btn' %}</a>
         <a
@@ -124,8 +124,8 @@
       <div class="w-2/3 pr-10">
         <h3 class="mb-5 font-semibold text-gray-400">{% trans 'footer_about_title' %}</h3>
         <p class="text-lg text-gray-500">
-          Diese Webseite zeigt dir Nachrichten basierend auf deinen Interessen an. Je nachdem, was du liest, werden dir entsprechende Artikel angezeigt. Eine KI erkennt außerdem, 
-          zu welchem Thema dieser Artikel gehört. Das ist ein Uniprojekt von Kilian Aaron Brinkner. 
+          {% trans 'footer_about_text' %}
+          
         </p>
       </div>
     </footer>

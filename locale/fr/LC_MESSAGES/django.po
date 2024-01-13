@@ -59,7 +59,7 @@ msgstr "Vos actualités"
 
 #: .\core\templates\core\base.html:52
 msgid "read_articles_btn"
-msgstr "articles lus"
+msgstr "Articles lus"
 
 #: .\core\templates\core\base.html:56 .\core\templates\core\logout.html:6
 msgid "logout_btn"
@@ -123,11 +123,11 @@ msgstr "Se déconnecter"
 
 #: .\core\templates\core\read_articles.html:2
 msgid "read_articles_page_title"
-msgstr "Lire les articles"
+msgstr "Articles lus"
 
 #: .\core\templates\core\read_articles.html:5
 msgid "read_articles_title"
-msgstr "Lire les articles"
+msgstr "Articles lus"
 
 #: .\core\templates\core\search.html:2
 msgid "search_results_title"
@@ -167,3 +167,12 @@ msgstr "Français"
 
 msgid "search_label"
 msgstr "Chercher"
+
+msgid "description_not_available"
+msgstr "Description non disponible"
+
+msgid "content_not_available"
+msgstr "Contenu non disponible"
+
+msgid "footer_about_text"
+msgstr "Ce site Web vous présente des actualités en fonction de vos intérêts. En fonction de ce que vous lisez, des articles correspondants vous seront présentés. Une IA reconnaît également à quel sujet appartient cet article. Il s'agit d'un projet universitaire de Kilian Aaron Brinkner."

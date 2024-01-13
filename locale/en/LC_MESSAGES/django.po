@@ -169,5 +169,14 @@ msgstr "French"
 msgid "search_label"
 msgstr "Search"
 
+msgid "description_not_available"
+msgstr "Description not available"
+
+msgid "content_not_available"
+msgstr "Content not available"
+
+msgid "footer_about_text"
+msgstr "This website shows you news based on your interests. Depending on what you are reading, you will be shown corresponding articles. An AI also recognizes what topic this article belongs to. This is a university project by Kilian Aaron Brinkner."
+
 #~ msgid "Back"
 #~ msgstr "Back to Homepage"

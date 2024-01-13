@@ -6,13 +6,11 @@ import re
 API_KEY = config('API_KEY')
 
 def readFile(category, country = "us"):
+    """
+    reads a given file of training data
+    """
     data_folder = f"data/{country}"
     file_path = os.path.join(data_folder, category + ".json")
-    # if chatgpt == False:
-    #     file_path = os.path.join(data_folder, category + ".json")
-    # else: 
-    #     file_path = os.path.join(data_folder, category + "-chatgpt.json")
-    
     if os.path.exists(file_path):
         try:
             with open(file_path, 'r', encoding='utf-8') as file:
@@ -26,6 +24,9 @@ def readFile(category, country = "us"):
         return False, None
 
 def saveFile(category, data):
+    """
+    saves the training data to a file
+    """
     data_folder = "data" 
 
     if not os.path.exists(data_folder):                     
@@ -57,6 +58,9 @@ def createUrl(category = None, country = "us"):
 
 
 def text_from_article(article):
+    '''
+    extracts title and description from the article
+    '''
     title = article.title if hasattr(article, 'title') else article.get('title')
     description = article.description if hasattr(article, 'description') else article.get('description')
     content = article.content if hasattr(article, "content") else article.get("content")
