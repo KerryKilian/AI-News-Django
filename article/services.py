@@ -1,3 +1,4 @@
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 from queue import PriorityQueue
 import random
@@ -142,7 +143,25 @@ def fetchWithoutCategories(country = "us"):
                 )
 
 
+def bag_of_words(user_profile, articles):
+    # sort Articles for user depending of bag of words
+    if user_profile.read_articles.exists():
+        # extract text from the last three articles
+        read_articles = user_profile.read_articles.all().order_by('-id')[:3]
+        read_articles_text = ""
+        for article in read_articles:
+            text = text_from_article(article)
+            read_articles_text += text + "; "
 
+        sorted_articles = sorted(
+            articles,
+            key=lambda article: compute_similarity(text_from_article(article), read_articles_text),
+            reverse=True,
+        )
+
+        return sorted_articles
+    else:
+        return articles
 
 
 def categoriesAlgorithm(user_profile, country = "us"):
@@ -197,80 +216,154 @@ def categoriesAlgorithm(user_profile, country = "us"):
         fetch_needed = False
         print("not fetching new data")
     
-    # sort the categories by positive, zero or negative in the according list
-    result = []
-    country_db = Country.objects.get(name=country)
+    
 
     # get as many articles from database as specified in category_number
-    for category_name, category_number in sorted_categories.items():
-        category = Category.objects.get(name=category_name)
-        articles = Article.objects.filter(category=category, country=country_db)
+    # for category_name, category_number in sorted_categories.items():
+    #     category = Category.objects.get(name=category_name)
+    #     articles = Article.objects.filter(category=category, country=country_db)
 
-        if len(articles) != 0:  # if there are articles in this category in the headlines
-            if category_number > 0:
-                for _ in range(category_number * 3): # as many articles as points in userprofile
-                    # get articles which are not yet in positive and not read by user yet
-                    available_articles = [
-                        article for article in articles if article not in result and article not in user_profile.read_articles.all()
-                    ]
-                    if available_articles:
-                        selected_article = available_articles[0]  # Select the first available article
-                        result.append(selected_article)
-            elif category_number == 0:
-                for _ in range(2): 
-                    # get articles which are not yet in zero and not read by user yet
-                    available_articles = [
-                        article for article in articles if article not in result and article not in user_profile.read_articles.all()
-                    ]
-                    if available_articles:
-                        selected_article = available_articles[0]  # Select the first available article
-                        result.append(selected_article)
-            elif category_number < 0:
-                # get articles which are not yet in negative and not read by user yet
-                available_articles = [
-                    article for article in articles if article not in result and article not in user_profile.read_articles.all()
-                ]
-                if available_articles:
-                    selected_article = available_articles[0]  # Select the first available article
-                    result.append(selected_article)
+    #     if len(articles) != 0:  # if there are articles in this category in the headlines
+    #         if category_number > 0:
+    #             for _ in range(category_number * 3): # as many articles as points in userprofile
+    #                 # get articles which are not yet in positive and not read by user yet
+    #                 available_articles = [
+    #                     article for article in articles if article not in result and article not in user_profile.read_articles.all()
+    #                 ]
+    #                 if available_articles:
+    #                     selected_article = available_articles[0]  # Select the first available article
+    #                     result.append(selected_article)
+    #         elif category_number == 0:
+    #             for _ in range(2): 
+    #                 # get articles which are not yet in zero and not read by user yet
+    #                 available_articles = [
+    #                     article for article in articles if article not in result and article not in user_profile.read_articles.all()
+    #                 ]
+    #                 if available_articles:
+    #                     selected_article = available_articles[0]  # Select the first available article
+    #                     result.append(selected_article)
+    #         elif category_number < 0:
+    #             # get articles which are not yet in negative and not read by user yet
+    #             available_articles = [
+    #                 article for article in articles if article not in result and article not in user_profile.read_articles.all()
+    #             ]
+    #             if available_articles:
+    #                 selected_article = available_articles[0]  # Select the first available article
+    #                 result.append(selected_article)
 
+    result = []
+    first_results = []
+    end_results = []
+    country_db = Country.objects.get(name=country)
 
+    first_categories_to_fetch = []
+    end_categories_to_fetch = []
+    categories = ["entertainment", "general", "business", "health", "science", "sports", "technology"]
+
+    # STEP 1: display at least one article from each category at the end
+    for category in categories:
+        category_db = Category.objects.get(name=category)
+        end_categories_to_fetch.append(category_db)
+
+    last_articles = user_profile.read_articles.all().order_by("-id")[:10]
+    like_articles = user_profile.like_articles.all().order_by("-id")[:10]
+    dislike_articles = user_profile.dislike_articles.all().order_by("-id")[:10]
+
+    # STEP 2: Append every category from the last 10 read articles
+    for article in last_articles:
+        first_categories_to_fetch.append(article.category)
+
+    # STEP 3: Append every category where user liked the article
+    for article in like_articles:
+        first_categories_to_fetch.append(article.category)
+
+    # STEP 4: Remove one category for disliked article (only if there are are least 2 categories in the list)
+    category_counts = Counter(first_categories_to_fetch)
+    for article in dislike_articles:
+        category = article.category
+        if category in category_counts and category_counts[category] >= 1:
+            first_categories_to_fetch.remove(category)
+            category_counts[category] -= 1
+    
+    # STEP 5: Append all categories to result list at first place
+    for category in first_categories_to_fetch:
+        articles_by_category = Article.objects.filter(category=category, country=country_db)
+        available_articles = [
+            article for article in articles_by_category if article not in first_results and article not in user_profile.read_articles.all()
+        ]
+        if available_articles:
+            first_results.append(available_articles[0])
+    
+    # STEP 6: Append all categories to result list at the end (so that at least one article from each category in list)
+    for category in end_categories_to_fetch:
+        articles_by_category = Article.objects.filter(category=category, country=country_db)
+        available_articles = [
+            article for article in articles_by_category if article not in first_results and article not in end_results and article not in user_profile.read_articles.all()
+        ]
+        if available_articles:
+            end_results.append(available_articles[0])
+    
+    # STEP 7: create bag of words and sort list by that
+    first_results_sorted = bag_of_words(user_profile, first_results)
+    end_results_sorted = bag_of_words(user_profile, end_results)
+
+    result = first_results_sorted + end_results_sorted
     return result, fetch_needed
+
+
 
 
 def getArticlesForUser(user_profile, country = "us"):
     print("getArticlesForUser")
     # get Articles for user depending on categories with trained AI
     articles, fetch_needed = categoriesAlgorithm(user_profile, country)
+    return articles
+    
 
     
 
-    # sort Articles for user depending of bag of words
-    if user_profile.read_articles.exists():
-        # extract text from the last three articles
-        read_articles = user_profile.read_articles.all().order_by('-id')[:3]
-        read_articles_text = ""
-        for article in read_articles:
-            text = text_from_article(article)
-            read_articles_text += text + "; "
+# def user_read_article(user_profile, article_id):
+#     '''
+#         adds an article to the user's "read_article" field
+#     '''
+#     article = Article.objects.get(id=article_id)
+#     user_profile.read_articles.add(article)
 
-        sorted_articles = sorted(
-            articles,
-            key=lambda article: compute_similarity(text_from_article(article), read_articles_text),
-            reverse=True,
-        )
-
-        return sorted_articles
-    else:
-        return articles
-
-def user_read_article(user_profile, article_id):
+def user_likes_article(user_profile, article_id):
     '''
-        adds an article to the user's "read_article" field
+        adds an article to the user's "like_article" field
     '''
     article = Article.objects.get(id=article_id)
+    print("Artikel soll geliked werden")
+    if article not in user_profile.like_articles.all():
+        print("Artikel noch nicht geliked")
+        user_profile.like_articles.add(article)
+        print("User Profile Like wurde hinzugefügt")
+        article.likes = article.likes + 1
+        print("Artikel Like wurde hinzugefügt")
+        if article in user_profile.dislike_articles.all():
+            print("Artikel wurde vorher gedisliked")
+            user_profile.dislike_articles.remove(article)
+            article.dislikes -= 1
 
-    user_profile.read_articles.add(article)
+    user_profile.save()
+    article.save()
+
+def user_dislikes_article(user_profile, article_id):
+    '''
+        adds an article to the user's "dislike_article" field
+    '''
+    article = Article.objects.get(id=article_id)
+    
+    if article not in user_profile.dislike_articles.all():
+        user_profile.dislike_articles.add(article)
+        article.dislikes += 1
+        if article in user_profile.like_articles.all():
+            user_profile.like_articles.remove(article)
+            article.likes -= 1
+
+    user_profile.save()
+    article.save()
 
 def search_articles(search_term):
     articles = Article.objects.filter(
@@ -280,7 +373,7 @@ def search_articles(search_term):
 
 def user_changes_rating(user_profile, article, points):
     """
-    user can rate an article
+    DEPRECATED user can rate an article
     """
     # change in userprofile
     field_name = article.category.name
@@ -326,16 +419,16 @@ def user_read_article(user_profile, article):
     method for registring the article into the read_articles field
     """
     user_profile.read_articles.add(article)
-    field_value = getattr(user_profile, article.category.name)
-    field_value += 1
-    setattr(user_profile, article.category.name, field_value)
-    user_profile.save()
+    # field_value = getattr(user_profile, article.category.name)
+    # field_value += 1
+    # setattr(user_profile, article.category.name, field_value)
+    # user_profile.save()
     return user_profile
 
 
 def user_rates_article(user_profile, article, rating_value):
     """
-    user can rate an article which is affecting the users interests profile
+    DEPRECATED user can rate an article which is affecting the users interests profile
     """
     print("User rates this article with " + str(rating_value))
     try:
@@ -359,13 +452,14 @@ def user_rates_article(user_profile, article, rating_value):
         raise e
     
     # rate category for user
-    if rating_value == 1:
-        user_changes_rating(user_profile, article, -2)
-    elif rating_value == 2:
-        user_changes_rating(user_profile, article, -1)
-    elif rating_value == 3:
-        pass
-    elif rating_value == 4:
-        user_changes_rating(user_profile, article, 1)
-    elif rating_value == 5:
-        user_changes_rating(user_profile, article, 2)
+    # if rating_value == 1:
+    #     user_changes_rating(user_profile, article, -2)
+    # elif rating_value == 2:
+    #     user_changes_rating(user_profile, article, -1)
+    # elif rating_value == 3:
+    #     pass
+    # elif rating_value == 4:
+    #     user_changes_rating(user_profile, article, 1)
+    # elif rating_value == 5:
+    #     user_changes_rating(user_profile, article, 2)
+    user_changes_rating(user_profile, article, rating_value)

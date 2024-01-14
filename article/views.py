@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from article.utils import readFile
-from .services import getArticlesForUser, search_articles, user_read_article, user_changes_rating
+from .services import getArticlesForUser, search_articles, user_dislikes_article, user_likes_article, user_read_article, user_changes_rating
 from .ai import train_ai_with_training_articles
 import os
 from .models import Article, ArticleComment, ArticleRating, Category, ChatMessage, Country, TrainingArticle, UserProfile
@@ -131,14 +131,32 @@ def read_articles(request):
     return render(request, 'article/read_articles.html', 
               {'articles': articles })    
 
+# @login_required
+# def rating(request, article_id):
+#     if request.method == 'POST':
+#         user_profile = UserProfile.objects.get(user=request.user)
+#         article = Article.objects.get(pk=article_id)
+#         rating = request.POST.get("rating")
+
+#         user_changes_rating(user_profile, article, rating)
+#         return HttpResponse(status=200)
+#     else:
+#         return HttpResponse(status=405)
+
 @login_required
 def rating(request, article_id):
+    print("Now in rating")
     if request.method == 'POST':
         user_profile = UserProfile.objects.get(user=request.user)
-        article = Article.objects.get(pk=article_id)
         rating = request.POST.get("rating")
 
-        user_changes_rating(user_profile, article, rating)
+        if int(rating) > 0:
+            print("rating positive")
+            user_likes_article(user_profile, article_id)
+        elif int(rating) < 0:
+            print("rating negative")
+            user_dislikes_article(user_profile, article_id)
         return HttpResponse(status=200)
     else:
         return HttpResponse(status=405)
+
