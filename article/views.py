@@ -6,10 +6,10 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from article.utils import readFile
-from .services import getArticlesForUser, search_articles, user_dislikes_article, user_likes_article, user_read_article, user_changes_rating
+from .services import getArticlesForUser, search_articles, user_dislikes_article, user_likes_article, user_read_article
 from .ai import train_ai_with_training_articles
 import os
-from .models import Article, ArticleComment, ArticleRating, Category, ChatMessage, Country, TrainingArticle, UserProfile
+from .models import Article, ArticleComment, Category, ChatMessage, Country, TrainingArticle, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth.models import User
@@ -88,13 +88,13 @@ def article_detail(request, pk):
     user_profile = UserProfile.objects.get(user=request.user)
     article = get_object_or_404(Article, pk=pk)
     user_read_article(user_profile, article)
-    ratings = ArticleRating.objects.filter(article=article)
+    # ratings = ArticleRating.objects.filter(article=article)
     comments = ArticleComment.objects.filter(article=article)
     messages = ChatMessage.objects.filter(article=article).order_by('-timestamp')[:50]
 
     return render(request, 'article/article_detail.html', 
                   {'article': article, 
-                   'ratings': ratings, 
+                #    'ratings': ratings, 
                    'comments': comments,
                    "messages": messages
                    })

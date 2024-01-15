@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 import requests
 
-from .models import Article, ArticleRating, Category, Country, TrainingArticle, UserProfile
+from .models import Article, Category, Country, TrainingArticle, UserProfile
 from decouple import config
 from .utils import readFile, createUrl, saveFile, text_from_article
 from .ai import create_bag_of_words, get_sorted_categories, predictCategory, compute_similarity
@@ -166,9 +166,9 @@ def bag_of_words(user_profile, articles):
 
 def categoriesAlgorithm(user_profile, country = "us"):
     print("categoriesAlgorithm")
-    sorted_categories = get_sorted_categories(user_profile=user_profile)
+    # sorted_categories = get_sorted_categories(user_profile=user_profile)
 
-
+    print("Checking if I shall request new data")
     # request Articles
     today = datetime.now().date()
     cache_key = f'last_fetch_date_{country}'
@@ -211,6 +211,7 @@ def categoriesAlgorithm(user_profile, country = "us"):
                     )
                 
         else: # fetch real data
+            print("fetchWithoutCategories")
             fetchWithoutCategories(country)
     else:
         fetch_needed = False
@@ -277,6 +278,7 @@ def categoriesAlgorithm(user_profile, country = "us"):
     for article in like_articles:
         first_categories_to_fetch.append(article.category)
 
+    print("STEP 4")
     # STEP 4: Remove one category for disliked article (only if there are are least 2 categories in the list)
     category_counts = Counter(first_categories_to_fetch)
     for article in dislike_articles:
@@ -284,7 +286,7 @@ def categoriesAlgorithm(user_profile, country = "us"):
         if category in category_counts and category_counts[category] >= 1:
             first_categories_to_fetch.remove(category)
             category_counts[category] -= 1
-    
+
     # STEP 5: Append all categories to result list at first place
     for category in first_categories_to_fetch:
         articles_by_category = Article.objects.filter(category=category, country=country_db)
@@ -293,8 +295,10 @@ def categoriesAlgorithm(user_profile, country = "us"):
         ]
         if available_articles:
             first_results.append(available_articles[0])
-    
-    # STEP 6: Append all categories to result list at the end (so that at least one article from each category in list)
+            if len(available_articles) > 1:
+                first_results.append(available_articles[1])
+
+    # STEP 6: Append all categories to result list at the end (so that at least two articles from each category in list)
     for category in end_categories_to_fetch:
         articles_by_category = Article.objects.filter(category=category, country=country_db)
         available_articles = [
@@ -302,6 +306,8 @@ def categoriesAlgorithm(user_profile, country = "us"):
         ]
         if available_articles:
             end_results.append(available_articles[0])
+            if len(available_articles) > 1:
+                end_results.append(available_articles[1])
     
     # STEP 7: create bag of words and sort list by that
     first_results_sorted = bag_of_words(user_profile, first_results)
@@ -371,46 +377,46 @@ def search_articles(search_term):
     )
     return articles
 
-def user_changes_rating(user_profile, article, points):
-    """
-    DEPRECATED user can rate an article
-    """
-    # change in userprofile
-    field_name = article.category.name
-    field_value = getattr(user_profile, field_name)
+# def user_changes_rating(user_profile, article, points):
+#     """
+#     DEPRECATED user can rate an article
+#     """
+#     # change in userprofile
+#     field_name = article.category.name
+#     field_value = getattr(user_profile, field_name)
     
-    # change in article
-    like_articles = user_profile.like_articles.all()
-    dislike_articles = user_profile.dislike_articles.all()
-    if int(points) > 0 and article not in like_articles:
-        article.likes += 1
-        user_profile.like_articles.add(article)
-        field_value += int(points)
-        if article in dislike_articles:
-            user_profile.dislike_articles.remove(article)
-            article.dislikes -= 1
-            field_value += int(points)
-        setattr(user_profile, field_name, field_value)
-    elif int(points) < 0 and article not in dislike_articles:
-        article.dislikes += 1
-        user_profile.dislike_articles.add(article)
-        field_value += int(points) - 1
+#     # change in article
+#     like_articles = user_profile.like_articles.all()
+#     dislike_articles = user_profile.dislike_articles.all()
+#     if int(points) > 0 and article not in like_articles:
+#         article.likes += 1
+#         user_profile.like_articles.add(article)
+#         field_value += int(points)
+#         if article in dislike_articles:
+#             user_profile.dislike_articles.remove(article)
+#             article.dislikes -= 1
+#             field_value += int(points)
+#         setattr(user_profile, field_name, field_value)
+#     elif int(points) < 0 and article not in dislike_articles:
+#         article.dislikes += 1
+#         user_profile.dislike_articles.add(article)
+#         field_value += int(points) - 1
 
-        # if it is the first rating
-        if article not in like_articles:
-            field_value -= 3
+#         # if it is the first rating
+#         if article not in like_articles:
+#             field_value -= 3
 
-        # if article already rated
-        if article in like_articles:
-            user_profile.like_articles.remove(article)
-            article.likes -= 1
-            field_value += int(points) - 1
-        setattr(user_profile, field_name, field_value)
+#         # if article already rated
+#         if article in like_articles:
+#             user_profile.like_articles.remove(article)
+#             article.likes -= 1
+#             field_value += int(points) - 1
+#         setattr(user_profile, field_name, field_value)
             
 
-    user_profile.save()
-    article.save()
-    return field_value
+#     user_profile.save()
+#     article.save()
+#     return field_value
 
 
 
@@ -426,40 +432,40 @@ def user_read_article(user_profile, article):
     return user_profile
 
 
-def user_rates_article(user_profile, article, rating_value):
-    """
-    DEPRECATED user can rate an article which is affecting the users interests profile
-    """
-    print("User rates this article with " + str(rating_value))
-    try:
-        # Try to get an existing rating
-        article_rating = ArticleRating.objects.get(user=user_profile, article=article)
-        # If it exists, update the rating
-        article_rating.rating = rating_value
+# def user_rates_article(user_profile, article, rating_value):
+#     """
+#     DEPRECATED user can rate an article which is affecting the users interests profile
+#     """
+#     print("User rates this article with " + str(rating_value))
+#     try:
+#         # Try to get an existing rating
+#         article_rating = ArticleRating.objects.get(user=user_profile, article=article)
+#         # If it exists, update the rating
+#         article_rating.rating = rating_value
         
-        article_rating.save()
-    except ArticleRating.DoesNotExist:
-        # If it doesn't exist, create a new rating
-        article_rating = ArticleRating.objects.create(
-            user=user_profile,
-            article=article,
-            rating=rating_value,
-        )
-        article_rating.save()
-    except IntegrityError as e:
-        # Handle any integrity errors, such as unique constraint violations
-        print(f"IntegrityError: {str(e)}")
-        raise e
+#         article_rating.save()
+#     except ArticleRating.DoesNotExist:
+#         # If it doesn't exist, create a new rating
+#         article_rating = ArticleRating.objects.create(
+#             user=user_profile,
+#             article=article,
+#             rating=rating_value,
+#         )
+#         article_rating.save()
+#     except IntegrityError as e:
+#         # Handle any integrity errors, such as unique constraint violations
+#         print(f"IntegrityError: {str(e)}")
+#         raise e
     
-    # rate category for user
-    # if rating_value == 1:
-    #     user_changes_rating(user_profile, article, -2)
-    # elif rating_value == 2:
-    #     user_changes_rating(user_profile, article, -1)
-    # elif rating_value == 3:
-    #     pass
-    # elif rating_value == 4:
-    #     user_changes_rating(user_profile, article, 1)
-    # elif rating_value == 5:
-    #     user_changes_rating(user_profile, article, 2)
-    user_changes_rating(user_profile, article, rating_value)
+#     # rate category for user
+#     # if rating_value == 1:
+#     #     user_changes_rating(user_profile, article, -2)
+#     # elif rating_value == 2:
+#     #     user_changes_rating(user_profile, article, -1)
+#     # elif rating_value == 3:
+#     #     pass
+#     # elif rating_value == 4:
+#     #     user_changes_rating(user_profile, article, 1)
+#     # elif rating_value == 5:
+#     #     user_changes_rating(user_profile, article, 2)
+#     user_changes_rating(user_profile, article, rating_value)

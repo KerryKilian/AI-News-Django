@@ -1,8 +1,8 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
-from article.models import ArticleComment, ArticleRating, ChatMessage, UserProfile
-from article.services import getArticlesForUser, user_changes_rating, user_read_article
+from article.models import ArticleComment, ChatMessage, UserProfile
+from article.services import getArticlesForUser, user_read_article
 from .forms import ChatForm, SignupForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
