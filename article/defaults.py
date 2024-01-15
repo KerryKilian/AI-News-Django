@@ -9,3 +9,6 @@ DEFAULT_TOPICS = [
     CategoryChoices.SPORTS.value,
     CategoryChoices.TECHNOLOGY.value,
 ]
+
+categories = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
+countries = ["us", "fr", "de"]

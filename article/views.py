@@ -1,20 +1,14 @@
-from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, redirect, render
-import requests
-import json
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from article.utils import readFile
 from .services import getArticlesForUser, search_articles, user_dislikes_article, user_likes_article, user_read_article
 from .ai import train_ai_with_training_articles
-import os
 from .models import Article, ArticleComment, Category, ChatMessage, Country, TrainingArticle, UserProfile
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseBadRequest
-from django.contrib.auth.models import User
-from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import user_passes_test
+from .defaults import categories, countries
 
 @require_http_methods(["GET"])
 
@@ -24,17 +18,13 @@ def train_ai(request):
     http endpoint for training the model based on the articles in data folder. Only accessible by admin user
     '''
     # Step 1 : Add Articles to TrainingArticles Database
-    category_names = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
-    countries = ["us", "fr", "de"]
-
-    # create 3 countries
     for country in countries:
         Country.objects.get_or_create(name=country)
 
     # read articles and save to db
     for country in countries:
         print(country)
-        for category_name in category_names:
+        for category_name in categories:
             print(category_name)
             category, created = Category.objects.get_or_create(name=category_name)
             for filename in [category_name, f"{category_name}-chatgpt"]:
@@ -88,13 +78,11 @@ def article_detail(request, pk):
     user_profile = UserProfile.objects.get(user=request.user)
     article = get_object_or_404(Article, pk=pk)
     user_read_article(user_profile, article)
-    # ratings = ArticleRating.objects.filter(article=article)
     comments = ArticleComment.objects.filter(article=article)
     messages = ChatMessage.objects.filter(article=article).order_by('-timestamp')[:50]
 
     return render(request, 'article/article_detail.html', 
                   {'article': article, 
-                #    'ratings': ratings, 
                    'comments': comments,
                    "messages": messages
                    })
@@ -131,21 +119,9 @@ def read_articles(request):
     return render(request, 'article/read_articles.html', 
               {'articles': articles })    
 
-# @login_required
-# def rating(request, article_id):
-#     if request.method == 'POST':
-#         user_profile = UserProfile.objects.get(user=request.user)
-#         article = Article.objects.get(pk=article_id)
-#         rating = request.POST.get("rating")
-
-#         user_changes_rating(user_profile, article, rating)
-#         return HttpResponse(status=200)
-#     else:
-#         return HttpResponse(status=405)
 
 @login_required
 def rating(request, article_id):
-    print("Now in rating")
     if request.method == 'POST':
         user_profile = UserProfile.objects.get(user=request.user)
         rating = request.POST.get("rating")

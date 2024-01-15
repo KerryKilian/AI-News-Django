@@ -53,14 +53,20 @@
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
+        
+
+        
     </style>
   <body>
     
     <nav
-      class="py-6 px-6 flex md:flex-col sm:flex-col lg:flex-row justify-between items-center border-b border-grey-200"
+      class="py-6 px-6 flex justify-between items-center border-b border-grey-200 header"
     >
       <a href="/" class="text-xl font-semibold">{% trans 'news_title' %}</a>
-      <div class="space-x-6 flex md:flex-col sm:flex-col sm:space-y-3 md:space-y-3 lg:flex-row items-center">
+      
+      <div class="space-x-6 flex items-center menu">
+        
         
 
         <form action="{% url 'article:search' %}" method="GET" class="flex items-center">

@@ -1,22 +1,14 @@
 from collections import Counter
-from datetime import datetime, timedelta, timezone
-from queue import PriorityQueue
-import random
-from django.db import IntegrityError
-from django.http import JsonResponse
+from datetime import datetime, timedelta
 import requests
 
-from .models import Article, Category, Country, TrainingArticle, UserProfile
+from .models import Article, Category, Country, TrainingArticle
 from decouple import config
 from .utils import readFile, createUrl, saveFile, text_from_article
-from .ai import create_bag_of_words, get_sorted_categories, predictCategory, compute_similarity
-import pickle
-from sklearn.metrics.pairwise import cosine_similarity
-
+from .ai import predictCategory, compute_similarity
 from django.core.cache import cache
-from django.contrib.auth.models import User
 from django.db.models import Q
-
+from .defaults import categories
 
 
 tfidf_vectorizer = None
@@ -26,60 +18,13 @@ USE_MOCKED_DATA = False
 API_KEY = config('API_KEY')
 USE_CACHE = True
 
-# def fetchTrainingArticles():
-#     '''
-#     DEPRECATED, DO NOT USE! fetches data for each category and saves it into the database
-#     '''
-#     try:
-#         categories = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
-        
-#         for category in categories:
-#             category_object = Category.objects.get_or_create(name=category)
-#             # either mocked data or real data
-#             if USE_MOCKED_DATA:
-#                 print("Using mocked data")
-#                 success, articles_data = readFile(category)
-#                 if not success:
-#                     print(f"Failed to read mocked data for category: {category}")
-#                     continue
-#             else:
-#                 response = requests.get(createUrl(category))
-#                 if response.status_code == 200:
-#                     articles_data = response.json().get('articles', [])
-#                 else:
-#                     print(f"Failed to fetch data for category: {category}")
-#                     continue
-
-#             for article_data in articles_data:
-#                 # Create a new Article object and save it to the database
-#                 TrainingArticle.objects.create(
-#                     title=article_data.get('title'),
-#                     description=article_data.get('description'),
-#                     author=article_data.get('author'),
-#                     url=article_data.get('url'),
-#                     urlToImage=article_data.get('urlToImage'),
-#                     publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
-#                     content=article_data.get('content'),
-#                     category=category_object
-#                 )
-
-#             # Save the fetched data or mocked data, if successful
-#             if USE_MOCKED_DATA:
-#                 saveFile(category, articles_data)
-
-#         return JsonResponse({'message': 'Articles saved to the database'}, safe=False)
-#     except Exception as e:
-#         return JsonResponse({'message': 'Failed to fetch articles from the API. ' + str(e)}, status=500, safe=False)
-
-
-
 def saveTrainingJsons():
     '''
     reads all json files which contain training data for the AI and saves it as trainings articles into database
     '''
 
     # Define the category names
-    category_names = ["business", "entertainment", "general", "health", "science", "sports", "technology"]
+    category_names = categories
 
     for category_name in category_names:
         try:
@@ -97,9 +42,8 @@ def saveTrainingJsons():
                             TrainingArticle.objects.create(
                                 title=article_data.get('title'),
                                 description=article_data.get('description'),
-                                category=category  # Assign the Category object
+                                category=category
                             )
-                            # print("New Article added: " + article_data.get("title"))
         except Exception as e:
             # Handle exceptions, such as if a category doesn't exist
             return False, e
@@ -165,10 +109,6 @@ def bag_of_words(user_profile, articles):
 
 
 def categoriesAlgorithm(user_profile, country = "us"):
-    print("categoriesAlgorithm")
-    # sorted_categories = get_sorted_categories(user_profile=user_profile)
-
-    print("Checking if I shall request new data")
     # request Articles
     today = datetime.now().date()
     cache_key = f'last_fetch_date_{country}'
@@ -211,46 +151,11 @@ def categoriesAlgorithm(user_profile, country = "us"):
                     )
                 
         else: # fetch real data
-            print("fetchWithoutCategories")
             fetchWithoutCategories(country)
     else:
         fetch_needed = False
         print("not fetching new data")
     
-    
-
-    # get as many articles from database as specified in category_number
-    # for category_name, category_number in sorted_categories.items():
-    #     category = Category.objects.get(name=category_name)
-    #     articles = Article.objects.filter(category=category, country=country_db)
-
-    #     if len(articles) != 0:  # if there are articles in this category in the headlines
-    #         if category_number > 0:
-    #             for _ in range(category_number * 3): # as many articles as points in userprofile
-    #                 # get articles which are not yet in positive and not read by user yet
-    #                 available_articles = [
-    #                     article for article in articles if article not in result and article not in user_profile.read_articles.all()
-    #                 ]
-    #                 if available_articles:
-    #                     selected_article = available_articles[0]  # Select the first available article
-    #                     result.append(selected_article)
-    #         elif category_number == 0:
-    #             for _ in range(2): 
-    #                 # get articles which are not yet in zero and not read by user yet
-    #                 available_articles = [
-    #                     article for article in articles if article not in result and article not in user_profile.read_articles.all()
-    #                 ]
-    #                 if available_articles:
-    #                     selected_article = available_articles[0]  # Select the first available article
-    #                     result.append(selected_article)
-    #         elif category_number < 0:
-    #             # get articles which are not yet in negative and not read by user yet
-    #             available_articles = [
-    #                 article for article in articles if article not in result and article not in user_profile.read_articles.all()
-    #             ]
-    #             if available_articles:
-    #                 selected_article = available_articles[0]  # Select the first available article
-    #                 result.append(selected_article)
 
     result = []
     first_results = []
@@ -259,16 +164,15 @@ def categoriesAlgorithm(user_profile, country = "us"):
 
     first_categories_to_fetch = []
     end_categories_to_fetch = []
-    categories = ["entertainment", "general", "business", "health", "science", "sports", "technology"]
 
     # STEP 1: display at least one article from each category at the end
     for category in categories:
         category_db = Category.objects.get(name=category)
         end_categories_to_fetch.append(category_db)
 
-    last_articles = user_profile.read_articles.all().order_by("-id")[:10]
-    like_articles = user_profile.like_articles.all().order_by("-id")[:10]
-    dislike_articles = user_profile.dislike_articles.all().order_by("-id")[:10]
+    last_articles = user_profile.read_articles.all().order_by("-id")[:5]
+    like_articles = user_profile.like_articles.all().order_by("-id")[:5]
+    dislike_articles = user_profile.dislike_articles.all().order_by("-id")[:5]
 
     # STEP 2: Append every category from the last 10 read articles
     for article in last_articles:
@@ -326,29 +230,15 @@ def getArticlesForUser(user_profile, country = "us"):
     return articles
     
 
-    
-
-# def user_read_article(user_profile, article_id):
-#     '''
-#         adds an article to the user's "read_article" field
-#     '''
-#     article = Article.objects.get(id=article_id)
-#     user_profile.read_articles.add(article)
-
 def user_likes_article(user_profile, article_id):
     '''
         adds an article to the user's "like_article" field
     '''
     article = Article.objects.get(id=article_id)
-    print("Artikel soll geliked werden")
     if article not in user_profile.like_articles.all():
-        print("Artikel noch nicht geliked")
         user_profile.like_articles.add(article)
-        print("User Profile Like wurde hinzugefügt")
         article.likes = article.likes + 1
-        print("Artikel Like wurde hinzugefügt")
         if article in user_profile.dislike_articles.all():
-            print("Artikel wurde vorher gedisliked")
             user_profile.dislike_articles.remove(article)
             article.dislikes -= 1
 
@@ -377,95 +267,10 @@ def search_articles(search_term):
     )
     return articles
 
-# def user_changes_rating(user_profile, article, points):
-#     """
-#     DEPRECATED user can rate an article
-#     """
-#     # change in userprofile
-#     field_name = article.category.name
-#     field_value = getattr(user_profile, field_name)
-    
-#     # change in article
-#     like_articles = user_profile.like_articles.all()
-#     dislike_articles = user_profile.dislike_articles.all()
-#     if int(points) > 0 and article not in like_articles:
-#         article.likes += 1
-#         user_profile.like_articles.add(article)
-#         field_value += int(points)
-#         if article in dislike_articles:
-#             user_profile.dislike_articles.remove(article)
-#             article.dislikes -= 1
-#             field_value += int(points)
-#         setattr(user_profile, field_name, field_value)
-#     elif int(points) < 0 and article not in dislike_articles:
-#         article.dislikes += 1
-#         user_profile.dislike_articles.add(article)
-#         field_value += int(points) - 1
-
-#         # if it is the first rating
-#         if article not in like_articles:
-#             field_value -= 3
-
-#         # if article already rated
-#         if article in like_articles:
-#             user_profile.like_articles.remove(article)
-#             article.likes -= 1
-#             field_value += int(points) - 1
-#         setattr(user_profile, field_name, field_value)
-            
-
-#     user_profile.save()
-#     article.save()
-#     return field_value
-
-
-
 def user_read_article(user_profile, article):
     """
     method for registring the article into the read_articles field
     """
     user_profile.read_articles.add(article)
-    # field_value = getattr(user_profile, article.category.name)
-    # field_value += 1
-    # setattr(user_profile, article.category.name, field_value)
-    # user_profile.save()
+    user_profile.save()
     return user_profile
-
-
-# def user_rates_article(user_profile, article, rating_value):
-#     """
-#     DEPRECATED user can rate an article which is affecting the users interests profile
-#     """
-#     print("User rates this article with " + str(rating_value))
-#     try:
-#         # Try to get an existing rating
-#         article_rating = ArticleRating.objects.get(user=user_profile, article=article)
-#         # If it exists, update the rating
-#         article_rating.rating = rating_value
-        
-#         article_rating.save()
-#     except ArticleRating.DoesNotExist:
-#         # If it doesn't exist, create a new rating
-#         article_rating = ArticleRating.objects.create(
-#             user=user_profile,
-#             article=article,
-#             rating=rating_value,
-#         )
-#         article_rating.save()
-#     except IntegrityError as e:
-#         # Handle any integrity errors, such as unique constraint violations
-#         print(f"IntegrityError: {str(e)}")
-#         raise e
-    
-#     # rate category for user
-#     # if rating_value == 1:
-#     #     user_changes_rating(user_profile, article, -2)
-#     # elif rating_value == 2:
-#     #     user_changes_rating(user_profile, article, -1)
-#     # elif rating_value == 3:
-#     #     pass
-#     # elif rating_value == 4:
-#     #     user_changes_rating(user_profile, article, 1)
-#     # elif rating_value == 5:
-#     #     user_changes_rating(user_profile, article, 2)
-#     user_changes_rating(user_profile, article, rating_value)

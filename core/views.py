@@ -1,14 +1,12 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from article.models import ArticleComment, ChatMessage, UserProfile
-from article.services import getArticlesForUser, user_read_article
-from .forms import ChatForm, SignupForm
+from article.models import UserProfile
+from article.services import getArticlesForUser
+from .forms import SignupForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import render, get_object_or_404
-from article.models import Article
-from django.db.models import Avg
+from django.shortcuts import render
 from django.utils.translation import get_language
 
 # Create your views here.
