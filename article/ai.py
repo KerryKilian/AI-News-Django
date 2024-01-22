@@ -138,11 +138,6 @@ def predictCategory(article, country = "us"):
     '''
     print("predictCategory")
     
-    title = article.title if hasattr(article, 'title') else article.get('title')
-    description = article.description if hasattr(article, 'description') else article.get('description')
-    
-    # tfidf_vectorizer = joblib.load('tfidf_vectorizer.pkl')
-    # classifier = joblib.load('classifier.pkl')
 
     tfidf_vectorizer_path = os.path.join('ai_model', country, 'tfidf_vectorizer.pkl')
     tfidf_vectorizer = joblib.load(tfidf_vectorizer_path)

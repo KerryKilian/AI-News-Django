@@ -2,24 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User 
 
 
-
-
-CATEGORY_CHOICES = [
-    ('business', 'Business'),
-    ('entertainment', 'Entertainment'),
-    ('general', 'General'),
-    ('health', 'Health'),
-    ('science', 'Science'),
-    ('sports', 'Sports'),
-    ('technology', 'Technology'),
-]
-
-COUNTRY_CHOICES = [
-    ('us', 'us'),
-    ('de', 'de'),
-    ('fr', 'fr'),
-]
-
 class Category(models.Model):
     name = models.CharField(max_length=100)
 

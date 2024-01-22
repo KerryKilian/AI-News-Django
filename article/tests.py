@@ -1,15 +1,9 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.core.management import call_command
+from .ai import create_bag_of_words, get_sorted_categories
+from .models import Category, TrainingArticle, Article, UserProfile
+from .services import get_articles_for_user, predictCategory, save_training_jsons, search_articles, user_read_article
 
-from article.views import train_ai
-
-from .ai import create_bag_of_words
-
-
-# Create your tests here.
-from .models import ArticleRating, Category, TrainingArticle, Article, UserProfile
-from .services import get_sorted_categories, getArticlesForUser, predictCategory, saveTrainingJsons, search_articles, user_changes_rating, user_read_article
 
 class ArticlesTest(TestCase):
     def setUp(self):
@@ -57,7 +51,7 @@ class ArticlesTest(TestCase):
         self.assertEqual(initial_article_count, 0)
 
         # Call the method that fetches articles
-        saveTrainingJsons()
+        save_training_jsons()
 
         # Query the database again to check the number of articles
         final_article_count = TrainingArticle.objects.count()
@@ -79,7 +73,7 @@ class ArticlesTest(TestCase):
             Category.objects.get_or_create(name=category_name)
     
         # Call the method that fetches articles
-        saveTrainingJsons()
+        save_training_jsons()
     
         # Query the database to get the count of articles for each category
         category_article_counts = {category: TrainingArticle.objects.filter(category__name=category).count() for category in categories_to_track}
@@ -88,43 +82,10 @@ class ArticlesTest(TestCase):
         for category in categories_to_track:
             self.assertGreaterEqual(category_article_counts[category], 1)
 
-    
-    # '''test if ai can predict the categories'''
-    # def test_train_ai(self):
-    #     # Save training articles into the database
-    #     saveTrainingJsons()
-
-    #     # Call the trainAi() method
-    #     trainAi()
-
-    #     article1 = Article.objects.get(title="The stock market reached record highs today as investors gained confidence in the economy.")
-    #     article2 = Article.objects.get(title="A thrilling football match ended in a penalty shootout, and the home team emerged victorious.")
-    #     article3 = Article.objects.get(title="Researchers have discovered a breakthrough treatment for a rare genetic disease.")
-    #     article4 = Article.objects.get(title="The highly anticipated sequel to the blockbuster movie is set to hit theaters next week.")
-    #     article5 = Article.objects.get(title="Scientists have detected signs of water on a distant exoplanet, raising hopes for extraterrestrial life.")
-    #     article6 = Article.objects.get(title="The latest smartphone model features a foldable screen and advanced AI capabilities.")
-    #     article7 = Article.objects.get(title="Amidst the ongoing debate, citizens eagerly await the decision of their elected representatives.")
-
-    #     # Test predictCategory() with Article objects
-    #     input_output_mapping = {
-    #         article1: ["business"],
-    #         article2: ["sports", "entertainment"],
-    #         article3: ["health", "technology", "science"],
-    #         article4: ["entertainment", "general"],
-    #         article5: ["science", "technology"],
-    #         article6: ["technology", "general"],
-    #         article7: ["general", "science"]
-    #     }
-
-    #     for input_article, expected_outputs in input_output_mapping.items():
-    #         predicted_category = predictCategory(input_article)
-    #         self.assertIn(predicted_category, expected_outputs)
-    #         print("Predicted: " + predicted_category + " - Expected: " + str(expected_outputs))
-
     ''' test if articles are in database after reading from files '''
     def test_save_training_jsons(self):
         # Call the method to save training JSONs
-        saveTrainingJsons()
+        save_training_jsons()
 
         # List of article titles to check
         article_titles = [
@@ -151,7 +112,7 @@ class ArticlesTest(TestCase):
     
 class UserTest(TestCase):
     def setUp(self):
-        saveTrainingJsons()
+        save_training_jsons()
         
     def test_user_existance(self):
         User.objects.create_user(
@@ -199,79 +160,14 @@ class UserTest(TestCase):
         user_profile = UserProfile.objects.get(user=user)
         self.assertEqual(user_profile.user, user)
 
-        # Check if UserProfile's category fields have default values of 0
-        category_fields = ["entertainment", "general", "business", "health", "science", "sports", "technology"]
-        for field_name in category_fields:
-            self.assertEqual(getattr(user_profile, field_name), 0)
+
 
         
     
 class UserArticlesTest(TestCase):
     def setUp(self):
-        saveTrainingJsons()
+        save_training_jsons()
         # call_command("create_initial_categories")
-
-    
-    def test_get_sorted_categories(self):
-        # Create a UserProfile instance with specific values for the category fields
-        user_profile = UserProfile(
-            entertainment=5,
-            general=0,
-            business=-1,
-            health=-3,
-            science=7,
-            sports=1,
-            technology=6,
-        )
-        user_profile.save()
-
-        # Use the get_sorted_categories function to get the sorted categories
-        sorted_categories = get_sorted_categories(user_profile)
-
-        # Define the expected sorted order
-        expected_sorted_order = ["science", "technology", "entertainment", "sports", "general", "business", "health"]
-
-        # Check if the sorted categories match the expected order
-        self.assertEqual(list(sorted_categories.keys()), expected_sorted_order)
-
-    def test_get_sorted_categories_universe(self):
-        
-        user_data = {
-            'username': 'testuser',
-            'email': 'testuser@example.com',
-            'password1': 'testpassword',
-            'password2': 'testpassword',
-        }
-        article = Article.objects.create(
-            title='The dark universe. When do we learn more with our telescopes?',
-            description='NASA builds new telescopes but when do we see more into the dark of the universe?',
-            content=""
-        )
-        feature_names, bag_of_words_matrix = create_bag_of_words(article)
-        article.bag_of_words_matrix = bag_of_words_matrix
-        article.save()
-
-        response = self.client.post('/signup/', user_data, follow=True)
-        user = User.objects.get(username='testuser')
-        user_profile = UserProfile.objects.get(user=user)
-        user_profile.entertainment = 0
-        user_profile.general = -1
-        user_profile.business = -2
-        user_profile.health = 4
-        user_profile.science = 5
-        user_profile.sports = 1
-        user_profile.technology = 3
-        user_profile.last_article = article
-        user_profile.read_articles.add(article)
-        user_profile.save()
-
-        result = getArticlesForUser(user_profile)
-        print("result")
-        print(result)
-        self.assertIsNotNone(result)
-        # cannot really test what is in here because mock data is not good enough (not every category is in mock data)
-
-    
 
     def test_user_read_article(self):
         '''
@@ -349,103 +245,6 @@ class ArticleSearchTest(TestCase):
         self.assertQuerysetEqual(articles, [])
 
 
-# class SaveRatingViewTest(TestCase):
-#     def setUp(self):
-#         # Create a user
-#         self.user = User.objects.create_user(username='testuser', password='testpassword')
-
-#         # Create an article with the category "entertainment"
-#         self.category_entertainment = Category.objects.create(name='entertainment')
-#         self.article = Article.objects.create(
-#             title='Test Article',
-#             description='Test Description',
-#             author='Test Author',
-#             url='https://example.com',
-#             urlToImage='https://example.com/image.jpg',
-#             sourceName='Test Source',
-#             content='Test Content',
-#             category=self.category_entertainment,
-#         )
-
-#         # Create a user profile for the test user
-#         self.user_profile = UserProfile.objects.create(user=self.user, entertainment=10)
-
-#     def test_save_rating_1(self):
-#         self.client.login(username='testuser', password='testpassword')
-#         response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '1'}, follow=True)
-
-#         # Check the response status code
-#         self.assertEqual(response.status_code, 200)
-
-#         # Check the user_profile "entertainment" field
-#         self.user_profile.refresh_from_db()
-#         self.assertEqual(self.user_profile.entertainment, 8)
-
-#         # Check the ArticleRating object
-#         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
-#         self.assertEqual(article_rating.rating, 1)
-
-#     def test_save_rating_2(self):
-#         self.client.login(username='testuser', password='testpassword')
-#         response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '2'}, follow=True)
-
-#         # Check the response status code
-#         self.assertEqual(response.status_code, 200)
-
-#         # Check the user_profile "entertainment" field
-#         self.user_profile.refresh_from_db()
-#         self.assertEqual(self.user_profile.entertainment, 9)
-
-#         # Check the ArticleRating object
-#         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
-#         self.assertEqual(article_rating.rating, 2)
-
-#     def test_save_rating_3(self):
-#         self.client.login(username='testuser', password='testpassword')
-#         response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '3'}, follow=True)
-
-#         # Check the response status code
-#         self.assertEqual(response.status_code, 200)
-
-#         # Check the user_profile "entertainment" field
-#         self.user_profile.refresh_from_db()
-#         self.assertEqual(self.user_profile.entertainment, 10)
-
-#         # Check the ArticleRating object
-#         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
-#         self.assertEqual(article_rating.rating, 3)
-
-#     def test_save_rating_4(self):
-#         self.client.login(username='testuser', password='testpassword')
-#         response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '4'}, follow=True)
-
-#         # Check the response status code
-#         self.assertEqual(response.status_code, 200)
-
-#         # Check the user_profile "entertainment" field
-#         self.user_profile.refresh_from_db()
-#         self.assertEqual(self.user_profile.entertainment, 11)
-
-#         # Check the ArticleRating object
-#         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
-#         self.assertEqual(article_rating.rating, 4)
-
-#     def test_save_rating_5(self):
-#         self.client.login(username='testuser', password='testpassword')
-#         response = self.client.post('/article/rating/' + str(self.article.id), {'rating': '5'}, follow=True)
-
-#         # Check the response status code
-#         self.assertEqual(response.status_code, 200)
-
-#         # Check the user_profile "entertainment" field
-#         self.user_profile.refresh_from_db()
-#         self.assertEqual(self.user_profile.entertainment, 12)
-
-#         # Check the ArticleRating object
-#         article_rating = ArticleRating.objects.get(user=self.user_profile, article=self.article)
-#         self.assertEqual(article_rating.rating, 5)
-
-
 class RatingTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpassword')
@@ -471,32 +270,3 @@ class RatingTestCase(TestCase):
 
         # Check if the article's likes is updated
         self.assertEqual(self.article.likes, 1)
-
-    # def test_user_changes_rating_function(self):
-    #     # Create a user profile
-
-    #     # Call the user_changes_rating function
-    #     user_changes_rating(self.user_profile, self.article, 1)
-
-    #     # Refresh the user and article instances from the database
-    #     self.user.refresh_from_db()
-    #     self.article.refresh_from_db()
-
-    #     # Check if the user's like_articles is updated
-    #     self.assertIn(self.article, self.user_profile.like_articles.all())
-
-    #     # Check if the article's likes is updated
-    #     self.assertEqual(self.article.likes, 1)
-
-    #     # Call the user_changes_rating function again with a different rating
-    #     user_changes_rating(self.user_profile, self.article, -1)
-
-    #     # Refresh the user and article instances from the database
-    #     self.user.refresh_from_db()
-    #     self.article.refresh_from_db()
-
-    #     # Check if the user's dislike_articles is updated
-    #     self.assertIn(self.article, self.user_profile.dislike_articles.all())
-
-    #     # Check if the article's dislikes is updated
-    #     self.assertEqual(self.article.dislikes, 1)

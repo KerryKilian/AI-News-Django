@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from article.models import UserProfile
-from article.services import getArticlesForUser
+from article.services import get_articles_for_user
 from .forms import SignupForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -42,8 +42,9 @@ def index(request):
     except:
         return redirect("/login/")
     try:
-        articles = getArticlesForUser(user_profile, country)
-    except:
+        articles = get_articles_for_user(user_profile, country)
+    except Exception as e:
+        print(str(e))
         return HttpResponse(status=500)
     return render(request, 'core/index.html', {'articles': articles})
 

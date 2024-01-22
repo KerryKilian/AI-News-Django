@@ -5,7 +5,7 @@ import re
 
 API_KEY = config('API_KEY')
 
-def readFile(category, country = "us"):
+def read_file(category, country = "us"):
     """
     reads a given file of training data
     """
@@ -23,7 +23,7 @@ def readFile(category, country = "us"):
         print(f"File not found: {file_path}")
         return False, None
 
-def saveFile(category, data):
+def save_file(category, data):
     """
     saves the training data to a file
     """
@@ -37,7 +37,7 @@ def saveFile(category, data):
 
 
 
-def createUrl(category = None, country = "us"):
+def create_url(category = None, country = "us"):
     """
     creates an url which will be used for fetching
     """
@@ -50,11 +50,8 @@ def createUrl(category = None, country = "us"):
        f'country={country}&'
        'category=' + category + '&from=2023-10-03&to=2023-10-13'
        '&apiKey=' + API_KEY)
-    # return ('https://newsapi.org/v2/everything?'
-    #    'category=' + category + '&'
-    #    '&apiKey=' + API_KEY)
+
     
-# https://newsapi.org/v2/top-headlines?country=us&apiKey=b01b15596d04498689a73fa1b9b0733e
 
 
 def text_from_article(article):

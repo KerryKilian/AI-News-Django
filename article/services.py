@@ -4,7 +4,7 @@ import requests
 
 from .models import Article, Category, Country, TrainingArticle
 from decouple import config
-from .utils import readFile, createUrl, saveFile, text_from_article
+from .utils import read_file, create_url, text_from_article
 from .ai import predictCategory, compute_similarity
 from django.core.cache import cache
 from django.db.models import Q
@@ -13,14 +13,13 @@ from .defaults import categories
 
 tfidf_vectorizer = None
 classifier = None
-# USE_MOCKED_DATA = config('USE_MOCKED_DATA', default=False, cast=bool)
-USE_MOCKED_DATA = False
+USE_MOCKED_DATA = config('USE_MOCKED_DATA')
 API_KEY = config('API_KEY')
-USE_CACHE = True
+USE_CACHE = config('USE_CACHE')
 
-def saveTrainingJsons():
+def save_training_jsons():
     '''
-    reads all json files which contain training data for the AI and saves it as trainings articles into database
+    reads all json files which contain training data for the AI and saves it as trainings articles into database. Created for test purposes
     '''
 
     # Define the category names
@@ -33,7 +32,7 @@ def saveTrainingJsons():
 
             # Iterate through possible file name variations
             for filename in [category_name, f"{category_name}-chatgpt"]:
-                success, articles_data = readFile(filename)
+                success, articles_data = read_file(filename)
                 if success:
                     for article_data in articles_data:
                         existing_article = TrainingArticle.objects.filter(title=article_data.get('title')).first()
@@ -50,44 +49,71 @@ def saveTrainingJsons():
 
     return True, "success"
 
+def fetch_mock():
+    success, data = read_file("top-headlines")
+            
+    for article_data in data:
+        # Create a new Article object and save it to the database
+        if article_data.get("title") != "[Removed]":
+
+            existing_article = Article.objects.filter(title=article_data.get('title')).first()
+            if existing_article:
+                continue
+            category = predictCategory(article_data)
+            Article.objects.create(
+                title=article_data.get('title'),
+                description=article_data.get('description'),
+                author=article_data.get('author'),
+                url=article_data.get('url'),
+                urlToImage=article_data.get('urlToImage'),
+                publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
+                sourceName=article_data.get("source").get("source"),
+                content=article_data.get('content'),
+                category=Category.objects.get(name=category)
+            )
 
 
 
-
-def fetchWithoutCategories(country = "us"):
+def fetch_real(country = "us"):
     '''
     takes articles from database and trains the ki with categories
     '''
     
-    response = requests.get(createUrl("", country))
+    response = requests.get(create_url("", country))
     if response.status_code == 200:
         articles_data = response.json().get('articles', [])
         for article_data in articles_data:
-            print(article_data)
-            if article_data.get("title") != "[Removed]":
-            
+            try:
+                print(article_data)
+                if article_data.get("title") != "[Removed]":
 
-                existing_article = Article.objects.filter(title=article_data.get('title')).first()
-                if existing_article:
-                    # If the article with the same title exists, you can skip it
-                    continue
-                category = predictCategory(article_data, country)
-                # Create a new Article object and save it to the database
-                Article.objects.create(
-                    title=article_data.get('title'),
-                    description=article_data.get('description'),
-                    author=article_data.get('author'),
-                    url=article_data.get('url'),
-                    urlToImage=article_data.get('urlToImage'),
-                    publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
-                    sourceName=article_data.get("source").get("source"),
-                    content=article_data.get('content'),
-                    category=Category.objects.get(name=category),
-                    country=Country.objects.get(name=country)
-                )
+
+                    existing_article = Article.objects.filter(title=article_data.get('title')).first()
+                    if existing_article:
+                        print("Article already existing")
+                        continue
+                    category = predictCategory(article_data, country)
+                    # Create a new Article object and save it to the database
+                    Article.objects.create(
+                        title=article_data.get('title'),
+                        description=article_data.get('description'),
+                        author=article_data.get('author'),
+                        url=article_data.get('url'),
+                        urlToImage=article_data.get('urlToImage'),
+                        publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
+                        sourceName=article_data.get("source").get("source"),
+                        content=article_data.get('content'),
+                        category=Category.objects.get(name=category),
+                        country=Country.objects.get(name=country)
+                    )
+            except Exception as e:
+                print(str(e))
 
 
 def bag_of_words(user_profile, articles):
+    '''
+    sorts the articles by the words that may be interesting for the user (depending on what the user has read the last three times)
+    '''
     # sort Articles for user depending of bag of words
     if user_profile.read_articles.exists():
         # extract text from the last three articles
@@ -107,56 +133,10 @@ def bag_of_words(user_profile, articles):
     else:
         return articles
 
-
-def categoriesAlgorithm(user_profile, country = "us"):
-    # request Articles
-    today = datetime.now().date()
-    cache_key = f'last_fetch_date_{country}'
-    if USE_CACHE == True:
-        print("using cache")
-        last_fetch_date = cache.get(cache_key)
-    else:
-        print("not using cache")
-        last_fetch_date = None
-
-    # If last fetch date is not set or it's not today, fetch the data
-    if not last_fetch_date or last_fetch_date.date() != today:
-        print("fetching new data")
-        # Update the last fetch date in the cache
-        cache.set(cache_key, datetime.now(), timeout=timedelta(days=1).seconds)
-        fetch_needed = True
-
-        # fetch mock data
-        if USE_MOCKED_DATA == True:
-            success, data = readFile("top-headlines")
-            
-            for article_data in data:
-                # Create a new Article object and save it to the database
-                if article_data.get("title") != "[Removed]":
-
-                    existing_article = Article.objects.filter(title=article_data.get('title')).first()
-                    if existing_article:
-                        continue
-                    category = predictCategory(article_data)
-                    Article.objects.create(
-                        title=article_data.get('title'),
-                        description=article_data.get('description'),
-                        author=article_data.get('author'),
-                        url=article_data.get('url'),
-                        urlToImage=article_data.get('urlToImage'),
-                        publishedAt=datetime.strptime(article_data.get('published_at'), "%Y-%m-%dT%H:%M:%SZ") if article_data.get('published_at') else None,
-                        sourceName=article_data.get("source").get("source"),
-                        content=article_data.get('content'),
-                        category=Category.objects.get(name=category)
-                    )
-                
-        else: # fetch real data
-            fetchWithoutCategories(country)
-    else:
-        fetch_needed = False
-        print("not fetching new data")
-    
-
+def algorithm(user_profile, country = "us"):
+    '''
+    algorithm for searching the users most interesting news articles
+    '''
     result = []
     first_results = []
     end_results = []
@@ -182,7 +162,6 @@ def categoriesAlgorithm(user_profile, country = "us"):
     for article in like_articles:
         first_categories_to_fetch.append(article.category)
 
-    print("STEP 4")
     # STEP 4: Remove one category for disliked article (only if there are are least 2 categories in the list)
     category_counts = Counter(first_categories_to_fetch)
     for article in dislike_articles:
@@ -218,17 +197,39 @@ def categoriesAlgorithm(user_profile, country = "us"):
     end_results_sorted = bag_of_words(user_profile, end_results)
 
     result = first_results_sorted + end_results_sorted
-    return result, fetch_needed
+
+    return result
 
 
+def get_articles_for_user(user_profile, country = "us"):
+    '''
+    logic that fetches new articles once a day and then searching the best fitting articles for the user with an algorithm
+    '''
+    # request Articles
+    today = datetime.now().date()
+    cache_key = f'last_fetch_date_{country}'
+    if USE_CACHE == True:
+        print("using cache")
+        last_fetch_date = cache.get(cache_key)
+    else:
+        print("not using cache")
+        last_fetch_date = None
 
+    # If last fetch date is not set or it's not today, fetch the data
+    if not last_fetch_date or last_fetch_date.date() != today:
+        print("fetching new data")
+        # Update the last fetch date in the cache
+        cache.set(cache_key, datetime.now(), timeout=timedelta(days=1).seconds)
 
-def getArticlesForUser(user_profile, country = "us"):
-    print("getArticlesForUser")
-    # get Articles for user depending on categories with trained AI
-    articles, fetch_needed = categoriesAlgorithm(user_profile, country)
+        if USE_MOCKED_DATA == True:
+            fetch_mock()     
+        else: 
+            fetch_real(country)
+
+    articles = algorithm(user_profile, country)
     return articles
-    
+
+
 
 def user_likes_article(user_profile, article_id):
     '''
@@ -262,6 +263,9 @@ def user_dislikes_article(user_profile, article_id):
     article.save()
 
 def search_articles(search_term):
+    '''
+    logic to search articles
+    '''
     articles = Article.objects.filter(
         Q(title__icontains=search_term) | Q(description__icontains=search_term)
     )
@@ -269,7 +273,7 @@ def search_articles(search_term):
 
 def user_read_article(user_profile, article):
     """
-    method for registring the article into the read_articles field
+    logic for registring the article into the read_articles field
     """
     user_profile.read_articles.add(article)
     user_profile.save()
